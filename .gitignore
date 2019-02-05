@@ -1,0 +1,27 @@
+# How to quickly add to .gitignore
+#
+# Ignore a file type in general
+# *.txt
+#
+# Ignore a directory in general
+# NAME/
+#
+# Ignore a file type in a directory
+# 1. relative path of directory ie. example/
+# 2. enter file extension after path ie. example/*.txt
+#
+# Ignore a specific file in a directory
+# 1. relative path of directory ie. example/
+# 2. enter filename after path ie. example/foo.txt
+#
+# Ignore a specific directory in a directory
+# 1. relative path of directory ie. example/
+# 2. enter directory name ie. example/bar/
+
+# Ignore these file types
+*.xml
+*.iml
+
+# Ignore these directories
+.idea/
+out/
