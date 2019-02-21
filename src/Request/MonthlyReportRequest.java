@@ -1,6 +1,6 @@
 package Request;
 
-public class RegisterVisitorRequest implements Request{
+public class MonthlyReportRequest implements Request{
 
     @Override
     public void collectDependencies() {
