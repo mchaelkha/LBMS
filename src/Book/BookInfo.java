@@ -4,13 +4,13 @@ import java.util.List;
 
 public class BookInfo {
 
-    String isbn;
-    String title;
-    List<String> authors;
-    String publisher;
-    String publishDate;
-    int totalNumCopies;
-    int totalCopiesAvailable;
+    private String isbn;
+    private String title;
+    private List<String> authors;
+    private String publisher;
+    private String publishDate;
+    private int totalNumCopies;
+    private int totalCopiesAvailable;
 
     /**
      * Adds a copy of this book to the library.
