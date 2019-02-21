@@ -1,10 +1,9 @@
 package Request;
 
-public class VisitorEnteringRequest implements Request {
-
+public class ChangeDateRequest implements Request {
     @Override
     public void collectDependencies() {
-
+        
     }
 
     @Override
