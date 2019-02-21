@@ -1,9 +1,9 @@
 package Request;
 
-public class ShutDownRequest implements Request {
+public class BookReturnRequest implements Request {
     @Override
     public void collectDependencies() {
-
+        
     }
 
     @Override
