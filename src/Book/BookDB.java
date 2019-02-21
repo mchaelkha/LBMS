@@ -3,7 +3,7 @@ package Book;
 import java.util.Map;
 
 public class BookDB {
-    Map<String, BookInfo> books;
+    private Map<String, BookInfo> books;
 
     public BookDB(){
 
