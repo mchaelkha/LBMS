@@ -2,9 +2,9 @@ package Book;
 
 import java.util.Comparator;
 
-public class PublishDateComparator implements Comparator {
+public class PublishDateComparator implements Comparator<BookInfo> {
     @Override
-    public int compare(Object o1, Object o2) {
+    public int compare(BookInfo o1, BookInfo o2) {
         return 0;
     }
 }
