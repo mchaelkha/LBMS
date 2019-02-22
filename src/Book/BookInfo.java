@@ -13,10 +13,23 @@ public class BookInfo {
     private int totalCopiesAvailable;
 
     /**
+     * Create book info given the necessary information.
+     */
+    public BookInfo(String isbn, String title, List<String> authors, String publisher, String publishDate) {
+        this.isbn = isbn;
+        this.title = title;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.publishDate = publishDate;
+        totalNumCopies = 1;
+        totalCopiesAvailable = 1;
+    }
+
+    /**
      * Adds a copy of this book to the library.
      */
     public void addCopy(){
-
+        totalNumCopies++;
     }
 
     /**
@@ -24,14 +37,18 @@ public class BookInfo {
      * @return Whether the book was successfully checked out.
      */
     public boolean checkOutCopy(){
-        return false;
+        if (totalCopiesAvailable == 0) {
+            return false;
+        }
+        totalCopiesAvailable--;
+        return true;
     }
 
     /**
      * Returns a copy of this book to the library.
      */
     public void returnCopy(){
-
+        totalCopiesAvailable++;
     }
 
     /**
