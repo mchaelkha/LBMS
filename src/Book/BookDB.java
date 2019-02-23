@@ -1,19 +1,12 @@
 package Book;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class BookDB {
-    /**
-     * All book titles that the library has
-     */
-    private Map<String, BookInfo> books;
+public class BookDB extends BookData {
 
     /**
      * Create a new book database that is empty.
      */
     public BookDB(){
-        books = new HashMap<>();
+        super();
     }
 
     /**
