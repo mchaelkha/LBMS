@@ -10,9 +10,6 @@ public class LibrarySystem {
     private static int OPEN_HOUR = 9;
     private static int CLOSE_HOUR = 12+9;
 
-    private String openTime;
-    private String closeTime;
-    private String currentMonth;
     private DBManager manager;
     private TimeKeeper timeKeeper;
 
@@ -20,7 +17,7 @@ public class LibrarySystem {
      * Gives the status of the library
      * @return Whether the library is open.
      */
-    public boolean isOpen(){
+    public boolean isOpen() {
         return timeKeeper.isLibraryOpen(OPEN_HOUR, CLOSE_HOUR);
     }
 

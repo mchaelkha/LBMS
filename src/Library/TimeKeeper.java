@@ -10,8 +10,6 @@ package Library;
 import java.time.LocalDateTime;
 
 public class TimeKeeper {
-    private String sytemTime;
-    private String systemDate;
     private LocalDateTime clock;
 
     public TimeKeeper() {
@@ -25,6 +23,12 @@ public class TimeKeeper {
 
     }
 
+    /**
+     * Returns a boolean stating whether or not the library is open.
+     * @param openHour the hour that the library opens, 0-23
+     * @param closeHour the hour that the library closes, 0-23
+     * @return true if the library is open, false otherwise.
+     */
     public boolean isLibraryOpen(int openHour, int closeHour) {
         int currentHour = clock.getHour();
         return (openHour <= currentHour) && (closeHour >= currentHour);
