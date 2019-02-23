@@ -33,6 +33,21 @@ public class BookInfo {
     }
 
     /**
+     * Create new book info by copying other book info and specified number of
+     * copies.
+     */
+    public BookInfo(BookInfo other, int copies) {
+        isbn = other.isbn;
+        title = other.title;
+        authors = other.authors;
+        publisher = other.publisher;
+        publishDate = other.publishDate;
+        pageCount = other.pageCount;
+        totalNumCopies = copies;
+        totalCopiesAvailable = copies;
+    }
+
+    /**
      * Adds a copy of this book to the library.
      */
     public void addCopy(){
