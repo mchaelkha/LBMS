@@ -2,6 +2,11 @@ package Book;
 
 import java.util.List;
 
+/**
+ * The book info to represent all information pertaining to a book.
+ *
+ * @author Michael Kha
+ */
 public class BookInfo {
 
     private String isbn;
@@ -54,7 +59,7 @@ public class BookInfo {
     }
 
     /**
-     * Get the book's ISBN
+     * Get the book's ISBN.
      * @return The book's ISBN
      */
     public String getIsbn() {
@@ -62,11 +67,43 @@ public class BookInfo {
     }
 
     /**
-     * Gives information about this book
-     * @return a String containing information about the book.
+     * Get the book title.
+     * @return The book title
      */
-    public String getInfo(){
-        return "";
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Get the authors of the book.
+     * @return The authors of the book
+     */
+    public List<String> getAuthors() {
+        return authors;
+    }
+
+    /**
+     * Get the publisher.
+     * @return The publisher of the book
+     */
+    public String getPublisher() {
+        return publisher;
+    }
+
+    /**
+     * Get the publish date
+     * @return The publish date
+     */
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    /**
+     * Get the page count.
+     * @return The page count
+     */
+    public int getPageCount() {
+        return pageCount;
     }
 
     /**
