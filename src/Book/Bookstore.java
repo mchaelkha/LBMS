@@ -75,4 +75,20 @@ public class Bookstore {
         return new BookInfo(isbn, title, authors, publisher, publishDate, pageCount);
     }
 
+    /**
+     * Purchase books of a given quantity.
+     * @param quantity Quantity to purchase
+     * @param bookIDs List of book IDs
+     * @return The list of book info that has been purchased
+     */
+    public List<BookInfo> purchaseBooks(int quantity, List<String> bookIDs) {
+        List<BookInfo> bookInfoList = new ArrayList<>();
+        for (String book: bookIDs) {
+            BookInfo original = books.get(book);
+            BookInfo copy = new BookInfo(original, quantity);
+            bookInfoList.add(copy);
+        }
+        return bookInfoList;
+    }
+
 }
