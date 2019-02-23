@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class BookInfo {
 
+    /**
+     * Book attributes
+     */
     private String isbn;
     private String title;
     private List<String> authors;
@@ -138,11 +141,4 @@ public class BookInfo {
         return totalCopiesAvailable != 0;
     }
 
-    /**
-     * Chooses the method to compare two books.
-     * @param compare The method to compare by.
-     */
-    public void setComparator(String compare){
-
-    }
 }
