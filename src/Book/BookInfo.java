@@ -70,7 +70,8 @@ public class BookInfo {
      * Returns a copy of this book to the library.
      */
     public void returnCopy(){
-        totalCopiesAvailable++;
+        if (totalCopiesAvailable < totalNumCopies)
+            totalCopiesAvailable++;
     }
 
     /**
@@ -119,6 +120,22 @@ public class BookInfo {
      */
     public int getPageCount() {
         return pageCount;
+    }
+
+    /**
+     * Get the total number of copies available.
+     * @return The total number of copies available
+     */
+    public int getTotalCopiesAvailable() {
+        return totalCopiesAvailable;
+    }
+
+    /**
+     * Check if there are copies available.
+     * @return If there are copies available
+     */
+    public boolean hasCopiesAvailable() {
+        return totalCopiesAvailable != 0;
     }
 
     /**
