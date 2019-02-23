@@ -20,6 +20,10 @@ public class Bookstore {
      * Books to be purchased
      */
     private Map<String, BookInfo> books;
+    /**
+     * Last search of book info mapped to temporary book IDs.
+     */
+    private Map<String, BookInfo> lastSearch;
 
     /**
      * Create a new bookstore by initializing the state.
@@ -75,6 +79,21 @@ public class Bookstore {
         return new BookInfo(isbn, title, authors, publisher, publishDate, pageCount);
     }
 
+    public Map<String, BookInfo> searchBooks(String title,
+                                             List<String> authors,
+                                             String ibsn,
+                                             String publisher, String sort) {
+        Map<String, BookInfo> searchedBooks = new HashMap<>();
+
+        for (BookInfo info : books.values()) {
+            // need to match information
+
+            // TODO: use streams and filters?
+        }
+        lastSearch = searchedBooks;
+        return searchedBooks;
+    }
+
     /**
      * Purchase books of a given quantity.
      * @param quantity Quantity to purchase
@@ -83,8 +102,8 @@ public class Bookstore {
      */
     public List<BookInfo> purchaseBooks(int quantity, List<String> bookIDs) {
         List<BookInfo> bookInfoList = new ArrayList<>();
-        for (String book: bookIDs) {
-            BookInfo original = books.get(book);
+        for (String book : bookIDs) {
+            BookInfo original = lastSearch.get(book);
             BookInfo copy = new BookInfo(original, quantity);
             bookInfoList.add(copy);
         }

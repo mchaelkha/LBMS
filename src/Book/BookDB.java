@@ -1,12 +1,19 @@
 package Book;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BookDB {
+    /**
+     * All book titles that the library has
+     */
     private Map<String, BookInfo> books;
 
+    /**
+     * Create a new book database that is empty.
+     */
     public BookDB(){
-
+        books = new HashMap<>();
     }
 
     /**
@@ -28,8 +35,8 @@ public class BookDB {
     }
 
     /**
-     * Removes a copy of a book from the library
-     * @param book the ISBN of the book
+     * Removes a copy of a book from the library.
+     * @param book the ISBN of the book.
      * @return Whether a copy of the book was removed.
      */
     public boolean removeCopy(String book){
@@ -37,11 +44,12 @@ public class BookDB {
     }
 
     /**
-     * Returns a copy of the book to the library
+     * Returns a copy of the book to the library.
      * @param book the ISBN of the book.
      */
     public void returnCopy(String book){
-
+        if (books.containsKey(book))
+            books.get(book).returnCopy();
     }
 
 }
