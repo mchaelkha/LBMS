@@ -1,6 +1,6 @@
 package Request;
 
-public class ShutDownRequest implements Request {
+public class ShutdownRequest implements Request {
     @Override
     public void collectDependencies() {
 
