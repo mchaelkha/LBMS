@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 /**
  * Book info data structure that holds books to be searched for.
+ *
+ * @author Michael Kha
  */
 public abstract class BookData {
 
@@ -38,7 +40,6 @@ public abstract class BookData {
 
     /**
      * Search the books using a filter on all the available books for purchase.
-     *
      * @param title Title search parameter
      * @param authors Authors search parameter
      * @param isbn ISBN search parameter
