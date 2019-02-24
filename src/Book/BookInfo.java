@@ -12,6 +12,8 @@ public class BookInfo implements Serializable {
 
     /**
      * Book attributes
+     * TODO: update to non-string values
+     * TODO: record when books are purchased Map of num-purchased, date
      */
     private String isbn;
     private String title;
