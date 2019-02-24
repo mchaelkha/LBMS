@@ -113,9 +113,12 @@ public abstract class BookData {
             }
         }
         if (!authors.isEmpty()) {
-            for (String author : bookAuthors) {
-                // Authors must exactly match
-                if (!authors.contains(author)) {
+            // Authors must match at least part of the book's authors
+            for (String author : authors) {
+                List<String> authorHits = bookAuthors.stream()
+                        .filter(a -> a.contains(author))
+                        .collect(Collectors.toList());
+                if (authorHits.isEmpty()) {
                     return false;
                 }
             }
