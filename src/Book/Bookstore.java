@@ -2,6 +2,7 @@ package Book;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -10,26 +11,18 @@ import java.util.*;
  *
  * @author Michael Kha
  */
-public class Bookstore {
+public class Bookstore extends BookData implements Serializable {
 
     /**
      * The file path of the books file
      */
     private static final String STORE_PATH = "assets/books.txt";
-    /**
-     * Books to be purchased
-     */
-    private Map<String, BookInfo> books;
-    /**
-     * Last search of book info mapped to temporary book IDs.
-     */
-    private Map<String, BookInfo> lastSearch;
 
     /**
      * Create a new bookstore by initializing the state.
      */
     public Bookstore() {
-        books = new HashMap<>();
+        super();
         init();
     }
 
@@ -76,22 +69,8 @@ public class Bookstore {
         publishDate = publishing[1];
         pageCount = Integer.parseInt(publishing[2]);
         // Create book info
-        return new BookInfo(isbn, title, authors, publisher, publishDate, pageCount);
-    }
-
-    public Map<String, BookInfo> searchBooks(String title,
-                                             List<String> authors,
-                                             String ibsn,
-                                             String publisher, String sort) {
-        Map<String, BookInfo> searchedBooks = new HashMap<>();
-
-        for (BookInfo info : books.values()) {
-            // need to match information
-
-            // TODO: use streams and filters?
-        }
-        lastSearch = searchedBooks;
-        return searchedBooks;
+        return new BookInfo(isbn, title, authors, publisher,
+                publishDate, pageCount);
     }
 
     /**

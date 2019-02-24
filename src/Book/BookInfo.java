@@ -1,5 +1,6 @@
 package Book;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,15 +8,18 @@ import java.util.List;
  *
  * @author Michael Kha
  */
-public class BookInfo {
+public class BookInfo implements Serializable {
 
+    /**
+     * Book attributes
+     */
     private String isbn;
     private String title;
     private List<String> authors;
     private String publisher;
     private String publishDate;
     private int pageCount;
-    private int totalNumCopies;
+    private int totalCopies;
     private int totalCopiesAvailable;
 
     /**
@@ -28,7 +32,7 @@ public class BookInfo {
         this.publisher = publisher;
         this.publishDate = publishDate;
         this.pageCount = pageCount;
-        totalNumCopies = 1;
+        totalCopies = 1;
         totalCopiesAvailable = 1;
     }
 
@@ -43,7 +47,7 @@ public class BookInfo {
         publisher = other.publisher;
         publishDate = other.publishDate;
         pageCount = other.pageCount;
-        totalNumCopies = copies;
+        totalCopies = copies;
         totalCopiesAvailable = copies;
     }
 
@@ -51,7 +55,14 @@ public class BookInfo {
      * Adds a copy of this book to the library.
      */
     public void addCopy(){
-        totalNumCopies++;
+        totalCopies++;
+    }
+
+    /**
+     * Adds a copy of this book to the library.
+     */
+    public void addCopy(int amount){
+        totalCopies += amount;
     }
 
     /**
@@ -70,7 +81,8 @@ public class BookInfo {
      * Returns a copy of this book to the library.
      */
     public void returnCopy(){
-        totalCopiesAvailable++;
+        if (totalCopiesAvailable < totalCopies)
+            totalCopiesAvailable++;
     }
 
     /**
@@ -122,10 +134,19 @@ public class BookInfo {
     }
 
     /**
-     * Chooses the method to compare two books.
-     * @param compare The method to compare by.
+     * Get the total number of copies
+     * @return The total number of copies
      */
-    public void setComparator(String compare){
-
+    public int getTotalCopies() {
+        return totalCopies;
     }
+
+    /**
+     * Check if there are copies available.
+     * @return If there are copies available
+     */
+    public boolean hasCopiesAvailable() {
+        return totalCopiesAvailable != 0;
+    }
+
 }

@@ -1,28 +1,51 @@
 package Book;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.List;
 
-public class BookDB {
+/**
+ * The book database that is used by the library to manage book purchases,
+ * book checkouts, and book returns.
+ *
+ * @author Michael Kha
+ */
+public class BookDB extends BookData implements Serializable {
+
     /**
-     * All book titles that the library has
+     * Bookstore to purchase books from
      */
-    private Map<String, BookInfo> books;
+    private Bookstore bookstore;
 
     /**
      * Create a new book database that is empty.
      */
     public BookDB(){
-        books = new HashMap<>();
+        super();
+        bookstore = new Bookstore();
     }
 
     /**
-     * Purchase a new book for the library.
-     * @param book The ISBN of the book being purchased.
-     * @param info Everything else.
+     * Purchase new books for the library based on the last search
+     * made on the bookstore. The books are mapped to the last search's IDs.
+     * Used to fulfill PurchaseRequest.
+     * @param quantity Number of books to purchase for each book ID
+     * @param bookIDs List of book IDs from the last search to purchase
      */
-    public void purchase(String book, String info){
-
+    public void purchase(int quantity, List<String> bookIDs){
+        List<BookInfo> booksPurchased = bookstore.purchaseBooks(quantity, bookIDs);
+        String isbn;
+        BookInfo temp;
+        for (BookInfo book : booksPurchased) {
+            isbn = book.getIsbn();
+            // If book already in library, add copies
+            if (books.containsKey(isbn)) {
+                temp = books.get(isbn);
+                book.addCopy(temp.getTotalCopies());
+                books.put(isbn, book);
+            } else {
+                books.put(isbn, book);
+            }
+        }
     }
 
     /**
@@ -31,7 +54,7 @@ public class BookDB {
      * @return The number of copies of the book.
      */
     public int getNumCopies(String book){
-        return 0;
+        return books.get(book).getTotalCopies();
     }
 
     /**
@@ -40,7 +63,8 @@ public class BookDB {
      * @return Whether a copy of the book was removed.
      */
     public boolean removeCopy(String book){
-        return false;
+        BookInfo bookInfo = books.get(book);
+        return bookInfo.checkOutCopy();
     }
 
     /**
