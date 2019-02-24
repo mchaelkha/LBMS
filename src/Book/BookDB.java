@@ -32,7 +32,8 @@ public class BookDB extends BookData implements Serializable {
      * @param bookIDs List of book IDs from the last search to purchase
      */
     public void purchase(int quantity, List<String> bookIDs){
-        List<BookInfo> booksPurchased = bookstore.purchaseBooks(quantity, bookIDs);
+        List<BookInfo> booksPurchased = bookstore.purchaseBooks(
+                quantity, bookIDs);
         String isbn;
         BookInfo temp;
         for (BookInfo book : booksPurchased) {

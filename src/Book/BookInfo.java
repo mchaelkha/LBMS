@@ -25,7 +25,8 @@ public class BookInfo implements Serializable {
     /**
      * Create book info given the necessary information.
      */
-    public BookInfo(String isbn, String title, List<String> authors, String publisher, String publishDate, int pageCount) {
+    public BookInfo(String isbn, String title, List<String> authors,
+                    String publisher, String publishDate, int pageCount) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
