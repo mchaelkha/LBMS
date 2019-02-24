@@ -11,7 +11,7 @@ public class TitleComparator implements Comparator<BookInfo> {
 
     /**
      * Compare the books such that the titles are they are ordered
-     * alphanumerically.
+     * alphanumerically using the String class's lexicographic compare method.
      * @param b1 First book
      * @param b2 Second book
      * @return The title ordering
@@ -20,7 +20,6 @@ public class TitleComparator implements Comparator<BookInfo> {
     public int compare(BookInfo b1, BookInfo b2) {
         String firstTitle = b1.getTitle();
         String secondTitle = b2.getTitle();
-
-        return 0;
+        return firstTitle.compareTo(secondTitle);
     }
 }
