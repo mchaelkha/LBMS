@@ -1,26 +1,45 @@
 package Checkout;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 /**
- *
+ * Class that stores information about checkout transactions performed by Visitors.
+ * @author Hersh Nagpal
  */
 public class Transaction {
 
     /**
+     * The base fine
+     */
+    public static int BASE_FINE = 8;
+
+    /**
+     * The amount the fine increases with each day past the due date
+     */
+    public static int FINE_DAILY_INCREMENT = 2;
+
+    /**
+     * The maximum amount of days that a book can be checked out for.
+     */
+    public static int MAX_CHECKOUT_PERIOD = 7;
+
+    /**
      * The date that the checkout occurred
      */
-    public String checkoutDate;
+    public LocalDateTime checkoutDate;
     /**
      * The date that the book is due
      */
-    public String dueDate;
+    public LocalDateTime dueDate;
     /**
      * The date that the book is returned
      */
-    public String returnDate;
+    public LocalDateTime returnDate;
     /**
      * The book's ISBN
      */
-    public String book;
+    public String isbn;
     /**
      * The fine amount of the transaction
      */
@@ -31,10 +50,10 @@ public class Transaction {
      * @param checkoutDate The checkout date
      * @param book The book's ISBN
      */
-    public Transaction(String checkoutDate, String book) {
+    public Transaction(LocalDateTime checkoutDate, String isbn) {
         this.checkoutDate = checkoutDate;
-        this.book = book;
-        // calculate due date
+        this.isbn = isbn;
+        this.dueDate = checkoutDate.plusDays(MAX_CHECKOUT_PERIOD);
 
         fineAmount = 0;
     }
@@ -43,7 +62,7 @@ public class Transaction {
      * Return the book on the given date.
      * @param date The date of return
      */
-    public void returnBook(String date) {
+    public void returnBook(LocalDateTime date) {
         returnDate = date;
         calculateFine();
     }
@@ -54,7 +73,7 @@ public class Transaction {
      * @return The number of late days after the due date
      */
     public int calculateNumLateDays() {
-        return 0;
+        return (int)ChronoUnit.DAYS.between(dueDate, returnDate);
     }
 
     /**
@@ -70,7 +89,11 @@ public class Transaction {
      * is determined by the number of late days.
      */
     private void calculateFine() {
-
+        if(returnDate.isBefore(dueDate)) {
+            this.fineAmount = 0;
+        } else {
+            this.fineAmount = BASE_FINE + FINE_DAILY_INCREMENT * (int)ChronoUnit.DAYS.between(dueDate, returnDate);
+        }
     }
 
 }

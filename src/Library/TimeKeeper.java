@@ -1,14 +1,13 @@
+package Library;
+import java.time.LocalDateTime;
+
 /**
  * A helper class for Library that tracks the current date. This information is used by the library to track
  * overdue books. The date can be pushed forward a number of days to simulate usage over a period of time for 
  * testing.
  * @author Hersh Nagpal
+ * @TODO a time object that moves with the current time.
  */
-
-package Library;
-
-import java.time.LocalDateTime;
-
 public class TimeKeeper {
     private LocalDateTime clock;
 
