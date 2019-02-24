@@ -1,5 +1,6 @@
 package Book;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @author Michael Kha
  */
-public class BookInfo {
+public class BookInfo implements Serializable {
 
     /**
      * Book attributes

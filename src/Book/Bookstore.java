@@ -2,6 +2,7 @@ package Book;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -10,7 +11,7 @@ import java.util.*;
  *
  * @author Michael Kha
  */
-public class Bookstore extends BookData {
+public class Bookstore extends BookData implements Serializable {
 
     /**
      * The file path of the books file

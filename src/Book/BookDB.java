@@ -1,5 +1,6 @@
 package Book;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author Michael Kha
  */
-public class BookDB extends BookData {
+public class BookDB extends BookData implements Serializable {
 
     /**
      * Bookstore to purchase books from
