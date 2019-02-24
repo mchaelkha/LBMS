@@ -18,7 +18,7 @@ public class BookInfo {
     private String publisher;
     private String publishDate;
     private int pageCount;
-    private int totalNumCopies;
+    private int totalCopies;
     private int totalCopiesAvailable;
 
     /**
@@ -31,7 +31,7 @@ public class BookInfo {
         this.publisher = publisher;
         this.publishDate = publishDate;
         this.pageCount = pageCount;
-        totalNumCopies = 1;
+        totalCopies = 1;
         totalCopiesAvailable = 1;
     }
 
@@ -46,7 +46,7 @@ public class BookInfo {
         publisher = other.publisher;
         publishDate = other.publishDate;
         pageCount = other.pageCount;
-        totalNumCopies = copies;
+        totalCopies = copies;
         totalCopiesAvailable = copies;
     }
 
@@ -54,7 +54,14 @@ public class BookInfo {
      * Adds a copy of this book to the library.
      */
     public void addCopy(){
-        totalNumCopies++;
+        totalCopies++;
+    }
+
+    /**
+     * Adds a copy of this book to the library.
+     */
+    public void addCopy(int amount){
+        totalCopies += amount;
     }
 
     /**
@@ -73,7 +80,7 @@ public class BookInfo {
      * Returns a copy of this book to the library.
      */
     public void returnCopy(){
-        if (totalCopiesAvailable < totalNumCopies)
+        if (totalCopiesAvailable < totalCopies)
             totalCopiesAvailable++;
     }
 
@@ -126,11 +133,11 @@ public class BookInfo {
     }
 
     /**
-     * Get the total number of copies available.
-     * @return The total number of copies available
+     * Get the total number of copies
+     * @return The total number of copies
      */
-    public int getTotalCopiesAvailable() {
-        return totalCopiesAvailable;
+    public int getTotalCopies() {
+        return totalCopies;
     }
 
     /**
