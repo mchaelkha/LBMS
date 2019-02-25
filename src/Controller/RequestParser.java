@@ -1,4 +1,6 @@
-package Request;
+package Controller;
+
+import Request.Request;
 
 /**
  * Work in progress
