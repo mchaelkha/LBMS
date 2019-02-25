@@ -54,11 +54,11 @@ public class TimeKeeper {
     }
 
     /**
-     * Adds one minute to the clock. 
-     * Used by the timer each minute to keep track of time.
+     * Adds the TimerInterval in seconds to the clock. 
+     * Used by the TimerTask to keep track of time.
      */
     public void updateTime() {
-        this.clock = clock.plusMinutes(1);
+        this.clock = clock.plusMinutes(TIMER_INTERVAL/600);
     }
 
     /**
