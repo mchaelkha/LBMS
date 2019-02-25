@@ -8,6 +8,26 @@ import java.util.Map;
 public class VisitorInfo {
 
     /**
+     * Visitor's first name
+     */
+    private String firstName;
+
+    /**
+     * Visitor's last name
+     */
+    private String lastName;
+
+    /**
+     * Visitor's address
+     */
+    private String address;
+
+    /**
+     * Visitor's phone number
+     */
+    private String phoneNumber;
+    
+    /**
      * All visits that a visitor has made
      */
     private Map<String, String> visits;
