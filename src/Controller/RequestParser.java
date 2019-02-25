@@ -1,6 +1,7 @@
 package Controller;
 
 import Request.Request;
+import Request.Partial;
 
 /**
  * Work in progress
@@ -20,6 +21,11 @@ public class RequestParser{
         partial = "";
     }
 
+    public String processRequest(String request) {
+        Request command = determineRequest(request);
+        return command.execute();
+    }
+
     public Request determineRequest(String request) {
         // Check if partial request first
         if (!request.endsWith(TERMINATOR) || !partial.isEmpty()) {
@@ -30,7 +36,7 @@ public class RequestParser{
                 return helpCreateRequest(request);
             }
             // return partial request
-            return null;
+            return new Partial();
         }
         else {
             return helpCreateRequest(request);
@@ -47,10 +53,14 @@ public class RequestParser{
         return createRequest(parts[0], parts[1]);
     }
 
+    /**
+     *
+     * @param command
+     * @param params
+     * @return
+     */
     private Request createRequest(String command, String params) {
         switch (command) {
-            case "partial-request":
-                break;
             case "register":
                 break;
             case "arrive":
