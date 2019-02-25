@@ -64,7 +64,20 @@ public class CheckoutDB {
      * @return The fine amount under a visitor ID
      */
     public int calculateFine(String visitorID) {
-        return 0;
+        int fines = 0;
+        if(this.openLoans.containsKey(visitorID)) {
+            for (Transaction t : this.openLoans.get(visitorID)) {
+                fines += t.fineAmount;
+            }
+        }
+
+        if(this.closedLoans.containsKey(visitorID)) {
+            for (Transaction t : this.closedLoans.get(visitorID)) {
+                fines += t.fineAmount;
+            }
+        }
+
+        return fines;
     }
 
     /**
