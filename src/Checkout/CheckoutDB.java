@@ -85,7 +85,20 @@ public class CheckoutDB {
      * @return The total fine amount
      */
     public int calculateTotalFines() {
-        return 0;
+        int fines = 0;
+        for (List<Transaction> transactionList : openLoans.values()) {
+            for (Transaction t : transactionList) {
+                fines += t.fineAmount;
+            }
+        }
+
+        for (List<Transaction> transactionList : closedLoans.values()) {
+            for (Transaction t : transactionList) {
+                fines += t.fineAmount;
+            }
+        }
+
+        return fines;
     }
 
     /**
