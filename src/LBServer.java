@@ -1,9 +1,12 @@
 import Book.BookDB;
 import Checkout.CheckoutDB;
+import Controller.RequestParser;
 import Visitor.VisitorDB;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Main class to start the library book management system.
@@ -16,7 +19,23 @@ public class LBServer {
      * The path name to save and open files
      */
     private static final String PATH = "assets/";
+    /**
+     * Usage message for invalid arguments
+     */
+    private static final String USAGE = "invalid arguments";
+    /**
+     * Command to shutdown the program by first saving
+     */
+    private static final String SHUTDOWN = "/shutdown";
+    /**
+     * Command to stop the program immediately
+     */
+    private static final String STOP = "/stop";
 
+    /**
+     * Parser used to process possible requests
+     */
+    private RequestParser parser;
     /**
      * Database to keep track of books
      */
@@ -34,6 +53,7 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
+        parser = new RequestParser();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB(visitorDB, bookDB);
@@ -46,9 +66,38 @@ public class LBServer {
      * @param checkoutDB The checkout database
      */
     public LBServer(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+        parser = new RequestParser();
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
+    }
+
+    /**
+     * Start the server by continuing to read input from the command line.
+     * Special commands:
+     * 1. /shutdown FILE - Shutdowns the program by first saving
+     * 2. /stop - Stop the program without saving
+     * 3. requests in csv format - commands to run through the parser
+     */
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        String next;
+        String[] parts;
+        while (scanner.hasNextLine()) {
+            next = scanner.nextLine();
+            // Check for special commands
+            if (next.matches("^" + SHUTDOWN)) {
+                parts = next.split(" ");
+                shutdown(parts[1]);
+                break;
+            }
+            if (next.matches("^" + STOP)) {
+                break;
+            }
+            // Next line must be a request to be processed
+            parser.determineRequest(next);
+        }
+        scanner.close();
     }
 
     /**
@@ -74,7 +123,10 @@ public class LBServer {
      * @param file Serialized object file
      */
     @SuppressWarnings("unchecked exception")
-    public void restore(String file) {
+    public static LBServer restore(String file) {
+        BookDB bookDB;
+        VisitorDB visitorDB;
+        CheckoutDB checkoutDB;
         try {
             FileInputStream fis = new FileInputStream(PATH + file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -83,9 +135,11 @@ public class LBServer {
             bookDB = (BookDB) items.get(0);
             visitorDB = (VisitorDB) items.get(1);
             checkoutDB = (CheckoutDB) items.get(2);
+            return new LBServer(bookDB, visitorDB, checkoutDB);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -97,14 +151,24 @@ public class LBServer {
      */
     public static void main(String[] args) {
         int argc = args.length;
+        LBServer server = null;
         switch (argc) {
             case 0:
+                server = new LBServer();
                 break;
             case 2:
+                if (!args[0].equals("open")) {
+                    System.err.println(USAGE);
+                    System.exit(1);
+                }
+                server = restore(PATH + args[1]);
                 break;
             default:
+                System.err.println(USAGE);
+                System.exit(1);
                 break;
         }
+        Objects.requireNonNull(server).start();
     }
 
 }
