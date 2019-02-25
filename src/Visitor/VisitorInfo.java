@@ -6,8 +6,16 @@ import java.util.Map;
  * Represents a registered visitor in the Library System
  */
 public class VisitorInfo {
-    
+
+    /**
+     * Current Visitor state
+     */
     VisitorState visitorState;
+
+    /**
+     * Collection of Visitor States for transitions
+     */
+    Map<String,VisitorState> visitorStates;
 
     /**
      * Visitor's first name
@@ -49,6 +57,9 @@ public class VisitorInfo {
      */
     public VisitorInfo(String info) {
         // break whole string to each part of info
+        
+        visitorStates.put("InLibrary", new InLibrary());
+        visitorStates.put("NotInLibrary", new NotInLibrary());
     }
 
     /**
