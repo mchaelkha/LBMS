@@ -134,6 +134,14 @@ public class TimeKeeper {
     }
 
     /**
+     * Discards the TimerTask and ends the Timer.
+     */
+    public void endTimeKeeping() {
+        timerTask.cancel();
+        timer.cancel();
+    }
+
+    /**
      * Moves the date forward by some number of days.
      * @param days The number of days to add to the current date.
      */
