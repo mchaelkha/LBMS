@@ -30,7 +30,7 @@ public class TimeKeeper {
     /**
      * The delay in milliseconds before the task is performed the first time
      */
-    private static long TIMER_DELAY = 600;
+    private static long TIMER_DELAY = 60000;
 
     /**
      * The delay milliseconds between time updates for the clock.
@@ -54,11 +54,11 @@ public class TimeKeeper {
     }
 
     /**
-     * Adds one minute to the clock. 
-     * Used by the timer each minute to keep track of time.
+     * Adds the TimerInterval in seconds to the clock. 
+     * Used by the TimerTask to keep track of time.
      */
     public void updateTime() {
-        this.clock = clock.plusMinutes(1);
+        this.clock = clock.plusMinutes(TIMER_INTERVAL/60000);
     }
 
     /**
@@ -131,6 +131,14 @@ public class TimeKeeper {
      */
     public void setTime(int hour) {
         clock = clock.withHour(hour);
+    }
+
+    /**
+     * Discards the TimerTask and ends the Timer.
+     */
+    public void endTimeKeeping() {
+        timerTask.cancel();
+        timer.cancel();
     }
 
     /**
