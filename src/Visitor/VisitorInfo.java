@@ -57,7 +57,7 @@ public class VisitorInfo {
      */
     public VisitorInfo(String info) {
         // break whole string to each part of info
-        
+
         visitorStates.put("InLibrary", new InLibrary());
         visitorStates.put("NotInLibrary", new NotInLibrary());
     }
@@ -108,6 +108,10 @@ public class VisitorInfo {
      */
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void beginVisit(){
+        visitorState.beginVisit();
     }
 
     /**
