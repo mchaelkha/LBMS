@@ -27,7 +27,7 @@ public class BookDB extends BookData implements Serializable {
     /**
      * Purchase new books for the library based on the last search
      * made on the bookstore. The books are mapped to the last search's IDs.
-     * Used to fulfill PurchaseRequest.
+     * Used to fulfill BookPurchase.
      * @param quantity Number of books to purchase for each book ID
      * @param bookIDs List of book IDs from the last search to purchase
      */
