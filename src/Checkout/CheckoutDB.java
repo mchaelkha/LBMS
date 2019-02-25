@@ -3,6 +3,8 @@ package Checkout;
 import Book.BookDB;
 import Visitor.VisitorDB;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +43,19 @@ public class CheckoutDB {
 
     /**
      * Create a checkout transaction using a visitor ID and a book's ISBN.
+     * @param checkoutDate the date and time of the transaction 
      * @param visitorID The visitor ID
-     * @param book The book's ISBN
+     * @param isbn The book's ISBN
      * @return The new transaction
      */
-    public Transaction checkout(String visitorID, String book) {
-        return null;
+    public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
+        Transaction transaction = new Transaction(checkoutDate, isbn);
+        
+        if(!this.openLoans.containsKey(visitorID)) {
+            this.openLoans.put(visitorID, new ArrayList<Transaction>());
+        }
+        this.openLoans.get(visitorID).add(transaction);
+        return transaction;
     }
 
     /**
@@ -55,7 +64,20 @@ public class CheckoutDB {
      * @return The fine amount under a visitor ID
      */
     public int calculateFine(String visitorID) {
-        return 0;
+        int fines = 0;
+        if(this.openLoans.containsKey(visitorID)) {
+            for (Transaction t : this.openLoans.get(visitorID)) {
+                fines += t.fineAmount;
+            }
+        }
+
+        if(this.closedLoans.containsKey(visitorID)) {
+            for (Transaction t : this.closedLoans.get(visitorID)) {
+                fines += t.fineAmount;
+            }
+        }
+
+        return fines;
     }
 
     /**
@@ -63,7 +85,20 @@ public class CheckoutDB {
      * @return The total fine amount
      */
     public int calculateTotalFines() {
-        return 0;
+        int fines = 0;
+        for (List<Transaction> transactionList : openLoans.values()) {
+            for (Transaction t : transactionList) {
+                fines += t.fineAmount;
+            }
+        }
+
+        for (List<Transaction> transactionList : closedLoans.values()) {
+            for (Transaction t : transactionList) {
+                fines += t.fineAmount;
+            }
+        }
+
+        return fines;
     }
 
     /**
