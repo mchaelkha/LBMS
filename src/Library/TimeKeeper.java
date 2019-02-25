@@ -30,7 +30,7 @@ public class TimeKeeper {
     /**
      * The delay in milliseconds before the task is performed the first time
      */
-    private static long TIMER_DELAY = 600;
+    private static long TIMER_DELAY = 60000;
 
     /**
      * The delay milliseconds between time updates for the clock.
@@ -58,7 +58,7 @@ public class TimeKeeper {
      * Used by the TimerTask to keep track of time.
      */
     public void updateTime() {
-        this.clock = clock.plusMinutes(TIMER_INTERVAL/600);
+        this.clock = clock.plusMinutes(TIMER_INTERVAL/60000);
     }
 
     /**
