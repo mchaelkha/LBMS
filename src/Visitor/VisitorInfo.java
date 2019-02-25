@@ -111,7 +111,7 @@ public class VisitorInfo {
     }
 
     public void beginVisit(){
-        visitorState.beginVisit();
+        //visitorState.beginVisit();
     }
 
     /**

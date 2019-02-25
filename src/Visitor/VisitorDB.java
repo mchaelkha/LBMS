@@ -2,6 +2,7 @@ package Visitor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.ToDoubleBiFunction;
 
 /**
  *
@@ -32,14 +33,30 @@ public class VisitorDB {
      */
     public void registerVisitor(String info) {
         //might return visitorinfo
+        //check for duplicate visitorInfo
     }
 
     /**
      * Start a visit given the visitor id.
      * @param visitorID The visitor id to log a visit with
      */
-    public void startVisit(String visitorID) {
-
+    public String startVisit(String visitorID) {
+        //Check if visitor with id already exists in currentVisitors
+        if (currentVisitors.containsKey(visitorID)) {
+            return "arrive,duplicate";
+        }
+        //Check if visitor has not registered yet
+        else if (!visitors.containsKey(visitorID)){
+            return "arrive,invalid-id";
+        }
+        //Add visitor to currentVisitors and update its state
+        else{
+            VisitorInfo visitor = visitors.get(visitorID);
+            currentVisitors.put(visitorID, visitor);
+            return "arrive";
+            //TODO return correct string with visit date and start time
+        }
+        //get visitorInfo and update new state
     }
 
     /**
@@ -64,5 +81,4 @@ public class VisitorDB {
     public boolean checkoutBook(String visitorID) {
         return true;
     }
-
 }
