@@ -76,4 +76,24 @@ public class VisitorInfo {
     public String getPhoneNumber() {
         return null;
     }
+
+    /**
+     * Used to check if visitor is already registered.
+     * @param o Visitor being compared to this
+     * @return true if visitor "o" is equal to this
+     */
+    @Override
+    public boolean equals(Object o){
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof VisitorInfo)) {
+            return false;
+        }
+
+        VisitorInfo visitorInfo = (VisitorInfo) o;
+        //return visitorInfo.getFirstName().equals(this.)
+        return false;
+    }
 }
