@@ -64,7 +64,7 @@ public class Transaction {
      */
     public void returnBook(LocalDateTime date) {
         returnDate = date;
-        calculateFine();
+        setFine();
     }
 
     /**
@@ -88,7 +88,7 @@ public class Transaction {
      * Calculate the fine amount from this transaction. This
      * is determined by the number of late days.
      */
-    private void calculateFine() {
+    private void setFine() {
         if(returnDate.isBefore(dueDate)) {
             this.fineAmount = 0;
         } else {
