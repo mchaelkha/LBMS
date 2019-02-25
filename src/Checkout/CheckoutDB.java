@@ -46,16 +46,22 @@ public class CheckoutDB {
      * @param checkoutDate the date and time of the transaction 
      * @param visitorID The visitor ID
      * @param isbn The book's ISBN
-     * @return The new transaction
+     * @return The new transaction if it was valid, otherwise null.
      */
     public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
         Transaction transaction = new Transaction(checkoutDate, isbn);
-        
-        if(!this.openLoans.containsKey(visitorID)) {
-            this.openLoans.put(visitorID, new ArrayList<Transaction>());
+        if(bookDB.getNumCopies(isbn) == 0){
+            return null;
         }
-        this.openLoans.get(visitorID).add(transaction);
-        return transaction;
+        if(visitorDB.checkoutBook(visitorID)) {
+            if(!this.openLoans.containsKey(visitorID)) {
+                this.openLoans.put(visitorID, new ArrayList<Transaction>());
+            }
+            this.openLoans.get(visitorID).add(transaction);
+            return transaction;
+        } else {
+            return null;
+        }
     }
 
     /**
