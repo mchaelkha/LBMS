@@ -1,26 +1,71 @@
+package Library;
+
+import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A helper class for Library that tracks the current date. This information is used by the library to track
  * overdue books. The date can be pushed forward a number of days to simulate usage over a period of time for 
  * testing.
  * @author Hersh Nagpal
+ * @TODO a time object that moves with the current time.
  */
-
-package Library;
-
-import java.time.LocalDateTime;
-
 public class TimeKeeper {
+    /**
+     * The object that holds the current time formatted nicely and is easy to manipulate.
+     */
     private LocalDateTime clock;
 
+    /**
+     * The task that updates the time each minute.
+     */
+    private TimerTask timerTask;
+
+    /**
+     * The timer that tells the TimerTask to update each minute.
+     */
+    private Timer timer;
+
+    /**
+     * The delay in milliseconds before the task is performed the first time
+     */
+    private static long TIMER_DELAY = 600;
+
+    /**
+     * The delay milliseconds between time updates for the clock.
+     */
+    private static long TIMER_INTERVAL = 60000; 
+
+    /**
+     * Constructs a new TimeKeeper. 
+     * A TimerTask is used in conjunction with a timer
+     * to ensure the time is updated every minute.
+     */
     public TimeKeeper() {
-        this.clock = LocalDateTime.now();
+        clock = LocalDateTime.now();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                updateTime();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, TIMER_DELAY,TIMER_INTERVAL);
     }
 
     /**
-     * Continuously updates the current time of the library.
+     * Adds one minute to the clock. 
+     * Used by the timer each minute to keep track of time.
      */
     public void updateTime() {
+        this.clock = clock.plusMinutes(1);
+    }
 
+    /**
+     * Resets all time changes, resetting the clock to the current time.
+     */
+    public void resetTime() {
+        clock = LocalDateTime.now();
     }
 
     /**
@@ -95,4 +140,6 @@ public class TimeKeeper {
     public void addDays(int days) {
         clock = clock.plusDays(days);
     }
+
+    
 }
