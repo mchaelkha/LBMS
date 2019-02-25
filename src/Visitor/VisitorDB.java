@@ -57,4 +57,12 @@ public class VisitorDB {
 
     }
 
+    /**
+     * Finds a visitor, determines whether or not they can
+     * checkout a book, and then adds a book if they can.
+     */
+    public boolean checkoutBook(String visitorID) {
+        return true;
+    }
+
 }
