@@ -3,9 +3,11 @@ package Visitor;
 import java.util.Map;
 
 /**
- *
+ * Represents a registered visitor in the Library System
  */
 public class VisitorInfo {
+    
+    VisitorState visitorState;
 
     /**
      * Visitor's first name
@@ -26,7 +28,7 @@ public class VisitorInfo {
      * Visitor's phone number
      */
     private String phoneNumber;
-    
+
     /**
      * All visits that a visitor has made
      */
@@ -70,7 +72,7 @@ public class VisitorInfo {
      * @return First name
      */
     public String getFirstName() {
-        return null;
+        return firstName;
     }
 
     /**
@@ -78,7 +80,7 @@ public class VisitorInfo {
      * @return Last name
      */
     public String getLastName() {
-        return null;
+        return lastName;
     }
 
     /**
@@ -86,7 +88,7 @@ public class VisitorInfo {
      * @return Address
      */
     public String getAddress() {
-        return null;
+        return address;
     }
 
     /**
@@ -94,11 +96,11 @@ public class VisitorInfo {
      * @return Phone number
      */
     public String getPhoneNumber() {
-        return null;
+        return phoneNumber;
     }
 
     /**
-     * Used to check if visitor is already registered.
+     * Used to check for duplicate visitors in library.
      * @param o Visitor being compared to this
      * @return true if visitor "o" is equal to this
      */
@@ -112,8 +114,10 @@ public class VisitorInfo {
             return false;
         }
 
-        VisitorInfo visitorInfo = (VisitorInfo) o;
-        //return visitorInfo.getFirstName().equals(this.)
-        return false;
+        VisitorInfo v = (VisitorInfo) o;
+        return v.getFirstName().equals(firstName) &&
+                v.getLastName().equals(lastName) &&
+                v.getAddress().equals(address) &&
+                v.getPhoneNumber().equals(phoneNumber);
     }
 }
