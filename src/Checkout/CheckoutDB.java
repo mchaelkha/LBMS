@@ -58,6 +58,7 @@ public class CheckoutDB {
                 this.openLoans.put(visitorID, new ArrayList<Transaction>());
             }
             this.openLoans.get(visitorID).add(transaction);
+            this.bookDB.removeCopy(isbn);
             return transaction;
         } else {
             return null;
@@ -112,7 +113,7 @@ public class CheckoutDB {
      * @param visitorID The visitor ID to return books for
      */
     public void returnBook(String visitorID) {
-
+        
     }
 
 }
