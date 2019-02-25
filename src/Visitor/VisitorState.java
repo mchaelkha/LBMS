@@ -1,5 +1,5 @@
 package Visitor;
 
 public interface VisitorState {
-    void beginVisit();
+    void beginVisit(VisitorDB visitorDB);
 }
