@@ -1,8 +1,19 @@
 package Request;
 
+import Checkout.CheckoutDB;
+
 public class PayFine implements Request {
+
+    private CheckoutDB checkoutDB;
+    private String params;
+
+    public PayFine(CheckoutDB checkoutDB, String params) {
+        this.checkoutDB = checkoutDB;
+        this.params = params;
+    }
+
     @Override
-    public String checkParams(String params) {
+    public String checkParams() {
         return "";
     }
 

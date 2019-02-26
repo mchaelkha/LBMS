@@ -1,8 +1,19 @@
 package Request;
 
+import Library.TimeKeeper;
+
 public class CurrentDateTime implements Request {
+
+    private TimeKeeper timeKeeper;
+    private String params;
+
+    public CurrentDateTime(TimeKeeper timeKeeper, String params) {
+        this.timeKeeper = timeKeeper;
+        this.params = params;
+    }
+
     @Override
-    public String checkParams(String params) {
+    public String checkParams() {
         return "";
     }
 

@@ -1,6 +1,7 @@
 package Request;
 
 import Library.LibrarySystem;
+import Library.TimeKeeper;
 
 /**
  * WIP
@@ -8,10 +9,16 @@ import Library.LibrarySystem;
  * @author Jack Li
  */
 public class AdvanceTime implements Request {
-    private LibrarySystem library = new LibrarySystem();
+    private TimeKeeper timeKeeper;
+    private String params;
+
+    public AdvanceTime(TimeKeeper timeKeeper, String params) {
+        this.timeKeeper = timeKeeper;
+        this.params = params;
+    }
 
     @Override
-    public String checkParams(String params) {
+    public String checkParams() {
         return "";
     }
 

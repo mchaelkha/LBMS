@@ -2,7 +2,7 @@ package Request;
 
 public class MissingParams implements Request {
     @Override
-    public String checkParams(String params) {
+    public String checkParams() {
         return "";
     }
 

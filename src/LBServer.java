@@ -1,6 +1,7 @@
 import Book.BookDB;
 import Checkout.CheckoutDB;
 import Controller.RequestParser;
+import Library.LibrarySystem;
 import Visitor.VisitorDB;
 
 import java.io.*;
@@ -37,6 +38,10 @@ public class LBServer {
      */
     private RequestParser parser;
     /**
+     * System that determines when the library is open or closed
+     */
+    private LibrarySystem library;
+    /**
      * Database to keep track of books
      */
     private BookDB bookDB;
@@ -53,6 +58,7 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
+        library = new LibrarySystem();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB(visitorDB, bookDB);

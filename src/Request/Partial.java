@@ -1,9 +1,8 @@
 package Request;
 
 public class Partial implements Request {
-
     @Override
-    public String checkParams(String params) {
+    public String checkParams() {
         return "";
     }
 

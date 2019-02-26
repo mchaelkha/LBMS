@@ -17,5 +17,8 @@ public interface RequestUtil {
     String ADVANCE_REQUEST = "advance";
     String DATE_TIME_REQUEST = "datetime";
     String REPORT_REQUEST = "report";
+
+    String PARAM_COUNT = "Too little or too many params";
+    String PROPER_PARAM = "";
     String DUPLICATE = "duplicate";
 }
