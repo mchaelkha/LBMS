@@ -11,8 +11,8 @@ public class AdvanceTime implements Request {
     private LibrarySystem library = new LibrarySystem();
 
     @Override
-    public boolean checkParams(String params) {
-        return false;
+    public String checkParams(String params) {
+        return "";
     }
 
     @Override

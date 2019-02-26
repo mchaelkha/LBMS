@@ -2,8 +2,8 @@ package Request;
 
 public class ReturnBook implements Request {
     @Override
-    public boolean checkParams(String params) {
-        return false;
+    public String checkParams(String params) {
+        return "";
     }
 
     @Override

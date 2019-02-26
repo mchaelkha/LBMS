@@ -1,6 +1,6 @@
 package Request;
 
-public interface Request {
-    boolean checkParams(String params);
+public interface Request extends RequestUtil {
+    String checkParams(String params);
     String execute();
 }

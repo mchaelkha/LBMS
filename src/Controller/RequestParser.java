@@ -1,7 +1,11 @@
 package Controller;
 
+import Request.RequestUtil;
+import Book.BookDB;
+import Checkout.CheckoutDB;
 import Request.Request;
 import Request.Partial;
+import Visitor.VisitorDB;
 
 /**
  * Work in progress
@@ -10,14 +14,29 @@ import Request.Partial;
  *
  * @author Michael Kha
  */
-public class RequestParser{
+public class RequestParser implements RequestUtil {
+    /**
+     * Database to keep track of books
+     */
+    private BookDB bookDB;
+    /**
+     * Database to keep track of visitors
+     */
+    private VisitorDB visitorDB;
+    /**
+     * Database to keep track of book checkouts by visitors
+     */
+    private CheckoutDB checkoutDB;
 
-    private static final String DELIMITER = ",";
-    private static final String TERMINATOR = ";";
-
+    /**
+     * A partial request
+     */
     private String partial;
 
-    public RequestParser() {
+    public RequestParser(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+        this.bookDB = bookDB;
+        this.visitorDB = visitorDB;
+        this.checkoutDB = checkoutDB;
         partial = "";
     }
 
@@ -61,31 +80,31 @@ public class RequestParser{
      */
     private Request createRequest(String command, String params) {
         switch (command) {
-            case "register":
+            case REGISTER_REQUEST:
                 break;
-            case "arrive":
+            case ARRIVE_REQUEST:
                 break;
-            case "depart":
+            case DEPART_REQUEST:
                 break;
-            case "info":
+            case INFO_REQUEST:
                 break;
-            case "borrow":
+            case BORROW_REQUEST:
                 break;
-            case "borrowed":
+            case BORROWED_REQUEST:
                 break;
-            case "return":
+            case RETURN_REQUEST:
                 break;
-            case "pay":
+            case PAY_REQUEST:
                 break;
-            case "search":
+            case SEARCH_REQUEST:
                 break;
-            case "buy":
+            case BUY_REQUEST:
                 break;
-            case "advance":
+            case ADVANCE_REQUEST:
                 break;
-            case "datetime":
+            case DATE_TIME_REQUEST:
                 break;
-            case "report":
+            case REPORT_REQUEST:
                 break;
             default:
                 break;
