@@ -57,9 +57,17 @@ public class VisitorInfo {
      */
     public VisitorInfo(String info) {
         // break whole string to each part of info
+        String[] visitorInformation = info.split(",");
+        firstName = visitorInformation[0];
+        lastName = visitorInformation[1];
+        address = visitorInformation[2];
+        phoneNumber = visitorInformation[3];
 
         visitorStates.put("InLibrary", new InLibrary());
         visitorStates.put("NotInLibrary", new NotInLibrary());
+
+        //Default state when visitor first registers
+        visitorState = visitorStates.get("NotInLibrary");
     }
 
     /**
