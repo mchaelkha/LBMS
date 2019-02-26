@@ -49,7 +49,7 @@ public class VisitorInfo {
     /**
      * The unique visitor id
      */
-    private String visitorID;
+    private int visitorID;
 
     /**
      * Create visitor info given a line of info.
