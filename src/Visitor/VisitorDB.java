@@ -10,11 +10,12 @@ import java.util.function.ToDoubleBiFunction;
 public class VisitorDB {
 
     /**
-     * All visitors that have been logged
+     * All visitors that are registered in the library. (VisitorID, VisitorInfo)
      */
-    private Map<String, VisitorInfo> visitors;
-    /**
-     * All current visitors in the library
+    private Map<String, VisitorInfo> registeredVisitors;
+
+    /*
+     * All current visitors in the library. (VisitorID, VisitorInfo)
      */
     private Map<String, VisitorInfo> currentVisitors;
 
@@ -22,7 +23,7 @@ public class VisitorDB {
      * Create a new visitor database that is empty.
      */
     public VisitorDB() {
-        visitors = new HashMap<>();
+        registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
     }
 
@@ -31,9 +32,18 @@ public class VisitorDB {
      * The new visitor is added into the map of visitors.
      * @param info The info needed to create a visitor
      */
-    public void registerVisitor(String info) {
+    public String registerVisitor(String info) {
+        //Create new visitorInfo object using info string
+        VisitorInfo newVisitorInfo = new VisitorInfo(info);
+
         //might return visitorinfo
         //check for duplicate visitorInfo
+        for (String currentKey : registeredVisitors.keySet()) {
+            if (registeredVisitors.get(currentKey).equals(newVisitorInfo)) {
+                //return RequestUtil.
+            }
+        }
+        return "";
     }
 
     /**
@@ -46,12 +56,12 @@ public class VisitorDB {
             return "arrive,duplicate";
         }
         //Check if visitor has not registered yet
-        else if (!visitors.containsKey(visitorID)){
+        else if (!registeredVisitors.containsKey(visitorID)){
             return "arrive,invalid-id";
         }
         //Add visitor to currentVisitors and update its state
         else{
-            VisitorInfo visitor = visitors.get(visitorID);
+            VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
             return "arrive";
             //TODO return correct string with visit date and start time

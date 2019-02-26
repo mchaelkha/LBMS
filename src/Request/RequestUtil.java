@@ -17,4 +17,5 @@ public interface RequestUtil {
     String ADVANCE_REQUEST = "advance";
     String DATE_TIME_REQUEST = "datetime";
     String REPORT_REQUEST = "report";
+    String DUPLICATE = "duplicate";
 }
