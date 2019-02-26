@@ -30,7 +30,7 @@ public class LBServer {
     /**
      * Command to stop the program immediately
      */
-    private static final String STOP = "/stop";
+    private static final String EXIT = "/exit";
 
     /**
      * Parser used to process possible requests
@@ -53,10 +53,10 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
-        parser = new RequestParser();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB(visitorDB, bookDB);
+        parser = new RequestParser(bookDB, visitorDB, checkoutDB);
     }
 
     /**
@@ -66,17 +66,17 @@ public class LBServer {
      * @param checkoutDB The checkout database
      */
     public LBServer(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
-        parser = new RequestParser();
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
+        parser = new RequestParser(bookDB, visitorDB, checkoutDB);
     }
 
     /**
      * Start the server by continuing to read input from the command line.
      * Special commands:
      * 1. /shutdown FILE - Shutdowns the program by first saving
-     * 2. /stop - Stop the program without saving
+     * 2. /exit - Exit the program without saving
      * 3. requests in csv format - commands to run through the parser
      */
     public void start() {
@@ -91,7 +91,7 @@ public class LBServer {
                 shutdown(parts[1]);
                 break;
             }
-            if (next.matches("^" + STOP)) {
+            if (next.matches("^" + EXIT)) {
                 break;
             }
             // Next line must be a request to be processed
