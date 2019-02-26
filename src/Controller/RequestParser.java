@@ -1,5 +1,7 @@
 package Controller;
 
+import Library.ReportGenerator;
+import Library.TimeKeeper;
 import Request.*;
 import Book.BookDB;
 import Checkout.CheckoutDB;
@@ -25,6 +27,14 @@ public class RequestParser implements RequestUtil {
      * Database to keep track of book checkouts by visitors
      */
     private CheckoutDB checkoutDB;
+    /**
+     * Keeps time consistent within the system.
+     */
+    private TimeKeeper timeKeeper;
+    /**
+     * Report Generator.
+     */
+    private ReportGenerator reporter;
 
     /**
      * A partial request
@@ -77,60 +87,50 @@ public class RequestParser implements RequestUtil {
      * @return The request that was executed.
      */
     private Request createRequest(String command, String params) {
+        Request request = null;
         switch (command) {
             case REGISTER_REQUEST:
-                RegisterVisitor reg = new RegisterVisitor();
-                reg.execute();
+                request = new RegisterVisitor(visitorDB, params);
                 break;
             case ARRIVE_REQUEST:
-                BeginVisit beg = new BeginVisit();
-                beg.execute();
+                request = new BeginVisit(visitorDB, params);
                 break;
             case DEPART_REQUEST:
-                EndVisit end = new EndVisit();
-                end.execute();
+                request = new EndVisit(visitorDB, params);
                 break;
             case INFO_REQUEST:
-                LibraryStatisticsReport libstat = new LibraryStatisticsReport();
-                libstat.execute();
+                request = new LibraryBookSearch(bookDB, params);
                 break;
             case BORROW_REQUEST:
-                BorrowBook borrow = new BorrowBook();
-                borrow.execute();
+                request = new BorrowBook(checkoutDB, params);
                 break;
             case BORROWED_REQUEST:
-                FindBorrowedBooks findb = new FindBorrowedBooks();
-                findb.execute();
+                request = new FindBorrowedBooks(visitorDB, params);
                 break;
             case RETURN_REQUEST:
-                ReturnBook rtn = new ReturnBook();
-                rtn.execute();
+                request = new ReturnBook(checkoutDB, params);
                 break;
             case PAY_REQUEST:
-                PayFine pay = new PayFine();
-                pay.execute();
+                request = new PayFine(checkoutDB, params);
                 break;
             case SEARCH_REQUEST:
-                LibraryBookSearch libsearch = new LibraryBookSearch();
-                libsearch.execute();
+                request = new LibraryBookSearch(bookDB, params);
                 break;
             case BUY_REQUEST:
-                BookPurchase purchase = new BookPurchase();
-                purchase.execute();
+                request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
-                AdvanceTime adv = new AdvanceTime();
-                adv.execute();
+                request = new AdvanceTime(timeKeeper, params);
                 break;
             case DATE_TIME_REQUEST:
-                CurrentDateTime date = new CurrentDateTime();
-                date.execute();
+                request = new CurrentDateTime(timeKeeper, params);
                 break;
             case REPORT_REQUEST:
+                request = new LibraryStatisticsReport(reporter, params);
                 break;
             default:
                 break;
         }
-        return null;
+        return request;
     }
 }

@@ -4,13 +4,21 @@ import Book.BookDB;
 import Checkout.CheckoutDB;
 import Visitor.VisitorDB;
 
-public class DBManager {
-    private VisitorDB visitor;
-    private CheckoutDB checkout;
-    private BookDB book;
+/**
+ *
+ *
+ * @author Michael Kha
+ */
+public class ReportGenerator {
 
-    public DBManager(){
+    private BookDB bookDB;
+    private VisitorDB visitorDB;
+    private CheckoutDB checkoutDB;
 
+    public ReportGenerator(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+        this.bookDB = bookDB;
+        this.visitorDB = visitorDB;
+        this.checkoutDB = checkoutDB;
     }
 
     /**
