@@ -1,5 +1,7 @@
 package Visitor;
 
+import Request.RequestUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.ToDoubleBiFunction;
@@ -14,10 +16,20 @@ public class VisitorDB {
      */
     private Map<String, VisitorInfo> registeredVisitors;
 
-    /*
+    /**
      * All current visitors in the library. (VisitorID, VisitorInfo)
      */
     private Map<String, VisitorInfo> currentVisitors;
+
+    /**
+     * Used for providing visitors with unique IDs
+     */
+    private int nextVisitorID;
+
+    /**
+     * First visitorID provided when library is created
+     */
+    private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
      * Create a new visitor database that is empty.
@@ -25,25 +37,36 @@ public class VisitorDB {
     public VisitorDB() {
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
+
+        //initialize nextVisitorID (All IDs need to be a 10 digit number)
+        nextVisitorID = INITIAL_VISITOR_ID;
     }
 
     /**
      * Register the visitor given properly formatted info.
      * The new visitor is added into the map of visitors.
      * @param info The info needed to create a visitor
+     * @return Response to user indicating registration went through or Error.
      */
     public String registerVisitor(String info) {
         //Create new visitorInfo object using info string
         VisitorInfo newVisitorInfo = new VisitorInfo(info);
 
-        //might return visitorinfo
         //check for duplicate visitorInfo
         for (String currentKey : registeredVisitors.keySet()) {
+            //Duplicate visitorInfo found
             if (registeredVisitors.get(currentKey).equals(newVisitorInfo)) {
-                //return RequestUtil.
+                return RequestUtil.ARRIVE_REQUEST + RequestUtil.DELIMITER + RequestUtil.DUPLICATE;
             }
         }
-        return "";
+        //No duplicate was found. Valid registration.
+        int newVisitorID = nextVisitorID;
+        nextVisitorID++;
+        String newVisitorIDString = Integer.toString(newVisitorID);
+        registeredVisitors.put(newVisitorIDString, newVisitorInfo);
+        //TODO figure out date format
+        return null;
+        //return RequestUtil.REGISTER_REQUEST+newVisitorIDString+;
     }
 
     /**
