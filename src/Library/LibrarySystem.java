@@ -10,7 +10,6 @@ public class LibrarySystem {
     private static int OPEN_HOUR = 9;
     private static int CLOSE_HOUR = 12+9;
 
-    private DBManager manager;
     private TimeKeeper timeKeeper;
 
     /**
@@ -34,14 +33,6 @@ public class LibrarySystem {
      * @param days The number of days to move forward.
      */
     public void moveDate(int days){
-
-    }
-
-    /**
-     * Compiles the month's information.
-     * @param month
-     */
-    private void generateInfoReport(String month){
 
     }
 }
