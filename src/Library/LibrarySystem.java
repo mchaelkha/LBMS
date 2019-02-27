@@ -21,14 +21,6 @@ public class LibrarySystem {
     }
 
     /**
-     * Handles requests from the client
-     * @param request The request being made.
-     */
-    public void handleRequest(Request request){
-
-    }
-
-    /**
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
      */
