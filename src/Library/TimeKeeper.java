@@ -13,6 +13,11 @@ import java.util.TimerTask;
  */
 public class TimeKeeper {
     /**
+     * Singleton instance of time keeper
+     */
+    private static TimeKeeper timeKeeper;
+
+    /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
     private static LocalDateTime clock;
@@ -42,7 +47,7 @@ public class TimeKeeper {
      * A TimerTask is used in conjunction with a timer
      * to ensure the time is updated every minute.
      */
-    public TimeKeeper() {
+    private TimeKeeper() {
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
             @Override
@@ -51,6 +56,17 @@ public class TimeKeeper {
             }
         };
         timer.scheduleAtFixedRate(timerTask, TIMER_DELAY,TIMER_INTERVAL);
+    }
+
+    /**
+     * Get the single instance of time keeper.
+     * @return The single instance of time keeper
+     */
+    public static TimeKeeper getInstance() {
+        if (timeKeeper == null) {
+            timeKeeper = new TimeKeeper();
+        }
+        return timeKeeper;
     }
 
     /**
