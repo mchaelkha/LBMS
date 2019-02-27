@@ -105,7 +105,9 @@ public class VisitorDB implements RequestUtil, Serializable{
      * @param visitorID The visitor id to end a visit for
      */
     public void endVisit(String visitorID) {
-
+        //Remove visitor from currentVisitors
+        currentVisitors.remove(visitorID);
+        //TODO change visitor state to not in library if using state pattern
     }
 
     /**
@@ -121,6 +123,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * checkout a book, and then adds a book if they can.
      */
     public boolean checkoutBook(String visitorID) {
+        
         return true;
     }
 }
