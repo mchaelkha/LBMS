@@ -20,5 +20,8 @@ public interface RequestUtil {
 
     String PARAM_COUNT = "Too little or too many params";
     String PROPER_PARAM = "";
+
     String DUPLICATE = "duplicate";
+    String SUCCESS = "success";
+    String NEW_LINE = System.lineSeparator();
 }
