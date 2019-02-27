@@ -1,5 +1,9 @@
 package Visitor;
 
+import Checkout.Transaction;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +54,11 @@ public class VisitorInfo {
      * The unique visitor id
      */
     private int visitorID;
+
+    /**
+     * Checkout transactions
+     */
+    private List<Transaction> transactionList = new ArrayList<>();
 
     /**
      * Create visitor info given a line of info.
@@ -116,6 +125,18 @@ public class VisitorInfo {
      */
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public int getNumberOfTransactions(){
+        return transactionList.size();
+    }
+
+    public void addTransaction(Transaction transaction){
+        transactionList.add(transaction);
+    }
+
+    public List<Transaction> getTransactionList(){
+        return transactionList;
     }
 
     public void beginVisit(){

@@ -53,7 +53,7 @@ public class CheckoutDB {
         if(bookDB.getNumCopies(isbn) == 0){
             return null;
         }
-        if(visitorDB.checkoutBook(visitorID)) {
+        if(visitorDB.checkOutBook(visitorID,transaction)) {
             if(!this.openLoans.containsKey(visitorID)) {
                 this.openLoans.put(visitorID, new ArrayList<Transaction>());
             }

@@ -22,4 +22,5 @@ public interface RequestUtil {
     String PROPER_PARAM = "";
     String DUPLICATE = "duplicate";
     String INVALID_ID = "invalid-id";
+    String INVALID_VISITOR_ID = "invalid-visitor-id";
 }

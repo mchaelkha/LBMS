@@ -1,5 +1,7 @@
 package Visitor;
 
+import Checkout.CheckoutDB;
+import Checkout.Transaction;
 import Library.TimeKeeper;
 import Request.RequestUtil;
 
@@ -122,8 +124,38 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Finds a visitor, determines whether or not they can
      * checkout a book, and then adds a book if they can.
      */
-    public boolean checkoutBook(String visitorID) {
-        
-        return true;
+    public boolean checkOutBook(String visitorID, Transaction transaction) {
+
+        //Check if there is a current visitor with visitorID
+        if (!currentVisitors.containsKey(visitorID)) {
+            //return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID;
+            //TODO where do we return the Error response for invalid visitor ID for Borrow request
+            return false;
+        } else {
+            VisitorInfo visitor = currentVisitors.get(visitorID);
+            //Update fines in visitor's transactions and check for outstanding fines
+            boolean hasOutstandingFine = false;
+            for (Transaction nextTransaction : visitor.getTransactionList()) {
+                nextTransaction.setFine();
+                if(nextTransaction.getFineAmount()>0){
+                    hasOutstandingFine = true;
+                }
+            }
+            //Check if visitor has already borrowed the max number of books
+            if(visitor.getNumberOfTransactions()>Transaction.MAX_NUMBER_OF_TRANSACTIONS){
+                //Response = borrow,book-limit-exceeded
+                return false;
+            }
+            //Check if visitor has an outstanding fine in any of their transactions
+            else if(hasOutstandingFine){
+                return false;
+            }
+            //Successful transaction, add transaction to Visitor's transactionList
+            else{
+                visitor.addTransaction(transaction);
+                return true;
+            }
+        }
+
     }
 }
