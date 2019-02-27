@@ -152,4 +152,20 @@ public class BookInfo implements Serializable {
         return totalCopiesAvailable != 0;
     }
 
+    /**
+     * A string that represents
+     * @return The string representation of book info
+     */
+    @Override
+    public String toString() {
+        String auths = "";
+        for (int i = 0; i < authors.size(); i++) {
+            auths += authors.get(i);
+            if (i != authors.size() - 1) {
+                auths += ",";
+            }
+        }
+        return isbn + "," + title + "," + auths + "," + publishDate;
+    }
+
 }
