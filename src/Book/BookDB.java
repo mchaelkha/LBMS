@@ -1,5 +1,7 @@
 package Book;
 
+import Request.RequestUtil;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  *
  * @author Michael Kha
  */
-public class BookDB extends BookData implements Serializable {
+public class BookDB extends BookData implements Serializable, RequestUtil {
 
     /**
      * Bookstore to purchase books from
@@ -19,7 +21,7 @@ public class BookDB extends BookData implements Serializable {
     /**
      * Create a new book database that is empty.
      */
-    public BookDB(){
+    public BookDB() {
         super();
         bookstore = new Bookstore();
     }
@@ -31,9 +33,11 @@ public class BookDB extends BookData implements Serializable {
      * @param quantity Number of books to purchase for each book ID
      * @param bookIDs List of book IDs from the last search to purchase
      */
-    public void purchase(int quantity, List<String> bookIDs){
+    public String purchase(int quantity, List<String> bookIDs) {
+        String response = "" + BUY_REQUEST + DELIMITER + SUCCESS + DELIMITER;
         List<BookInfo> booksPurchased = bookstore.purchaseBooks(
                 quantity, bookIDs);
+        response += String.valueOf(booksPurchased.size() * quantity);
         String isbn;
         BookInfo temp;
         for (BookInfo book : booksPurchased) {
@@ -46,7 +50,11 @@ public class BookDB extends BookData implements Serializable {
             } else {
                 books.put(isbn, book);
             }
+            // Build response string
+            response += book.toString();
+            response += DELIMITER + book.getTotalCopies() + NEW_LINE;
         }
+        return response;
     }
 
     /**
@@ -63,7 +71,7 @@ public class BookDB extends BookData implements Serializable {
      * @param book the ISBN of the book.
      * @return Whether a copy of the book was removed.
      */
-    public boolean removeCopy(String book){
+    public boolean removeCopy(String book) {
         BookInfo bookInfo = books.get(book);
         return bookInfo.checkOutCopy();
     }
