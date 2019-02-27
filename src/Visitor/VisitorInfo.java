@@ -45,7 +45,7 @@ public class VisitorInfo {
      * Identifying information for a visitor including name, address, and
      * phone number
      */
-    private String[] info;
+    private String[] visitorInformation;
     /**
      * The unique visitor id
      */
@@ -57,7 +57,7 @@ public class VisitorInfo {
      */
     public VisitorInfo(String info) {
         // break whole string to each part of info
-        String[] visitorInformation = info.split(",");
+        visitorInformation = info.split(",");
         firstName = visitorInformation[0];
         lastName = visitorInformation[1];
         address = visitorInformation[2];

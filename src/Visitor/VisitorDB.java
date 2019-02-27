@@ -3,14 +3,14 @@ package Visitor;
 import Library.TimeKeeper;
 import Request.RequestUtil;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.ToDoubleBiFunction;
 
 /**
  *
  */
-public class VisitorDB {
+public class VisitorDB implements RequestUtil, Serializable{
 
     /**
      * All visitors that are registered in the library. (VisitorID, VisitorInfo)
@@ -57,7 +57,7 @@ public class VisitorDB {
         for (String currentKey : registeredVisitors.keySet()) {
             //Duplicate visitorInfo found
             if (registeredVisitors.get(currentKey).equals(newVisitorInfo)) {
-                return RequestUtil.ARRIVE_REQUEST + RequestUtil.DELIMITER + RequestUtil.DUPLICATE;
+                return ARRIVE_REQUEST + DELIMITER + DUPLICATE;
             }
         }
         //No duplicate was found. Register new visitor.
@@ -65,9 +65,10 @@ public class VisitorDB {
         nextVisitorID++;
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
-        String registeredDate = TimeKeeper.readDate();
-        return RequestUtil.REGISTER_REQUEST+RequestUtil.DELIMITER
-                +newVisitorIDString+RequestUtil.DELIMITER+registeredDate;
+        TimeKeeper timeKeeper = TimeKeeper.getInstance();
+        String registeredDate = timeKeeper.readDate();
+        return REGISTER_REQUEST+DELIMITER+newVisitorIDString
+                +DELIMITER+registeredDate;
     }
 
     /**
@@ -77,20 +78,26 @@ public class VisitorDB {
     public String startVisit(String visitorID) {
         //Check if visitor with id already exists in currentVisitors
         if (currentVisitors.containsKey(visitorID)) {
-            return "arrive,duplicate";
+            //Response = "arrive,duplicate";
+            return ARRIVE_REQUEST+DELIMITER+DUPLICATE;
         }
         //Check if visitor has not registered yet
         else if (!registeredVisitors.containsKey(visitorID)){
-            return "arrive,invalid-id";
+            //Response = "arrive,invalid-id";
+            return ARRIVE_REQUEST+DELIMITER+INVALID_ID;
         }
         //Add visitor to currentVisitors and update its state
         else{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
-            return "arrive";
-            //TODO return correct string with visit date and start time
+            TimeKeeper timeKeeper = TimeKeeper.getInstance();
+            String visitDate = timeKeeper.readDate();
+            String visitTime = timeKeeper.readTime();
+            //Response = "arrive,visitorID,visitDate,visitStartTime"
+            return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
+                    +visitDate+DELIMITER+visitTime;
+            //TODO change visitorInfo state to inLabrary if using state pattern
         }
-        //get visitorInfo and update new state
     }
 
     /**
@@ -98,14 +105,17 @@ public class VisitorDB {
      * @param visitorID The visitor id to end a visit for
      */
     public void endVisit(String visitorID) {
-
+        //Remove visitor from currentVisitors
+        currentVisitors.remove(visitorID);
+        //TODO change visitor state to not in library if using state pattern
     }
 
     /**
      * Clear all the current visitors that are logged.
      */
     public void clearCurrentVisitors() {
-
+        //TODO go through collection and change state of each visitorInfo
+        currentVisitors.clear();
     }
 
     /**
@@ -113,6 +123,7 @@ public class VisitorDB {
      * checkout a book, and then adds a book if they can.
      */
     public boolean checkoutBook(String visitorID) {
+        
         return true;
     }
 }
