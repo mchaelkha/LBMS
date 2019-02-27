@@ -1,5 +1,6 @@
 package Visitor;
 
+import Library.TimeKeeper;
 import Request.RequestUtil;
 
 import java.util.HashMap;
@@ -59,14 +60,14 @@ public class VisitorDB {
                 return RequestUtil.ARRIVE_REQUEST + RequestUtil.DELIMITER + RequestUtil.DUPLICATE;
             }
         }
-        //No duplicate was found. Valid registration.
+        //No duplicate was found. Register new visitor.
         int newVisitorID = nextVisitorID;
         nextVisitorID++;
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
-        //TODO figure out date format
-        return null;
-        //return RequestUtil.REGISTER_REQUEST+newVisitorIDString+;
+        String registeredDate = TimeKeeper.readDate();
+        return RequestUtil.REGISTER_REQUEST+RequestUtil.DELIMITER
+                +newVisitorIDString+RequestUtil.DELIMITER+registeredDate;
     }
 
     /**

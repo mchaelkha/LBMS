@@ -15,7 +15,7 @@ public class TimeKeeper {
     /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
-    private LocalDateTime clock;
+    private static LocalDateTime clock;
 
     /**
      * The task that updates the time each minute.
@@ -94,7 +94,7 @@ public class TimeKeeper {
      * Returns the current date as a formatted String.
      * @return the current date, d/m/y.
      */
-    public String readDate() {
+    public static String readDate() {
         Integer day = clock.getDayOfMonth();
         Integer month = clock.getMonthValue();
         Integer year = clock.getYear();
