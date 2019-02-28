@@ -4,6 +4,7 @@ import Request.RequestUtil;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The book database that is used by the library to manage book purchases,
@@ -24,6 +25,22 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     public BookDB() {
         super();
         bookstore = new Bookstore();
+    }
+
+    /**
+     * Search the book store for books with the given information.
+     * @param title The title
+     * @param authors The authors
+     * @param isbn The isbn
+     * @param publisher The publisher
+     * @param sort The sort order
+     * @return The mapping of hits to a unique ID
+     */
+    public Map<String, BookInfo> searchStore(String title,
+                                             List<String> authors,
+                                             String isbn,
+                                             String publisher, String sort) {
+        return bookstore.searchBooks(title, authors, isbn, publisher, sort);
     }
 
     /**

@@ -88,6 +88,8 @@ public class RequestParser implements RequestUtil {
      */
     private Request createRequest(String command, String params) {
         Request request = null;
+        // Remove terminating character
+        params = params.substring(0, params.length() - 1);
         switch (command) {
             case REGISTER_REQUEST:
                 request = new RegisterVisitor(visitorDB, params);
@@ -114,7 +116,7 @@ public class RequestParser implements RequestUtil {
                 request = new PayFine(checkoutDB, params);
                 break;
             case SEARCH_REQUEST:
-                request = new LibraryBookSearch(bookDB, params);
+                request = new BookStoreSearch(bookDB, params);
                 break;
             case BUY_REQUEST:
                 request = new BookPurchase(bookDB, params);
@@ -129,6 +131,7 @@ public class RequestParser implements RequestUtil {
                 request = new LibraryStatisticsReport(reporter, params);
                 break;
             default:
+                request = new Illegal();
                 break;
         }
         return request;

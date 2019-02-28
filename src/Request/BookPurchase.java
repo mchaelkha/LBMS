@@ -26,14 +26,13 @@ public class BookPurchase implements Request {
      */
     private int quantity;
     /**
-     * List of book from their IDs to purchase
+     * List of books from their IDs of the most recent book store search
      */
-    private List<String> ids;
+    private List<String> bookIDs;
 
     /**
      * Create a new book purchase request given the book database
      * and the parameters for the request.
-     *
      * @param bookDB The book database
      * @param params The parameters that follow a request command
      */
@@ -43,8 +42,8 @@ public class BookPurchase implements Request {
     }
 
     /**
+     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
-     *
      * @return If the parameters are correct
      */
     @Override
@@ -52,8 +51,8 @@ public class BookPurchase implements Request {
         String[] parts = params.split(DELIMITER);
         if (parts.length > 1) {
             quantity = Integer.parseInt(parts[0]);
-            ids = new ArrayList<>();
-            ids.addAll(Arrays.asList(parts).subList(1, parts.length));
+            bookIDs = new ArrayList<>();
+            bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
             return PROPER_PARAM;
         }
         return PARAM_COUNT;
@@ -69,6 +68,6 @@ public class BookPurchase implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return bookDB.purchase(quantity, ids) + TERMINATOR + NEW_LINE;
+        return bookDB.purchase(quantity, bookIDs) + TERMINATOR + NEW_LINE;
     }
 }
