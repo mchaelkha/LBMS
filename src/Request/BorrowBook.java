@@ -65,6 +65,11 @@ public class BorrowBook implements Request {
      */
     @Override
     public String execute() {
+        String check = checkParams();
+        if (!check.equals(PROPER_PARAM)) {
+            return check;
+        }
+        // TODO: implement by calling right methods in DB
         return null;
     }
 }
