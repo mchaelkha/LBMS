@@ -116,7 +116,7 @@ public class RequestParser implements RequestUtil {
                 request = new PayFine(checkoutDB, params);
                 break;
             case SEARCH_REQUEST:
-                request = new LibraryBookSearch(bookDB, params);
+                request = new BookStoreSearch(bookDB, params);
                 break;
             case BUY_REQUEST:
                 request = new BookPurchase(bookDB, params);
