@@ -96,6 +96,14 @@ public class TimeKeeper {
     }
 
     /**
+     * Returns the clock LocalDateTime object
+     * @return the clock
+     */
+    public LocalDateTime getClock() {
+        return clock;
+    }
+
+    /**
      * Returns the current time as a formatted String.
      * @return the current time.
      */
