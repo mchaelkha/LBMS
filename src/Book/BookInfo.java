@@ -145,6 +145,14 @@ public class BookInfo implements Serializable {
     }
 
     /**
+     * Get the total number of copies available
+     * @return The total number of copies available
+     */
+    public int getTotalCopiesAvailable() {
+        return totalCopiesAvailable;
+    }
+
+    /**
      * Check if there are copies available.
      * @return If there are copies available
      */

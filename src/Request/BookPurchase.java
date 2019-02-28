@@ -33,7 +33,6 @@ public class BookPurchase implements Request {
     /**
      * Create a new book purchase request given the book database
      * and the parameters for the request.
-     *
      * @param bookDB The book database
      * @param params The parameters that follow a request command
      */
@@ -43,8 +42,8 @@ public class BookPurchase implements Request {
     }
 
     /**
+     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
-     *
      * @return If the parameters are correct
      */
     @Override
