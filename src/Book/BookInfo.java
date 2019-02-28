@@ -166,13 +166,14 @@ public class BookInfo implements Serializable {
      */
     @Override
     public String toString() {
-        String auths = "";
+        String auths = "{";
         for (int i = 0; i < authors.size(); i++) {
             auths += authors.get(i);
             if (i != authors.size() - 1) {
                 auths += ",";
             }
         }
+        auths += "}";
         return isbn + "," + title + "," + auths + "," + publishDate;
     }
 

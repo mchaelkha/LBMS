@@ -99,15 +99,14 @@ public class LibraryBookSearch implements Request {
     private String buildString(Map<String, BookInfo> search) {
         int size = search.size();
         String result = "" + INFO_REQUEST + DELIMITER
-                + size + DELIMITER + "[";
+                + size + DELIMITER;
         for (String id : search.keySet()) {
             BookInfo book = search.get(id);
-            result += NEW_LINE + DELIMITER;
+            result += NEW_LINE;
             result += book.getTotalCopiesAvailable() + DELIMITER;
-            result += id;
+            result += id + DELIMITER;
             result += book + DELIMITER + book.getPageCount();
         }
-        result += "]";
         result += String.format("{%d}", size);
         result += TERMINATOR;
         return result;
