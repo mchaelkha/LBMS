@@ -77,8 +77,8 @@ public class LibraryBookSearch implements Request {
     }
 
     /**
-     * Execute the book purchase command which returns a string.
-     * @return String indicating the books purchased if any
+     * Execute the library book search command which returns a string.
+     * @return String containing the results of the book search
      */
     @Override
     public String execute() {

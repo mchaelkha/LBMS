@@ -20,6 +20,7 @@ public interface RequestUtil {
     String REPORT_REQUEST = "report";
 
     String PARAM_COUNT = "Too little or too many params";
+    // Use String.format to insert request name
     String MISSING_PARAM = "<%s>" + DELIMITER + "missing-parameters";
     String PROPER_PARAM = "";
     String DUPLICATE = "duplicate";
