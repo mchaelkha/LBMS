@@ -131,6 +131,7 @@ public class RequestParser implements RequestUtil {
                 request = new LibraryStatisticsReport(reporter, params);
                 break;
             default:
+                request = new Illegal();
                 break;
         }
         return request;

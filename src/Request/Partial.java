@@ -18,7 +18,7 @@ public class Partial implements Request {
 
     /**
      * Execute the partial request by displaying a message.
-     * @return
+     * @return A partial request message
      */
     @Override
     public String execute() {

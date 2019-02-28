@@ -101,7 +101,7 @@ public class LBServer {
                 break;
             }
             // Next line must be a request to be processed
-            parser.determineRequest(next);
+            System.out.println(parser.processRequest(next));
         }
         scanner.close();
     }

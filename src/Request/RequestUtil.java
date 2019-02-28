@@ -1,5 +1,8 @@
 package Request;
 
+/**
+ * Interface to store constants for classes that need Request strings.
+ */
 public interface RequestUtil {
     String DELIMITER = ",";
     String TERMINATOR = ";";
@@ -23,6 +26,7 @@ public interface RequestUtil {
     // Use String.format to insert request name
     String MISSING_PARAM = "<%s>" + DELIMITER + "missing-parameters";
     String PROPER_PARAM = "";
+    String ILLEGAL_COMMAND = "illegal-command";
     String DUPLICATE = "duplicate";
     String INVALID_ID = "invalid-id";
     String SUCCESS = "success";
