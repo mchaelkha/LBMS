@@ -88,6 +88,8 @@ public class RequestParser implements RequestUtil {
      */
     private Request createRequest(String command, String params) {
         Request request = null;
+        // Remove terminating character
+        params = params.substring(0, params.length() - 1);
         switch (command) {
             case REGISTER_REQUEST:
                 request = new RegisterVisitor(visitorDB, params);
