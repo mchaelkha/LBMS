@@ -50,7 +50,7 @@ public class CheckoutDB {
      */
     public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
         Transaction transaction = new Transaction(checkoutDate, isbn);
-        if(visitorDB.checkoutBook(visitorID)) {
+        if(visitorDB.checkoutBook(visitorID, transaction)) {
             if(!this.openLoans.containsKey(visitorID)) {
                 this.openLoans.put(visitorID, new ArrayList<Transaction>());
             }
