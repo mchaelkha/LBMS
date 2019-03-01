@@ -3,6 +3,7 @@ package Book;
 import Request.RequestUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +82,29 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
      */
     public int getNumCopies(String book){
         return books.get(book).getTotalCopies();
+    }
+
+    /**
+     * Borrow books from a list of book IDs referring to books in the last
+     * search.
+     * @param bookIDs The book IDs to checkout
+     * @return List of books to be borrowed or null if invalid book ID
+     */
+    public List<BookInfo> borrowBooks(List<String> bookIDs) {
+        List<BookInfo> books = new ArrayList<>();
+        for (String bookID : bookIDs) {
+            BookInfo book = lastSearch.get(bookID);
+            // All IDs must match
+            if (book == null) {
+                return null;
+            }
+            books.add(book);
+            // Book no longer available
+            if (!book.checkOutCopy()) {
+                return null;
+            }
+        }
+        return books;
     }
 
     /**
