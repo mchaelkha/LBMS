@@ -13,10 +13,11 @@ class LibraryOpen implements LibraryState {
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
      * @param isbn the isbn of the book to check out
+     * @param checkoutDate the current date of checkout
      */
     @Override
     public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
-
+        //TODO
         return null;
     }
 
@@ -27,6 +28,7 @@ class LibraryOpen implements LibraryState {
      */
     @Override
     public String startVisit(String visitorID) {
+        //TODO
         return null;
     }
 
