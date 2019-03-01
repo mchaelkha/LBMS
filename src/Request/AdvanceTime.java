@@ -12,8 +12,8 @@ public class AdvanceTime implements Request {
     private TimeKeeper timeKeeper;
     private String params;
 
-    public AdvanceTime(TimeKeeper timeKeeper, String params) {
-        this.timeKeeper = timeKeeper.getInstance();
+    public AdvanceTime(String params) {
+        this.timeKeeper = TimeKeeper.getInstance();
         this.params = params;
     }
 
