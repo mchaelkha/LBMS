@@ -1,6 +1,9 @@
 package Library;
 
+import Request.RequestUtil;
+
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,7 +14,7 @@ import java.util.TimerTask;
  * @author Hersh Nagpal
  * @TODO a time object that moves with the current time.
  */
-public class TimeKeeper {
+public class TimeKeeper implements RequestUtil{
     /**
      * Singleton instance of time keeper
      */
@@ -171,6 +174,18 @@ public class TimeKeeper {
      */
     public void addDays(int days) {
         clock = clock.plusDays(days);
+    }
+
+    /**
+     * Calculates the duration between two LocalDayTime objects in hours:minutes:seconds
+     * @return String representation of duration between LocalDayTime objects
+     */
+    public String calculateDuration(LocalDateTime start, LocalDateTime end) {
+        String hours = Long.toString(ChronoUnit.HOURS.between(start, end));
+        String minutes = Long.toString(ChronoUnit.MINUTES.between(start, end));
+        String seconds = Long.toString(ChronoUnit.SECONDS.between(start, end));
+
+        return hours+":"+minutes+":"+seconds;
     }
 
     
