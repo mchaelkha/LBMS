@@ -119,6 +119,8 @@ public class CheckoutDB {
                     t.returnBook(returnDate);
                     this.openLoans.get(visitorID).remove(t);
 
+                    //TODO remove transaction from visitorInfo transactions
+
                     if(!this.closedLoans.containsKey(visitorID)) {
                         this.closedLoans.put(visitorID, new ArrayList<Transaction>());
                     }

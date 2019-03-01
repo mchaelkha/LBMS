@@ -41,5 +41,12 @@ public class LibrarySystem {
 
     }
 
+    /**
+     * Called when library changes state to closed.
+     */
+    public void closeLibrary() {
+        //call clearVisitors() in VisitorDB
+    }
+
     //TODO Implement Closed state of LibrarySystem -> LUIS
 }

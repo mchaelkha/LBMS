@@ -11,7 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The visitor database that is used by the library to manage visitor commands
+ * including beginVisit, endVisit, registerVisitor, and checkoutBook.
  *
+ * @author Luis Gutierrez
  */
 public class VisitorDB implements RequestUtil, Serializable{
 
@@ -38,7 +41,7 @@ public class VisitorDB implements RequestUtil, Serializable{
     /**
      * Updated when Visitor begins a visit. Used to calculate visit duration
      */
-    private LocalDateTime startDayTime;
+    private LocalDateTime startVisitDayTime;
 
     /**
      * Create a new visitor database that is empty.
@@ -89,7 +92,7 @@ public class VisitorDB implements RequestUtil, Serializable{
             //Response = "arrive,duplicate";
             return ARRIVE_REQUEST+DELIMITER+DUPLICATE+TERMINATOR;
         }
-        //Check if visitor has not registered yet
+        //Check if visitor has not been registered yet
         else if (!registeredVisitors.containsKey(visitorID)){
             //Response = "arrive,invalid-id";
             return ARRIVE_REQUEST+DELIMITER+INVALID_ID+TERMINATOR;
@@ -103,12 +106,11 @@ public class VisitorDB implements RequestUtil, Serializable{
             String visitTime = timeKeeper.readTime();
 
             //Get LocalDateTime for the startVisit time
-            LocalDateTime startVisitDateTime = timeKeeper.getClock();
+            startVisitDayTime = timeKeeper.getClock();
 
             //Response = "arrive,visitorID,visitDate,visitStartTime"
             return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
                     +visitDate+DELIMITER+visitTime+TERMINATOR;
-            //TODO change visitorInfo state to inLabrary if using state pattern
         }
     }
 
@@ -131,7 +133,7 @@ public class VisitorDB implements RequestUtil, Serializable{
         String visitEndTime = timeKeeper.readTime();
 
         LocalDateTime endVisitDateTime = timeKeeper.getClock();
-        String visitDuration = timeKeeper.calculateDuration(startDayTime, endVisitDateTime);
+        String visitDuration = timeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
                 DELIMITER+visitDuration;
@@ -139,15 +141,15 @@ public class VisitorDB implements RequestUtil, Serializable{
 
     /**
      * Clear all the current visitors that are logged.
+     * Called when Library closes.
      */
     public void clearCurrentVisitors() {
-        //TODO go through collection and change state of each visitorInfo
         currentVisitors.clear();
     }
 
     /**
      * Finds a visitor, determines whether or not they can
-     * checkout a book, and then adds a book if they can.
+     * checkout a book, and then add a book if they can.
      */
     public boolean checkoutBook(String visitorID, Transaction transaction) {
 
