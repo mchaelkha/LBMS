@@ -2,6 +2,10 @@ package Request;
 
 import Library.TimeKeeper;
 
+/**
+ * Gives the system's current date and time.
+ * @author Jack Li
+ */
 public class CurrentDateTime implements Request {
 
     private TimeKeeper timeKeeper;

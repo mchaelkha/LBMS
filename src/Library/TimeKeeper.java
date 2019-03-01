@@ -9,7 +9,6 @@ import java.util.TimerTask;
  * overdue books. The date can be pushed forward a number of days to simulate usage over a period of time for 
  * testing.
  * @author Hersh Nagpal
- * @TODO a time object that moves with the current time.
  */
 public class TimeKeeper {
     /**
@@ -173,5 +172,11 @@ public class TimeKeeper {
         clock = clock.plusDays(days);
     }
 
-    
+    /**
+     * Moves the time forward by some number of hours.
+     * @param hours the number of hours to add.
+     */
+    public void addHours(int hours){
+        clock = clock.plusHours(hours);
+    }
 }
