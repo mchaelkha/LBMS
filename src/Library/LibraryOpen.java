@@ -1,22 +1,29 @@
 package Library;
 
 /**
- * The state interface that allows the Library's activities to 
- * change depending on whether or not it is open.
+ * The state of the Library when it is open. Checkouts and visits are allowed.
  * @author Hersh Nagpal
  */
-public interface LibraryState {
+class LibraryOpen implements LibraryState {
+
     /**
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
      * @param isbn the isbn of the book to check out
      */
-    String checkoutBook(String visitorID, String isbn);
+    @Override
+    public String checkoutBook(String visitorID, String isbn) {
+        return null;
+    }
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.
      * @param visitorID the visitor whose visit to start
      * @return a formatted string regarding the success of the operation.
      */
-    String startVisit(String visitorID);
-}
+    @Override
+    public String startVisit(String visitorID) {
+        return null;
+    }
+
+} 
