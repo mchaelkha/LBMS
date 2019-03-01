@@ -2,14 +2,18 @@ package Request;
 
 import Library.TimeKeeper;
 
+/**
+ * Gives the system's current date and time.
+ * @author Jack Li
+ */
 public class CurrentDateTime implements Request {
 
     private TimeKeeper timeKeeper;
     private String params;
 
-    public CurrentDateTime(TimeKeeper timeKeeper, String params) {
-        this.timeKeeper = timeKeeper;
-        this.params = params;
+    public CurrentDateTime() {
+        this.timeKeeper = TimeKeeper.getInstance();
+        //this.params = params;
     }
 
     @Override
@@ -19,6 +23,6 @@ public class CurrentDateTime implements Request {
 
     @Override
     public String execute() {
-        return null;
+        return timeKeeper.readTime() + "," + timeKeeper.readDate();
     }
 }

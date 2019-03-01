@@ -41,6 +41,12 @@ public class RequestParser implements RequestUtil {
      */
     private String partial;
 
+    /**
+     * Creates a new RequestParser
+     * @param bookDB The system's database of Books
+     * @param visitorDB The system's database of visitors
+     * @param checkoutDB The system's database of transactions (checkout, purchase, return)
+     */
     public RequestParser(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
@@ -48,11 +54,21 @@ public class RequestParser implements RequestUtil {
         partial = "";
     }
 
+    /**
+     * Processes a given request and returns the result of the command.
+     * @param request A string containing the request (partial or complete)
+     * @return the result of the command which was executed.
+     */
     public String processRequest(String request) {
         Request command = determineRequest(request);
         return command.execute();
     }
 
+    /**
+     * Determines if a request is unfinished or not.
+     * @param request The request to be parsed.
+     * @return a partial request, or a call to create the request depending on whether the request was complete.
+     */
     public Request determineRequest(String request) {
         // Check if partial request first
         if (!request.endsWith(TERMINATOR) || !partial.isEmpty()) {
@@ -70,6 +86,11 @@ public class RequestParser implements RequestUtil {
         }
     }
 
+    /**
+     * Splits the request into the command and its parameters, and calls createRequest with the parts.
+     * @param request the request to be split.
+     * @return a new request based on the command and parameters given.
+     */
     private Request helpCreateRequest(String request) {
         // Break request into a command and its parameters
         String[] parts = request.split(DELIMITER, 2);
@@ -122,10 +143,10 @@ public class RequestParser implements RequestUtil {
                 request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(timeKeeper, params);
+                request = new AdvanceTime(params);
                 break;
             case DATE_TIME_REQUEST:
-                request = new CurrentDateTime(timeKeeper, params);
+                request = new CurrentDateTime();
                 break;
             case REPORT_REQUEST:
                 request = new LibraryStatisticsReport(reporter, params);

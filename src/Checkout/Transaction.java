@@ -101,4 +101,12 @@ public class Transaction {
         }
     }
 
+    /**
+     * Returns the isbn of the book associated with this Transaction
+     * @return the isbn of the book associated with this Transaction
+     */
+    public String getIsbn() {
+        return this.isbn;
+    }
+
 }
