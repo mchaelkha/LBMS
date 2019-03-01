@@ -26,7 +26,6 @@ public abstract class BookData {
      */
     private Comparator<BookInfo> byTitle;
     private Comparator<BookInfo> byPublishDate;
-    private Comparator<BookInfo> byCopies;
 
     /**
      * Create a new book data structure that can be used to search for books.
@@ -35,7 +34,6 @@ public abstract class BookData {
         books = new HashMap<>();
         byTitle = new TitleComparator();
         byPublishDate = new PublishDateComparator();
-        byCopies = new CopiesComparator();
     }
 
     /**
@@ -68,7 +66,6 @@ public abstract class BookData {
                 hits.sort(byPublishDate);
                 break;
             case "book-status":
-                hits.sort(byCopies);
                 hits = hits.stream().filter(BookInfo::hasCopiesAvailable)
                         .collect(Collectors.toList());
                 break;
