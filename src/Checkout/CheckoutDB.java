@@ -50,7 +50,7 @@ public class CheckoutDB {
      */
     public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
         Transaction transaction = new Transaction(checkoutDate, isbn);
-        if(visitorDB.checkoutBook(visitorID)) {
+        if(visitorDB.checkoutBook(visitorID, transaction)) {
             if(!this.openLoans.containsKey(visitorID)) {
                 this.openLoans.put(visitorID, new ArrayList<Transaction>());
             }
@@ -107,7 +107,7 @@ public class CheckoutDB {
     /**
      * Return to the Library a given book that the given visitor has checked out by isbn.
      * Returns the completed Transaction if successful.
-     * @param returnDate the date and time of the transaction 
+     * @param returnDate the date and time of the transaction
      * @param visitorID The visitor ID to return books for
      * @param isbn the isbn of the book the visitor has checked out.
      * @return the completed Transaction if successful, null otherwise.
@@ -118,7 +118,7 @@ public class CheckoutDB {
                 if(t.getIsbn().equals(isbn)) {
                     t.returnBook(returnDate);
                     this.openLoans.get(visitorID).remove(t);
-                    
+
                     if(!this.closedLoans.containsKey(visitorID)) {
                         this.closedLoans.put(visitorID, new ArrayList<Transaction>());
                     }
@@ -127,7 +127,7 @@ public class CheckoutDB {
                     return t;
                 }
             }
-        } 
+        }
         return null;
     }
 

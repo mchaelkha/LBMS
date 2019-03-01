@@ -25,6 +25,11 @@ public class Transaction {
     public static int MAX_CHECKOUT_PERIOD = 7;
 
     /**
+     * Max number of transactions for a visitor
+     */
+    public static int MAX_NUMBER_OF_TRANSACTIONS = 5;
+
+    /**
      * The date that the checkout occurred
      */
     public LocalDateTime checkoutDate;
@@ -88,7 +93,7 @@ public class Transaction {
      * Calculate the fine amount from this transaction. This
      * is determined by the number of late days.
      */
-    private void setFine() {
+    public void setFine() {
         if(returnDate.isBefore(dueDate)) {
             this.fineAmount = 0;
         } else {

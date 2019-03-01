@@ -25,7 +25,7 @@ public class LibrarySystem {
 
     /**
      * Returns the given book for the given visitor.
-     * @param visistorID the visitor returning the book
+     * @param visitorID the visitor returning the book
      * @param isbn the book to be returned by the visitor
      * @return a formatted string regarding the success
      */
@@ -40,4 +40,6 @@ public class LibrarySystem {
     public void moveDate(int days){
 
     }
+
+    //TODO Implement Closed state of LibrarySystem -> LUIS
 }
