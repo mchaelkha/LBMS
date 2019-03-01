@@ -30,7 +30,7 @@ public class LibrarySystem {
      * @return a formatted string regarding the success
      */
     public String checkoutBook(String visitorID, String isbn) {
-        return currentLibraryState.checkoutBook(visitorID, isbn);
+        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn);
     }
 
     /**

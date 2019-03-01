@@ -1,7 +1,10 @@
 package Library;
 
+import java.time.LocalDateTime;
+
 /**
  * The state of the Library when it is open. Checkouts and visits are allowed.
+ * 
  * @author Hersh Nagpal
  */
 class LibraryOpen implements LibraryState {
@@ -12,7 +15,8 @@ class LibraryOpen implements LibraryState {
      * @param isbn the isbn of the book to check out
      */
     @Override
-    public String checkoutBook(String visitorID, String isbn) {
+    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
+
         return null;
     }
 
