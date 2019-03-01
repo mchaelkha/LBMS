@@ -172,5 +172,11 @@ public class TimeKeeper {
         clock = clock.plusDays(days);
     }
 
-    
+    /**
+     * Moves the time forward by some number of hours.
+     * @param hours the number of hours to add.
+     */
+    public void addHours(int hours){
+        clock = clock.plusHours(hours);
+    }
 }

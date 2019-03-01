@@ -13,7 +13,7 @@ public class AdvanceTime implements Request {
     private String params;
 
     public AdvanceTime(TimeKeeper timeKeeper, String params) {
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = timeKeeper.getInstance();
         this.params = params;
     }
 
@@ -24,6 +24,9 @@ public class AdvanceTime implements Request {
 
     @Override
     public String execute() {
-        return null;
+        String[] arr = params.split(",");
+        timeKeeper.addDays(Integer.parseInt(arr[1]));
+        timeKeeper.addHours(Integer.parseInt(arr[2]));
+        return "success";
     }
 }
