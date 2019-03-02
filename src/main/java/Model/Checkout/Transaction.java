@@ -23,12 +23,7 @@ public class Transaction {
      * The maximum amount of days that a book can be checked out for.
      */
     private static int MAX_CHECKOUT_PERIOD = 7;
-
-    /**
-     * Max number of transactions for a visitor
-     */
-    private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
-
+    
     /**
      * The date that the checkout occurred
      */

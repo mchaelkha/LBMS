@@ -38,6 +38,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
+     * Max number of transactions for a visitor
+     */
+    private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
+
+    /**
      * Updated when Visitor begins a visit. Used to calculate visit duration
      */
     private LocalDateTime startVisitDayTime;
@@ -165,7 +170,7 @@ public class VisitorDB implements RequestUtil, Serializable{
                 }
             }
             //Check if visitor has already borrowed the max number of books
-            if(visitor.getNumberOfTransactions()>Transaction.MAX_NUMBER_OF_TRANSACTIONS){
+            if(visitor.getNumberOfTransactions()>MAX_NUMBER_OF_TRANSACTIONS){
                 //Response = borrow,book-limit-exceeded
                 return false;
             }
