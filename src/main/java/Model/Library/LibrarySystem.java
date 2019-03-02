@@ -43,8 +43,8 @@ public class LibrarySystem {
      * @param isbn the book to be returned by the visitor
      * @return a formatted string regarding the success of the command
      */
-    public String checkoutBook(String visitorID, String isbn, CheckoutDB checkoutDB) {
-        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn, checkoutDB);
+    public String checkoutBook(String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn, checkoutDB, visitorDB);
     }
 
     /**

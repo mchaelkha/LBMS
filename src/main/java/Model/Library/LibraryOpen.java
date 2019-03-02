@@ -2,6 +2,7 @@ package main.java.Model.Library;
 
 import main.java.Controller.Request.RequestUtil;
 import main.java.Model.Checkout.CheckoutDB;
+import main.java.Model.Checkout.Transaction;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
@@ -41,7 +42,10 @@ class LibraryOpen implements LibraryState,RequestUtil {
             return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID;
         }
         else{
-            return null;
+            //call checkout() in CheckoutDB
+            Transaction transaction = checkoutDB.checkout(checkoutDate, visitorID, isbn);
+            String dueDate = transaction.getDueDate();
+            return BORROW_REQUEST+DELIMITER+dueDate;
         }
     }
 
