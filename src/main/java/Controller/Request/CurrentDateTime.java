@@ -14,11 +14,6 @@ public class CurrentDateTime implements Request {
     private TimeKeeper timeKeeper;
 
     /**
-     * The parameters for this command.
-     */
-    private String params;
-
-    /**
      * Creates a new CurrentDateTime command.
      */
     public CurrentDateTime() {
