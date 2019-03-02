@@ -27,7 +27,7 @@ class LibraryOpen implements LibraryState {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String startVisit(String visitorID) {
+    public String beginVisit(String visitorID) {
         //TODO
         return null;
     }

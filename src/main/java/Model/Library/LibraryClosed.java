@@ -29,7 +29,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String startVisit(String visitorID) {
+    public String beginVisit(String visitorID) {
         return ARRIVE_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 }

@@ -21,5 +21,5 @@ public interface LibraryState {
      * @param visitorID the visitor whose visit to start
      * @return a formatted string regarding the success of the operation.
      */
-    String startVisit(String visitorID);
+    String beginVisit(String visitorID);
 }

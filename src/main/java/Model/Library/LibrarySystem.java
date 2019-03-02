@@ -2,16 +2,28 @@ package main.java.Model.Library;
 import java.util.Map;
 
 /**
- * The LibrarySystem acts as a reciever of commands and delegates 
+ * The LibrarySystem acts as a receiver of commands and delegates
  * almost all functionality to other Database and helper classes.
  * @author Hersh Nagpal
  */
 public class LibrarySystem {
     private static int OPEN_HOUR = 9;
     private static int CLOSE_HOUR = 12+9;
+
+    /**
+     * Collection of library states used during state transitions.
+     */
     private Map<String,LibraryState> states;
+
+    /**
+     * Represents the current state of the library (closed or open).
+     */
     public LibraryState currentLibraryState;
 
+    /**
+     * Object used to update library time and to notify library when
+     * to close and open (Library state transition)
+     */
     private TimeKeeper timeKeeper;
 
     /**
@@ -23,13 +35,22 @@ public class LibrarySystem {
     }
 
     /**
-     * Returns the given book for the given visitor.
+     * Delegates checkoutBook visitor command to library concrete state.
      * @param visitorID the visitor returning the book
      * @param isbn the book to be returned by the visitor
-     * @return a formatted string regarding the success
+     * @return a formatted string regarding the success of the command
      */
     public String checkoutBook(String visitorID, String isbn) {
         return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn);
+    }
+
+    /**
+     * Delegates beginVisit visitor command to library concrete state
+     * @param visitorID the visitor returning the book
+     * @return the book to be returned by the visitor
+     */
+    public String beginVisit(String visitorID){
+        return currentLibraryState.beginVisit(visitorID);
     }
 
     /**
@@ -37,7 +58,7 @@ public class LibrarySystem {
      * @param days The number of days to move forward.
      */
     public void moveDate(int days){
-
+        //delegate this command to timeKeeper object
     }
 
     /**
@@ -47,5 +68,4 @@ public class LibrarySystem {
         //call clearVisitors() in VisitorDB
     }
 
-    //TODO Implement Closed state of LibrarySystem -> LUIS
 }

@@ -58,6 +58,7 @@ public class BeginVisit implements Request {
             return check;
         }
         // TODO: implement by calling right methods in DB
+        //Call beginVisit method in librarySystem first
         return null;
     }
 }
