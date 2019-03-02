@@ -1,6 +1,7 @@
 package main.java.Model.Library;
 
 import main.java.Controller.Request.RequestUtil;
+import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +30,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID) {
+    public String beginVisit(String visitorID, VisitorDB visitorDB) {
         return ARRIVE_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 }
