@@ -92,7 +92,7 @@ public class LBServer {
         while (scanner.hasNextLine()) {
             next = scanner.nextLine();
             // Check for special commands
-            if (next.matches("^" + SHUTDOWN)) {
+            if (next.matches("^" + SHUTDOWN + "\\s[\\w].*")) {
                 parts = next.split(" ");
                 shutdown(parts[1]);
                 break;
