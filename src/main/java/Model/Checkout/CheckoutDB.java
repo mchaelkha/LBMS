@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * The database that manages all information about checkout and return 
+ * transactions and fines performed by visitors to the library.
+ * @author Hersh Nagpal
  */
 public class CheckoutDB implements Serializable {
 
