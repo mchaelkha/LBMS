@@ -1,5 +1,6 @@
 package main.java.Model.Library;
 
+import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
@@ -18,8 +19,11 @@ class LibraryOpen implements LibraryState {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
+    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB) {
         //Call checkoutBook in CheckoutDB
+        //checkout was not successful
+        //Make methods returning booleans for each check in VisitorDB
+        //If all are true call checkoutDB
         return null;
     }
 

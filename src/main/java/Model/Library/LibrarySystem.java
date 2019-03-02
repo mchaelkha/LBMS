@@ -1,4 +1,5 @@
 package main.java.Model.Library;
+import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.util.Map;
@@ -42,8 +43,8 @@ public class LibrarySystem {
      * @param isbn the book to be returned by the visitor
      * @return a formatted string regarding the success of the command
      */
-    public String checkoutBook(String visitorID, String isbn) {
-        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn);
+    public String checkoutBook(String visitorID, String isbn, CheckoutDB checkoutDB) {
+        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn, checkoutDB);
     }
 
     /**

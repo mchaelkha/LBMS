@@ -1,5 +1,6 @@
 package main.java.Model.Library;
 
+import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public interface LibraryState {
      * @param visitorID the ID of the visitor checking out the books
      * @param isbn the isbn of the book to check out
      */
-    String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn);
+    String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkOutDB);
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.

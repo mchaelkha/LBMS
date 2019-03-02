@@ -1,6 +1,7 @@
 package main.java.Controller.Request;
 
 import main.java.Model.Checkout.CheckoutDB;
+import main.java.Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,10 @@ public class BorrowBook implements Request {
      * The checkout database of the library
      */
     private CheckoutDB checkoutDB;
+    /**
+     * The librarySystem. Used to check library closed or open state.
+     */
+    private LibrarySystem librarySystem;
     /**
      * Params in the command
      */
@@ -70,7 +75,12 @@ public class BorrowBook implements Request {
             return check;
         }
         // TODO: implement by calling right methods in DB
-        //Call borrowBook
+        //Call checkoutBook() in Library System -> checkoutBook() in CheckoutDB
+        // -> checkoutBook() in VisitorDB
+        /*for (String bookID : bookIDs) {
+            librarySystem.checkoutBook(visitorID,bookID);
+        }*/
+        //return librarySystem.checkoutBook(visitorID,)
         return null;
     }
 }

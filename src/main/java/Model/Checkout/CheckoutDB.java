@@ -26,21 +26,11 @@ public class CheckoutDB implements Serializable {
      * The closed transaction loans of each visitor
      */
     private Map<String, List<Transaction>> closedLoans;
-    /**
-     * The visitor database
-     */
-    private VisitorDB visitorDB;
-    /**
-     * The book database
-     */
-    private BookDB bookDB;
 
     /**
      * Create a new checkout database that is empty
      */
     public CheckoutDB(VisitorDB visitorDB, BookDB bookDB) {
-        this.visitorDB = visitorDB;
-        this.bookDB = bookDB;
         openLoans = new HashMap<>();
         closedLoans = new HashMap<>();
     }
@@ -54,15 +44,11 @@ public class CheckoutDB implements Serializable {
      */
     public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
         Transaction transaction = new Transaction(checkoutDate, isbn);
-        if(visitorDB.checkoutBook(visitorID, transaction)) {
-            if(!this.openLoans.containsKey(visitorID)) {
-                this.openLoans.put(visitorID, new ArrayList<Transaction>());
-            }
-            this.openLoans.get(visitorID).add(transaction);
-            return transaction;
-        } else {
-            return null;
+        if(!this.openLoans.containsKey(visitorID)) {
+            this.openLoans.put(visitorID, new ArrayList<Transaction>());
         }
+        this.openLoans.get(visitorID).add(transaction);
+        return transaction;
     }
 
     /**

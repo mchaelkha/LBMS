@@ -151,6 +151,28 @@ public class VisitorDB implements RequestUtil, Serializable{
         currentVisitors.clear();
     }
 
+    public boolean hasOutstandingFine(String visitorID, Transaction transaction) {
+        VisitorInfo visitor = currentVisitors.get(visitorID);
+        //Update fines in visitor's transactions and check for outstanding fines
+        boolean hasOutstandingFine = false;
+        for (Transaction nextTransaction : visitor.getTransactionList()) {
+            nextTransaction.setFine();
+            if(nextTransaction.getFineAmount()>0){
+                hasOutstandingFine = true;
+            }
+        }
+        return hasOutstandingFine;
+    }
+
+    /**
+     * Check if there is a current visitor with visitorID
+     * @param visitorID Visitor's ID
+     * @return true if visitor is a current visitor
+     */
+    public boolean validCurrentVisitor(String visitorID) {
+        return currentVisitors.containsKey(visitorID);
+    }
+
     /**
      * Finds a visitor, determines whether or not they can
      * checkout a book, and then add a book if they can.
