@@ -3,6 +3,7 @@ package Model.Checkout;
 import Model.Book.BookDB;
 import Model.Visitor.VisitorDB;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  *
  */
-public class CheckoutDB {
+public class CheckoutDB implements Serializable {
 
     /**
      * The open transaction loans of each visitor

@@ -167,7 +167,7 @@ public class LBServer {
                     System.err.println(USAGE);
                     System.exit(1);
                 }
-                server = restore(PATH + args[1]);
+                server = restore(args[1]);
                 break;
             default:
                 System.err.println(USAGE);
