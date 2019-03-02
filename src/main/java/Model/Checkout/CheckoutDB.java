@@ -72,13 +72,13 @@ public class CheckoutDB implements Serializable {
         int fines = 0;
         if(this.openLoans.containsKey(visitorID)) {
             for (Transaction t : this.openLoans.get(visitorID)) {
-                fines += t.fineAmount;
+                fines += t.getFineAmount();
             }
         }
 
         if(this.closedLoans.containsKey(visitorID)) {
             for (Transaction t : this.closedLoans.get(visitorID)) {
-                fines += t.fineAmount;
+                fines += t.getFineAmount();
             }
         }
 
@@ -93,13 +93,13 @@ public class CheckoutDB implements Serializable {
         int fines = 0;
         for (List<Transaction> transactionList : openLoans.values()) {
             for (Transaction t : transactionList) {
-                fines += t.fineAmount;
+                fines += t.getFineAmount();
             }
         }
 
         for (List<Transaction> transactionList : closedLoans.values()) {
             for (Transaction t : transactionList) {
-                fines += t.fineAmount;
+                fines += t.getFineAmount();
             }
         }
 

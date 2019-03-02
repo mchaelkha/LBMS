@@ -12,43 +12,43 @@ public class Transaction {
     /**
      * The base fine
      */
-    public static int BASE_FINE = 8;
+    private static int BASE_FINE = 8;
 
     /**
      * The amount the fine increases with each day past the due date
      */
-    public static int FINE_DAILY_INCREMENT = 2;
+    private static int FINE_DAILY_INCREMENT = 2;
 
     /**
      * The maximum amount of days that a book can be checked out for.
      */
-    public static int MAX_CHECKOUT_PERIOD = 7;
+    private static int MAX_CHECKOUT_PERIOD = 7;
 
     /**
      * Max number of transactions for a visitor
      */
-    public static int MAX_NUMBER_OF_TRANSACTIONS = 5;
+    private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
 
     /**
      * The date that the checkout occurred
      */
-    public LocalDateTime checkoutDate;
+    private LocalDateTime checkoutDate;
     /**
      * The date that the book is due
      */
-    public LocalDateTime dueDate;
+    private LocalDateTime dueDate;
     /**
      * The date that the book is returned
      */
-    public LocalDateTime returnDate;
+    private LocalDateTime returnDate;
     /**
      * The book's ISBN
      */
-    public String isbn;
+    private String isbn;
     /**
      * The fine amount of the transaction
      */
-    public int fineAmount;
+    private int fineAmount;
 
     /**
      * Create a new transaction given a checkout date and the book.
@@ -108,5 +108,7 @@ public class Transaction {
     public String getIsbn() {
         return this.isbn;
     }
+
+    
 
 }
