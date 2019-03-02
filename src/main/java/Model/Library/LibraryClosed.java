@@ -1,6 +1,7 @@
 package main.java.Model.Library;
 
 import main.java.Controller.Request.RequestUtil;
+import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
+    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB) {
         return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 

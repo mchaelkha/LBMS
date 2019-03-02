@@ -151,7 +151,12 @@ public class VisitorDB implements RequestUtil, Serializable{
         currentVisitors.clear();
     }
 
-    public boolean hasOutstandingFine(String visitorID, Transaction transaction) {
+    /**
+     * Check if visitor has an outstanding fine.
+     * @param visitorID Visitor's ID
+     * @return true if visitor has an outstanding fine, false otherwise
+     */
+    public boolean hasOutstandingFine(String visitorID) {
         VisitorInfo visitor = currentVisitors.get(visitorID);
         //Update fines in visitor's transactions and check for outstanding fines
         boolean hasOutstandingFine = false;
@@ -174,6 +179,16 @@ public class VisitorDB implements RequestUtil, Serializable{
     }
 
     /**
+     * Check if visitor has already borrowed the max number of books
+     * @param visitorID Visitor's ID
+     * @return true if visitor has max number of transactions
+     */
+    public boolean hasBookLimit(String visitorID) {
+        VisitorInfo visitor = currentVisitors.get(visitorID);
+        return visitor.getNumberOfTransactions()==MAX_NUMBER_OF_TRANSACTIONS;
+    }
+
+    /**
      * Finds a visitor, determines whether or not they can
      * checkout a book, and then add a book if they can.
      */
@@ -192,7 +207,7 @@ public class VisitorDB implements RequestUtil, Serializable{
                 }
             }
             //Check if visitor has already borrowed the max number of books
-            if(visitor.getNumberOfTransactions()>MAX_NUMBER_OF_TRANSACTIONS){
+            if(visitor.getNumberOfTransactions()==MAX_NUMBER_OF_TRANSACTIONS){
                 //Response = borrow,book-limit-exceeded
                 return false;
             }
