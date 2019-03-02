@@ -60,14 +60,14 @@ public class Bookstore extends BookData implements Serializable {
         List<String> authors = new ArrayList<>(
                 Arrays.asList(firstSplit[1].split(",")));
         // Split isbn and title
-        String[] isbnTitle = firstSplit[0].split(",");
+        String[] isbnTitle = firstSplit[0].split(",(?!\\s)");
         isbn = isbnTitle[0];
         title = isbnTitle[1];
         // Split publisher, publish date, page count
-        String[] publishing = firstSplit[2].split(",");
-        publisher = publishing[0];
-        publishDate = publishing[1];
-        pageCount = Integer.parseInt(publishing[2]);
+        String[] publishing = firstSplit[2].split(",(?!\\s)");
+        publisher = publishing[1];
+        publishDate = publishing[2];
+        pageCount = Integer.parseInt(publishing[3]);
         // Create book info
         return new BookInfo(isbn, title, authors, publisher,
                 publishDate, pageCount);
