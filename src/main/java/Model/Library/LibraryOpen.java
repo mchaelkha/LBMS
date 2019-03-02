@@ -1,5 +1,7 @@
 package main.java.Model.Library;
 
+import main.java.Model.Visitor.VisitorDB;
+
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +19,7 @@ class LibraryOpen implements LibraryState {
      */
     @Override
     public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
-        //TODO
+        //Call checkoutBook in CheckoutDB
         return null;
     }
 
@@ -27,9 +29,8 @@ class LibraryOpen implements LibraryState {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID) {
-        //TODO
-        return null;
+    public String beginVisit(String visitorID, VisitorDB visitorDB) {
+        return visitorDB.beginVisit(visitorID);
     }
 
 } 

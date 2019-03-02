@@ -3,6 +3,7 @@ package main.java.Controller;
 import main.java.Controller.Request.*;
 import main.java.Model.Book.BookDB;
 import main.java.Model.Checkout.CheckoutDB;
+import main.java.Model.Library.LibrarySystem;
 import main.java.Model.Library.ReportGenerator;
 import main.java.Model.Library.TimeKeeper;
 import main.java.Model.Visitor.VisitorDB;
@@ -15,6 +16,10 @@ import main.java.Model.Visitor.VisitorDB;
  * @author Michael Kha
  */
 public class RequestParser implements RequestUtil {
+    /**
+     * Library system to keep track of library state
+     */
+    private LibrarySystem librarySystem;
     /**
      * Database to keep track of books
      */
@@ -118,7 +123,7 @@ public class RequestParser implements RequestUtil {
                 request = new RegisterVisitor(visitorDB, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(visitorDB, params);
+                request = new BeginVisit(librarySystem, params);
                 break;
             case DEPART_REQUEST:
                 request = new EndVisit(visitorDB, params);

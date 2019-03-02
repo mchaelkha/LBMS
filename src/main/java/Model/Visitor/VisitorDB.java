@@ -85,7 +85,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Start a visit given the visitor id.
      * @param visitorID The visitor id to log a visit with
      */
-    public String startVisit(String visitorID) {
+    public String beginVisit(String visitorID) {
         //Check if visitor with id already exists in currentVisitors
         if (currentVisitors.containsKey(visitorID)) {
             //Response = "arrive,duplicate";
@@ -151,7 +151,6 @@ public class VisitorDB implements RequestUtil, Serializable{
      * checkout a book, and then add a book if they can.
      */
     public boolean checkoutBook(String visitorID, Transaction transaction) {
-
         //Check if there is a current visitor with visitorID
         if (!currentVisitors.containsKey(visitorID)) {
             return false;
