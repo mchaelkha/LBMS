@@ -1,11 +1,11 @@
-package Controller;
+package main.java.Controller;
 
-import Model.Library.ReportGenerator;
-import Model.Library.TimeKeeper;
-import Controller.Request.*;
-import Model.Book.BookDB;
-import Model.Checkout.CheckoutDB;
-import Model.Visitor.VisitorDB;
+import main.java.Controller.Request.*;
+import main.java.Model.Book.BookDB;
+import main.java.Model.Checkout.CheckoutDB;
+import main.java.Model.Library.ReportGenerator;
+import main.java.Model.Library.TimeKeeper;
+import main.java.Model.Visitor.VisitorDB;
 
 /**
  * Work in progress

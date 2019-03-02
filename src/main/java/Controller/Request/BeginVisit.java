@@ -1,6 +1,6 @@
-package Controller.Request;
+package main.java.Controller.Request;
 
-import Model.Visitor.VisitorDB;
+import main.java.Model.Visitor.VisitorDB;
 
 /**
  * Begin visit request to start a visit for a visitor.

@@ -1,6 +1,6 @@
-package Controller.Request;
+package main.java.Controller.Request;
 
-import Model.Library.TimeKeeper;
+import main.java.Model.Library.TimeKeeper;
 
 /**
  * Gives the system's current date and time.

@@ -1,4 +1,4 @@
-package Controller.Request;
+package main.java.Controller.Request;
 
 /**
  * Partial request to represent any request that is non-terminated.

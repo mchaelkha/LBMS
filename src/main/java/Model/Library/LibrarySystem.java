@@ -1,4 +1,4 @@
-package Model.Library;
+package main.java.Model.Library;
 import java.util.Map;
 
 /**

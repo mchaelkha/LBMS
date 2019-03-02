@@ -1,8 +1,8 @@
-package Model.Visitor;
+package main.java.Model.Visitor;
 
-import Model.Checkout.Transaction;
-import Model.Library.TimeKeeper;
-import Controller.Request.RequestUtil;
+import main.java.Controller.Request.RequestUtil;
+import main.java.Model.Checkout.Transaction;
+import main.java.Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -154,8 +154,6 @@ public class VisitorDB implements RequestUtil, Serializable{
 
         //Check if there is a current visitor with visitorID
         if (!currentVisitors.containsKey(visitorID)) {
-            //return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID;
-            //TODO where do we return the Error response for invalid visitor ID for Borrow request
             return false;
         } else {
             VisitorInfo visitor = currentVisitors.get(visitorID);

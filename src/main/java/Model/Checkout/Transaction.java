@@ -1,4 +1,4 @@
-package Model.Checkout;
+package main.java.Model.Checkout;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

@@ -1,6 +1,6 @@
-package Model.Library;
+package main.java.Model.Library;
 
-import Controller.Request.RequestUtil;
+import main.java.Controller.Request.RequestUtil;
 
 import java.time.LocalDateTime;
 

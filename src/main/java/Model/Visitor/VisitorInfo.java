@@ -1,6 +1,6 @@
-package Model.Visitor;
+package main.java.Model.Visitor;
 
-import Model.Checkout.Transaction;
+import main.java.Model.Checkout.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,6 @@ import java.util.Map;
  * Represents a registered visitor in the Library System
  */
 public class VisitorInfo {
-
-    /**
-     * Current Visitor state
-     */
-    VisitorState visitorState;
-
-    /**
-     * Collection of Visitor States for transitions
-     */
-    Map<String,VisitorState> visitorStates;
 
     /**
      * Visitor's first name
@@ -58,7 +48,7 @@ public class VisitorInfo {
     /**
      * Checkout transactions
      */
-    private List<Transaction> transactionList = new ArrayList<>();
+    private List<Transaction> transactionList;
 
     /**
      * Create visitor info given a line of info.
@@ -71,28 +61,7 @@ public class VisitorInfo {
         lastName = visitorInformation[1];
         address = visitorInformation[2];
         phoneNumber = visitorInformation[3];
-
-        visitorStates.put("InLibrary", new InLibrary());
-        visitorStates.put("NotInLibrary", new NotInLibrary());
-
-        //Default state when visitor first registers
-        visitorState = visitorStates.get("NotInLibrary");
-    }
-
-    /**
-     * Record a visit given a date.
-     * @param date The date at the start of the visit
-     */
-    public void startVisit(String date) {
-
-    }
-
-    /**
-     * End the last visit given a date.
-     * @param date The date at the end of the visit
-     */
-    public void endVisit(String date) {
-
+        transactionList = new ArrayList<>();
     }
 
     /**
@@ -135,12 +104,12 @@ public class VisitorInfo {
         transactionList.add(transaction);
     }
 
-    public List<Transaction> getTransactionList(){
-        return transactionList;
+    public void removeTransaction(Transaction transaction) {
+        transactionList.remove(transaction);
     }
 
-    public void beginVisit(){
-        //visitorState.beginVisit();
+    public List<Transaction> getTransactionList(){
+        return transactionList;
     }
 
     /**

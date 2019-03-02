@@ -1,4 +1,4 @@
-package Model.Book;
+package main.java.Model.Book;
 
 import java.util.Comparator;
 

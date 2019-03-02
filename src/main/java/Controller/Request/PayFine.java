@@ -1,6 +1,6 @@
-package Controller.Request;
+package main.java.Controller.Request;
 
-import Model.Checkout.CheckoutDB;
+import main.java.Model.Checkout.CheckoutDB;
 
 public class PayFine implements Request {
 

@@ -1,7 +1,8 @@
-package Model.Checkout;
+package main.java.Model.Checkout;
 
-import Model.Book.BookDB;
-import Model.Visitor.VisitorDB;
+import main.java.Model.Book.BookDB;
+import main.java.Model.Visitor.VisitorDB;
+import main.java.Model.Checkout.Transaction;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

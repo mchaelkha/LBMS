@@ -1,8 +1,8 @@
-package Model.Library;
+package main.java.Model.Library;
 
-import Model.Book.BookDB;
-import Model.Checkout.CheckoutDB;
-import Model.Visitor.VisitorDB;
+import main.java.Model.Book.BookDB;
+import main.java.Model.Checkout.CheckoutDB;
+import main.java.Model.Visitor.VisitorDB;
 
 /**
  *
