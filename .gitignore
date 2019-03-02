@@ -25,3 +25,6 @@
 # Ignore these directories
 .idea/
 out/
+
+# Do not ignore
+!pom.xml
