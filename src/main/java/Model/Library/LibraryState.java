@@ -1,5 +1,7 @@
 package main.java.Model.Library;
 
+import main.java.Model.Visitor.VisitorDB;
+
 import java.time.LocalDateTime;
 
 /**
@@ -21,5 +23,5 @@ public interface LibraryState {
      * @param visitorID the visitor whose visit to start
      * @return a formatted string regarding the success of the operation.
      */
-    String beginVisit(String visitorID);
+    String beginVisit(String visitorID, VisitorDB visitorDB);
 }

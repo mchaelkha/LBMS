@@ -1,4 +1,6 @@
 package main.java.Model.Library;
+import main.java.Model.Visitor.VisitorDB;
+
 import java.util.Map;
 
 /**
@@ -49,8 +51,8 @@ public class LibrarySystem {
      * @param visitorID the visitor returning the book
      * @return the book to be returned by the visitor
      */
-    public String beginVisit(String visitorID){
-        return currentLibraryState.beginVisit(visitorID);
+    public String beginVisit(String visitorID, VisitorDB visitorDB){
+        return currentLibraryState.beginVisit(visitorID, visitorDB);
     }
 
     /**

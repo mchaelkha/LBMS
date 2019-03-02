@@ -1,5 +1,6 @@
 package main.java.Controller.Request;
 
+import main.java.Model.Library.LibrarySystem;
 import main.java.Model.Visitor.VisitorDB;
 
 /**
@@ -14,6 +15,10 @@ public class BeginVisit implements Request {
      */
     private VisitorDB visitorDB;
     /**
+     * The librarySystem. Used to check library closed or open state.
+     */
+    private LibrarySystem librarySystem;
+    /**
      * Params in the command
      */
     private String params;
@@ -25,11 +30,11 @@ public class BeginVisit implements Request {
     /**
      * Create a new begin visit request given the visitor database
      * and the parameters for the request.
-     * @param visitorDB The visitor database
+     * @param librarySystem The library system
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(VisitorDB visitorDB, String params) {
-        this.visitorDB = visitorDB;
+    public BeginVisit(LibrarySystem librarySystem, String params) {
+        this.librarySystem = librarySystem;
         this.params = params;
     }
 
@@ -59,6 +64,6 @@ public class BeginVisit implements Request {
         }
         // TODO: implement by calling right methods in DB
         //Call beginVisit method in librarySystem first
-        return null;
+        return librarySystem.beginVisit(visitorID, visitorDB);
     }
 }
