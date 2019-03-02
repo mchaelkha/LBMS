@@ -1,5 +1,7 @@
 package Library;
 
+import Request.RequestUtil;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,16 +9,27 @@ import java.time.LocalDateTime;
  *
  * @author Luis Gutierrez
  */
-public class LibraryClosed implements LibraryState {
+public class LibraryClosed implements LibraryState, RequestUtil {
 
 
+    /**
+     * Returns error string notifying visitor of closed library state.
+     * @param visitorID the ID of the visitor checking out the books
+     * @param isbn the isbn of the book to check out
+     * @param checkoutDate the current date of checkout
+     */
     @Override
     public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn) {
-        return null;
+        return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 
+    /**
+     * Returns error string notifying visitor of closed library state.
+     * @param visitorID the visitor whose visit to start
+     * @return a formatted string regarding the success of the operation.
+     */
     @Override
     public String startVisit(String visitorID) {
-        return null;
+        return ARRIVE_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 }

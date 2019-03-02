@@ -31,6 +31,7 @@ public interface RequestUtil {
     String INVALID_ID = "invalid-id";
     String INVALID_VISITOR_ID = "invalid-visitor-id";
     String SUCCESS = "success";
+    String CLOSED_LIBRARY = "closed-library";
     String NEW_LINE = System.lineSeparator();
 
 }
