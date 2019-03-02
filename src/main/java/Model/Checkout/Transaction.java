@@ -104,6 +104,10 @@ public class Transaction {
         return this.isbn;
     }
 
-    
+    public String getDueDate(){
+        return dueDate.getYear() + "/" + dueDate.getMonthValue() + "/" + dueDate.getDayOfMonth();
+    }
+
+
 
 }
