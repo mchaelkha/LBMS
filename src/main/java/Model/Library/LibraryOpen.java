@@ -1,5 +1,6 @@
 package main.java.Model.Library;
 
+import main.java.Controller.Request.RequestUtil;
 import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  * 
  * @author Hersh Nagpal
  */
-class LibraryOpen implements LibraryState {
+class LibraryOpen implements LibraryState,RequestUtil {
 
     /**
      * Returns the given book for the given visitor.
@@ -19,12 +20,29 @@ class LibraryOpen implements LibraryState {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB) {
+    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
         //Call checkoutBook in CheckoutDB
-        //checkout was not successful
+
         //Make methods returning booleans for each check in VisitorDB
         //If all are true call checkoutDB
-        return null;
+
+        //Check if visitor has outstanding fine
+        if (visitorDB.hasOutstandingFine(visitorID)) {
+            int fineAmount = checkoutDB.calculateFine(visitorID);
+            //return "borrow,outstanding-fine,amount"
+            return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount;
+        }
+        //Check if visitor has book limit
+        else if(visitorDB.hasBookLimit(visitorID)){
+            return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED;
+        }
+        //Check if visitorID is a valid id
+        else if(!visitorDB.validCurrentVisitor(visitorID)){
+            return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID;
+        }
+        else{
+            return null;
+        }
     }
 
     /**

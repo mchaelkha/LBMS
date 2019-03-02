@@ -17,7 +17,7 @@ public interface LibraryState {
      * @param visitorID the ID of the visitor checking out the books
      * @param isbn the isbn of the book to check out
      */
-    String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkOutDB);
+    String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkOutDB, VisitorDB visitorDB);
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.
