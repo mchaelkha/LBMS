@@ -50,6 +50,7 @@ public class TimeKeeper implements RequestUtil{
      * to ensure the time is updated every minute.
      */
     private TimeKeeper() {
+        timer = new Timer();
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
             @Override

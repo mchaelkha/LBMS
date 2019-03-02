@@ -94,23 +94,25 @@ public class RequestParser implements RequestUtil {
     private Request helpCreateRequest(String request) {
         // Break request into a command and its parameters
         String[] parts = request.split(DELIMITER, 2);
-        if (parts.length != 2) {
-            // TODO: throw exception
-        }
-        // Determine which request
-        return createRequest(parts[0], parts[1]);
+        return createRequest(parts);
     }
 
     /**
      * Creates, executes, and returns the request, given a command, and parameters.
-     * @param command The request to execute
-     * @param params The parameters for the command.
+     * @param parts The parts of the request, a command and possibly its parameters
      * @return The request that was executed.
      */
-    private Request createRequest(String command, String params) {
-        Request request = null;
-        // Remove terminating character
-        params = params.substring(0, params.length() - 1);
+    private Request createRequest(String[] parts) {
+        Request request;
+        String command = parts[0];
+        String params = "";
+        if (parts.length == 2) {
+            params = parts[1];
+            // Remove terminating character
+            params = params.substring(0, params.length() - 1);
+        } else {
+            command = command.substring(0, command.length() - 1);
+        }
         switch (command) {
             case REGISTER_REQUEST:
                 request = new RegisterVisitor(visitorDB, params);
