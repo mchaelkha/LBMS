@@ -40,6 +40,6 @@ public class CurrentDateTime implements Request {
      */
     @Override
     public String execute() {
-        return timeKeeper.readTime() + "," + timeKeeper.readDate();
+        return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }
 }
