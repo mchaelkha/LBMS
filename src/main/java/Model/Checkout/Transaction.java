@@ -23,7 +23,7 @@ public class Transaction {
      * The maximum amount of days that a book can be checked out for.
      */
     private static int MAX_CHECKOUT_PERIOD = 7;
-    
+
     /**
      * The date that the checkout occurred
      */
@@ -48,7 +48,7 @@ public class Transaction {
     /**
      * Create a new transaction given a checkout date and the book.
      * @param checkoutDate The checkout date
-     * @param book The book's ISBN
+     * @param isbn The book's ISBN
      */
     public Transaction(LocalDateTime checkoutDate, String isbn) {
         this.checkoutDate = checkoutDate;
