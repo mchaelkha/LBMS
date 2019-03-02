@@ -9,6 +9,11 @@ import Model.Library.TimeKeeper;
  */
 public class AdvanceTime implements Request {
     /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ADVANCE_REQUEST) + DELIMITER + "number-of-days[,number-of-hours]";
+    /**
      * Singleton timekeeper to keep time the same across the system.
      */
     private TimeKeeper timeKeeper;
@@ -16,6 +21,14 @@ public class AdvanceTime implements Request {
      * the parameters for the command.
      */
     private String params;
+    /**
+     * Days to add
+     */
+    private int days;
+    /**
+     * Hours to add
+     */
+    private int hours;
 
     /**
      * Creates a new AdvanceTime request with the given parameters.
@@ -32,7 +45,15 @@ public class AdvanceTime implements Request {
      */
     @Override
     public String checkParams() {
-        return "";
+        String[] parts = params.split(DELIMITER);
+        if (parts.length > 0) {
+            days = Integer.parseInt(parts[0]);
+            if (parts.length > 1) {
+                hours = Integer.parseInt(parts[1]);
+            }
+            return PROPER_PARAM;
+        }
+        return PARAM_MESSAGE;
     }
 
     /**
@@ -41,9 +62,12 @@ public class AdvanceTime implements Request {
      */
     @Override
     public String execute() {
-        String[] arr = params.split(",");
-        timeKeeper.addDays(Integer.parseInt(arr[1]));
-        timeKeeper.addHours(Integer.parseInt(arr[2]));
-        return "success";
+        String check = checkParams();
+        if (!check.equals(PROPER_PARAM)) {
+            return check;
+        }
+        timeKeeper.addDays(days);
+        timeKeeper.addHours(hours);
+        return ADVANCE_REQUEST + DELIMITER + SUCCESS;
     }
 }
