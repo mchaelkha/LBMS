@@ -184,6 +184,5 @@ public class VisitorDB implements RequestUtil, Serializable{
                 return true;
             }
         }
-
     }
 }

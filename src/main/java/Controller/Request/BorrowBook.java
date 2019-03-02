@@ -70,6 +70,7 @@ public class BorrowBook implements Request {
             return check;
         }
         // TODO: implement by calling right methods in DB
+        //Call borrowBook
         return null;
     }
 }
