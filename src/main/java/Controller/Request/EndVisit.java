@@ -9,7 +9,11 @@ import Model.Visitor.VisitorDB;
  * @author Michael Kha
  */
 public class EndVisit implements Request {
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "visitor ID";
     /**
      * The library system holding system databases
      */
@@ -35,7 +39,6 @@ public class EndVisit implements Request {
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */
@@ -46,7 +49,7 @@ public class EndVisit implements Request {
             visitorID = parts[0];
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**

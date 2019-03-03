@@ -8,7 +8,11 @@ import Model.Library.LibrarySystem;
  * @author Michael Kha
  */
 public class RegisterVisitor implements Request{
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "first name,last name,address,phone-number";
     /**
      * The library system holding system databases
      */
@@ -46,7 +50,6 @@ public class RegisterVisitor implements Request{
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */
@@ -60,7 +63,7 @@ public class RegisterVisitor implements Request{
             phoneNumber = parts[3];
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**
@@ -73,7 +76,6 @@ public class RegisterVisitor implements Request{
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-
         return librarySystem.registerVisitor(firstName,lastName,address,phoneNumber);
     }
 }

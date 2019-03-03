@@ -168,6 +168,7 @@ public class LibrarySystem implements RequestUtil{
 
         for(int i = 0; i < bookIDs.size(); i++){
             t = checkoutDB.returnBook(timeKeeper.getClock(), visitorID, bookIDs.get(i));
+            bookDB.returnCopy(bookIDs.get(i));
             if(t.getFineAmount() > 0){
                 totalFine = totalFine + t.getFineAmount();
                 overdue.add(bookIDs.get(i));
@@ -218,7 +219,6 @@ public class LibrarySystem implements RequestUtil{
     }
 
     /**
-     * TODO
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
      * @param hours The number of hours

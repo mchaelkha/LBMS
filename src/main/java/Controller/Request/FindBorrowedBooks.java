@@ -8,7 +8,11 @@ import Model.Library.LibrarySystem;
  * @author Michael Kha
  */
 public class FindBorrowedBooks implements Request {
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "visitor ID";
     /**
      * The library
      */
@@ -44,7 +48,7 @@ public class FindBorrowedBooks implements Request {
             visitorID = parts[0];
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**
