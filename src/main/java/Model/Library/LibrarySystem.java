@@ -39,8 +39,8 @@ public class LibrarySystem {
 
     /**
      * Delegates checkoutBook visitor command to library concrete state.
-     * @param visitorID the visitor returning the book
-     * @param isbn the book to be returned by the visitor
+     * @param visitorID the visitor borrowing a book
+     * @param isbn the book to be checked out
      * @return a formatted string regarding the success of the command
      */
     public String checkoutBook(String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
@@ -50,10 +50,21 @@ public class LibrarySystem {
     /**
      * Delegates beginVisit visitor command to library concrete state
      * @param visitorID the visitor returning the book
+     * @param visitorDB the visitor database to
      * @return the book to be returned by the visitor
      */
     public String beginVisit(String visitorID, VisitorDB visitorDB){
         return currentLibraryState.beginVisit(visitorID, visitorDB);
+    }
+
+    /**
+     * @param visitorID visitor
+     * @param visitorDB visitor database
+     * @param checkoutDB checkout database
+     * @return String whether returnBook command was successful
+     */
+    public String returnBook(String visitorID, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+        return null;
     }
 
     /**

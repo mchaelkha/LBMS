@@ -28,13 +28,13 @@ class LibraryOpen implements LibraryState,RequestUtil {
         //If all are true call checkoutDB
 
         //Check if visitor has outstanding fine
-        if (visitorDB.hasOutstandingFine(visitorID)) {
+        if (checkoutDB.hasOutstandingFine(visitorID)) {
             int fineAmount = checkoutDB.calculateFine(visitorID);
             //return "borrow,outstanding-fine,amount"
             return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount;
         }
         //Check if visitor has book limit
-        else if(visitorDB.hasBookLimit(visitorID)){
+        else if(checkoutDB.hasBookLimit(visitorID)){
             return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED;
         }
         //Check if visitorID is a valid id

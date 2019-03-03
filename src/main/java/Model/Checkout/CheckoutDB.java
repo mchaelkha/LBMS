@@ -26,6 +26,10 @@ public class CheckoutDB implements Serializable {
      * The closed transaction loans of each visitor
      */
     private Map<String, List<Transaction>> closedLoans;
+    /**
+     * The max number of transactions a visitor can haave.
+     */
+    private final static int MAX_NUM_OF_TRANSACTIONS = 5;
 
     /**
      * Create a new checkout database that is empty
@@ -49,6 +53,29 @@ public class CheckoutDB implements Serializable {
         }
         this.openLoans.get(visitorID).add(transaction);
         return transaction;
+    }
+
+    /**
+     * Check if visitor has an outstanding fine.
+     * @param visitorID Visitor's ID
+     * @return true if visitor has an outstanding fine, false otherwise
+     */
+    public boolean hasOutstandingFine(String visitorID) {
+        //Update fines in visitor's transactions and check for outstanding fines
+        boolean hasOutstandingFine = false;
+        //Iterate through visitor's transactions and check if there is an outstanding fine
+        for (Transaction transaction : openLoans.get(visitorID)) {
+            transaction.setFine();
+            if(transaction.getFineAmount()>0){
+                hasOutstandingFine = true;
+            }
+        }
+        return hasOutstandingFine;
+    }
+
+
+    public boolean hasBookLimit(String visitorID) {
+        return openLoans.get(visitorID).size()==MAX_NUM_OF_TRANSACTIONS;
     }
 
     /**

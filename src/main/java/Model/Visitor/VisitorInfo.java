@@ -46,11 +46,6 @@ public class VisitorInfo {
     private int visitorID;
 
     /**
-     * Checkout transactions
-     */
-    private List<Transaction> transactionList;
-
-    /**
      * Create visitor info given a line of info.
      * @param info Correctly formatted info
      */
@@ -61,7 +56,7 @@ public class VisitorInfo {
         lastName = visitorInformation[1];
         address = visitorInformation[2];
         phoneNumber = visitorInformation[3];
-        transactionList = new ArrayList<>();
+        //transactionList = new ArrayList<>();
     }
 
     /**
@@ -94,22 +89,6 @@ public class VisitorInfo {
      */
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public int getNumberOfTransactions(){
-        return transactionList.size();
-    }
-
-    public void addTransaction(Transaction transaction){
-        transactionList.add(transaction);
-    }
-
-    public void removeTransaction(Transaction transaction) {
-        transactionList.remove(transaction);
-    }
-
-    public List<Transaction> getTransactionList(){
-        return transactionList;
     }
 
     /**

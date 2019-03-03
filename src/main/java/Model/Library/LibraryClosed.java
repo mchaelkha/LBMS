@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
  */
 public class LibraryClosed implements LibraryState, RequestUtil {
 
-
     /**
      * Returns error string notifying visitor of closed library state.
      * @param visitorID the ID of the visitor checking out the books
@@ -21,7 +20,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB) {
+    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
         return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY;
     }
 

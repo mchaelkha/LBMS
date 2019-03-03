@@ -152,74 +152,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     }
 
     /**
-     * Check if visitor has an outstanding fine.
-     * @param visitorID Visitor's ID
-     * @return true if visitor has an outstanding fine, false otherwise
-     */
-    public boolean hasOutstandingFine(String visitorID) {
-        VisitorInfo visitor = currentVisitors.get(visitorID);
-        //Update fines in visitor's transactions and check for outstanding fines
-        boolean hasOutstandingFine = false;
-        for (Transaction nextTransaction : visitor.getTransactionList()) {
-            nextTransaction.setFine();
-            if(nextTransaction.getFineAmount()>0){
-                hasOutstandingFine = true;
-            }
-        }
-        return hasOutstandingFine;
-    }
-
-    /**
      * Check if there is a current visitor with visitorID
      * @param visitorID Visitor's ID
      * @return true if visitor is a current visitor
      */
     public boolean validCurrentVisitor(String visitorID) {
         return currentVisitors.containsKey(visitorID);
-    }
-
-    /**
-     * Check if visitor has already borrowed the max number of books
-     * @param visitorID Visitor's ID
-     * @return true if visitor has max number of transactions
-     */
-    public boolean hasBookLimit(String visitorID) {
-        VisitorInfo visitor = currentVisitors.get(visitorID);
-        return visitor.getNumberOfTransactions()==MAX_NUMBER_OF_TRANSACTIONS;
-    }
-
-    /**
-     * Finds a visitor, determines whether or not they can
-     * checkout a book, and then add a book if they can.
-     */
-    public boolean checkoutBook(String visitorID, Transaction transaction) {
-        //Check if there is a current visitor with visitorID
-        if (!currentVisitors.containsKey(visitorID)) {
-            return false;
-        } else {
-            VisitorInfo visitor = currentVisitors.get(visitorID);
-            //Update fines in visitor's transactions and check for outstanding fines
-            boolean hasOutstandingFine = false;
-            for (Transaction nextTransaction : visitor.getTransactionList()) {
-                nextTransaction.setFine();
-                if(nextTransaction.getFineAmount()>0){
-                    hasOutstandingFine = true;
-                }
-            }
-            //Check if visitor has already borrowed the max number of books
-            if(visitor.getNumberOfTransactions()==MAX_NUMBER_OF_TRANSACTIONS){
-                //Response = borrow,book-limit-exceeded
-                return false;
-            }
-            //Check if visitor has an outstanding fine in any of their transactions
-            else if(hasOutstandingFine){
-                return false;
-            }
-            //Successful transaction, add transaction to Visitor's transactionList
-            else{
-                visitor.addTransaction(transaction);
-                return true;
-            }
-        }
     }
 }
