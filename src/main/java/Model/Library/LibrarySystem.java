@@ -17,7 +17,6 @@ import java.util.Map;
  * @author Hersh Nagpal
  */
 public class LibrarySystem implements RequestUtil{
-
     /**
      * String to map to the open state
      */
@@ -93,7 +92,7 @@ public class LibrarySystem implements RequestUtil{
      * @return Whether the library is open.
      */
     public boolean isOpen() {
-        return timeKeeper.isLibraryOpen(OPEN_HOUR, CLOSE_HOUR);
+        return timeKeeper.isLibraryOpen();
     }
 
     /**

@@ -16,6 +16,14 @@ import java.util.TimerTask;
  */
 public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
     /**
+     * Library's open hour
+     */
+    private static int OPEN_HOUR = 9;
+    /**
+     * Library's close hour
+     */
+    private static int CLOSE_HOUR = 12+9;
+    /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
     private LocalDateTime clock;
@@ -74,13 +82,11 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
 
     /**
      * Returns a boolean stating whether or not the library is open.
-     * @param openHour the hour that the library opens, 0-23
-     * @param closeHour the hour that the library closes, 0-23
      * @return true if the library is open, false otherwise.
      */
-    public boolean isLibraryOpen(int openHour, int closeHour) {
+    public boolean isLibraryOpen() {
         int currentHour = clock.getHour();
-        return (openHour <= currentHour) && (closeHour >= currentHour);
+        return (OPEN_HOUR <= currentHour) && (CLOSE_HOUR >= currentHour);
     }
 
     /**
