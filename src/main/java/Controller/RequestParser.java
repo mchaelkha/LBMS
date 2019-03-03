@@ -105,24 +105,20 @@ public class RequestParser implements RequestUtil {
                 request = new BorrowBook(librarySystem, params);
                 break;
             case BORROWED_REQUEST:
-                request = null;
-                //request = new FindBorrowedBooks(visitorDB, params);
+                request = new FindBorrowedBooks(librarySystem, params);
                 break;
             case RETURN_REQUEST:
                 request = null;
                 //request = new ReturnBook(checkoutDB, params);
                 break;
             case PAY_REQUEST:
-                request = null;
-                //request = new PayFine(checkoutDB, params);
+                request = new PayFine(librarySystem, params);
                 break;
             case SEARCH_REQUEST:
-                request = null;
-                //request = new BookStoreSearch(bookDB, params);
+                request = new BookStoreSearch(librarySystem, params);
                 break;
             case BUY_REQUEST:
-                request = null;
-                //request = new BookPurchase(bookDB, params);
+                request = new BookPurchase(librarySystem, params);
                 break;
             case ADVANCE_REQUEST:
                 request = new AdvanceTime(librarySystem, params);
