@@ -22,30 +22,25 @@ class LibraryOpen implements LibraryState,RequestUtil {
      */
     @Override
     public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
-        //Call checkoutBook in CheckoutDB
-
-        //Make methods returning booleans for each check in VisitorDB
-        //If all are true call checkoutDB
-
         //Check if visitor has outstanding fine
         if (checkoutDB.hasOutstandingFine(visitorID)) {
             int fineAmount = checkoutDB.calculateFine(visitorID);
             //return "borrow,outstanding-fine,amount"
-            return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount;
+            return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount+TERMINATOR;
         }
         //Check if visitor has book limit
         else if(checkoutDB.hasBookLimit(visitorID)){
-            return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED;
+            return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED+TERMINATOR;
         }
         //Check if visitorID is a valid id
         else if(!visitorDB.validCurrentVisitor(visitorID)){
-            return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID;
+            return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
         }
         else{
             //call checkout() in CheckoutDB
             Transaction transaction = checkoutDB.checkout(checkoutDate, visitorID, isbn);
             String dueDate = transaction.getDueDate();
-            return BORROW_REQUEST+DELIMITER+dueDate;
+            return BORROW_REQUEST+DELIMITER+dueDate+TERMINATOR;
         }
     }
 
