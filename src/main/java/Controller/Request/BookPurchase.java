@@ -1,6 +1,6 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Book.BookDB;
+import Model.Book.BookDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;

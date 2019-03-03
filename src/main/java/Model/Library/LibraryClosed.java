@@ -1,8 +1,8 @@
-package main.java.Model.Library;
+package Model.Library;
 
-import main.java.Controller.Request.RequestUtil;
-import main.java.Model.Checkout.CheckoutDB;
-import main.java.Model.Visitor.VisitorDB;
+import Controller.Request.RequestUtil;
+import Model.Checkout.CheckoutDB;
+import Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
 import java.util.List;

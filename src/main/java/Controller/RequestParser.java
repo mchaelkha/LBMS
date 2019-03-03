@@ -1,12 +1,12 @@
-package main.java.Controller;
+package Controller;
 
-import main.java.Controller.Request.*;
-import main.java.Model.Book.BookDB;
-import main.java.Model.Checkout.CheckoutDB;
-import main.java.Model.Library.LibrarySystem;
-import main.java.Model.Library.ReportGenerator;
-import main.java.Model.Library.TimeKeeper;
-import main.java.Model.Visitor.VisitorDB;
+import Controller.Request.*;
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
+import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
+import Model.Library.TimeKeeper;
+import Model.Visitor.VisitorDB;
 
 /**
  * Parse strings into requests to be executed. Parsing checks for errors

@@ -1,6 +1,6 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Visitor.VisitorDB;
+import Model.Visitor.VisitorDB;
 
 /**
  * Find borrowed books request to check what books a visitor is borrowing.

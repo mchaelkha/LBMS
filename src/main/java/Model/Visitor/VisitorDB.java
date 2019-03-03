@@ -1,7 +1,7 @@
-package main.java.Model.Visitor;
+package Model.Visitor;
 
-import main.java.Controller.Request.RequestUtil;
-import main.java.Model.Library.TimeKeeper;
+import Controller.Request.RequestUtil;
+import Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

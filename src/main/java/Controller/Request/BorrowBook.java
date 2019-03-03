@@ -1,7 +1,7 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Checkout.CheckoutDB;
-import main.java.Model.Library.LibrarySystem;
+import Model.Checkout.CheckoutDB;
+import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

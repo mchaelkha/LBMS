@@ -1,6 +1,6 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Library.LibrarySystem;
+import Model.Library.LibrarySystem;
 
 /**
  * Register visitor request to add visitors into the database.

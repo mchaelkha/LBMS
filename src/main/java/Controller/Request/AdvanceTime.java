@@ -1,6 +1,6 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Library.TimeKeeper;
+import Model.Library.TimeKeeper;
 
 /**
  * WIP

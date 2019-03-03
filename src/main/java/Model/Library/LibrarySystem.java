@@ -1,9 +1,9 @@
-package main.java.Model.Library;
-import main.java.Controller.Request.RequestUtil;
-import main.java.Model.Book.BookDB;
-import main.java.Model.Book.BookInfo;
-import main.java.Model.Checkout.CheckoutDB;
-import main.java.Model.Visitor.VisitorDB;
+package Model.Library;
+import Controller.Request.RequestUtil;
+import Model.Book.BookDB;
+import Model.Book.BookInfo;
+import Model.Checkout.CheckoutDB;
+import Model.Visitor.VisitorDB;
 
 import java.util.HashMap;
 import java.util.List;

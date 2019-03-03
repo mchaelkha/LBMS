@@ -1,6 +1,6 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Library.ReportGenerator;
+import Model.Library.ReportGenerator;
 
 public class LibraryStatisticsReport implements Request{
 

@@ -1,4 +1,4 @@
-package main.java.Model.Book;
+package Model.Book;
 
 import java.io.Serializable;
 import java.util.List;

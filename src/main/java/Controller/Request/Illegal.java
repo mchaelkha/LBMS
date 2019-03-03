@@ -1,4 +1,4 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
 /**
  * Illegal request to represent any command that does not exist.

@@ -1,6 +1,6 @@
-package main.java.Model.Book;
+package Model.Book;
 
-import main.java.Controller.Request.RequestUtil;
+import Controller.Request.RequestUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

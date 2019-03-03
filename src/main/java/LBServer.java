@@ -1,10 +1,9 @@
-package main.java;
 
-import main.java.Model.Book.BookDB;
-import main.java.Model.Checkout.CheckoutDB;
-import main.java.Controller.RequestParser;
-import main.java.Model.Library.LibrarySystem;
-import main.java.Model.Visitor.VisitorDB;
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
+import Controller.RequestParser;
+import Model.Library.LibrarySystem;
+import Model.Visitor.VisitorDB;
 
 import java.io.*;
 import java.util.ArrayList;

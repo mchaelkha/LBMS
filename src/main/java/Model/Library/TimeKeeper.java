@@ -1,6 +1,6 @@
-package main.java.Model.Library;
+package Model.Library;
 
-import main.java.Controller.Request.RequestUtil;
+import Controller.Request.RequestUtil;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

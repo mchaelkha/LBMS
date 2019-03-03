@@ -1,4 +1,4 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
 /**
  * Interface to store constants for classes that need Request strings.

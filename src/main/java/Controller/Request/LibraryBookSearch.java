@@ -1,8 +1,8 @@
-package main.java.Controller.Request;
+package Controller.Request;
 
-import main.java.Model.Book.BookDB;
-import main.java.Model.Book.BookInfo;
-import main.java.Model.Library.LibrarySystem;
+import Model.Book.BookDB;
+import Model.Book.BookInfo;
+import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

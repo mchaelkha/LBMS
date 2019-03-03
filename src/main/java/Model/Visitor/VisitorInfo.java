@@ -1,6 +1,6 @@
-package main.java.Model.Visitor;
+package Model.Visitor;
 
-import main.java.Model.Checkout.Transaction;
+import Model.Checkout.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
