@@ -1,6 +1,7 @@
 package Model.Library;
 
 import Controller.Request.RequestUtil;
+import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Checkout.Transaction;
 import Model.Visitor.VisitorDB;
@@ -18,11 +19,13 @@ class LibraryOpen implements LibraryState,RequestUtil {
     private TimeKeeper timeKeeper;
     private CheckoutDB checkoutDB;
     private VisitorDB visitorDB;
+    private BookDB bookDB;
 
-    public LibraryOpen(TimeKeeper timeKeeper, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public LibraryOpen(TimeKeeper timeKeeper, CheckoutDB checkoutDB, VisitorDB visitorDB, BookDB bookDB) {
         this.timeKeeper = timeKeeper;
         this.checkoutDB = checkoutDB;
         this.visitorDB = visitorDB;
+        this.bookDB = bookDB;
     }
 
     /**
@@ -50,6 +53,8 @@ class LibraryOpen implements LibraryState,RequestUtil {
         else{
             //Successful checkout
             List<Transaction> transactions = checkoutDB.checkout(checkoutDate, visitorID, bookIds);
+            //Update book number in BookDB
+            bookDB.borrowBooks(bookIds);
             //All due dates for transactions made are the same
             String dueDate = transactions.get(0).getDueDate();
             return BORROW_REQUEST+DELIMITER+dueDate+TERMINATOR;

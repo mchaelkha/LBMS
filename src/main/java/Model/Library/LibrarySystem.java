@@ -25,14 +25,6 @@ public class LibrarySystem implements RequestUtil{
      * String to to map to the closed state
      */
     private static final String CLOSED_STATE = "LibraryClosed";
-    /**
-     * The hour that the library becomes open
-     */
-    private static final int OPEN_HOUR = 9;
-    /**
-     * The hour that the library becomes closed
-     */
-    private static final int CLOSE_HOUR = 12+9;
 
     /**
      * Collection of library states used during state transitions.
@@ -155,7 +147,11 @@ public class LibrarySystem implements RequestUtil{
         return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds);
     }
 
-    //TODO delegate this request to checkoutDB and get the list of books borrowed by visitorID
+    /**
+     * Find the borrowed books under a visitor by getting the visitor info.
+     * @param visitorID The visitor to find the borrowed books
+     * @return The string containing the books borrowed under the visitor
+     */
     public String findBorrowedBooks(String visitorID){
         return null;
     }
@@ -186,7 +182,12 @@ public class LibrarySystem implements RequestUtil{
         }
     }
 
-    //TODO delegate to checkoutDB and create method in checkoutDB to pay all or part of an outstanding fine
+    /**
+     * Pay the fines under a visitor by some amount.
+     * @param visitorID The visitor to pay their fines for
+     * @param amount The amount to add to
+     * @return String indicating if successful or not and the new balance
+     */
     public String payFine(String visitorID, int amount){
         return null;
     }
@@ -230,7 +231,10 @@ public class LibrarySystem implements RequestUtil{
         return ADVANCE_REQUEST + DELIMITER + SUCCESS;
     }
 
-    //TODO
+    /**
+     * Read the current date and time from the time keeper.
+     * @return The date and time as a string
+     */
     public String currentDateTime(){
         return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }

@@ -27,24 +27,9 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
     private Map<String, VisitorInfo> currentVisitors;
 
     /**
-     * Used for providing visitors with unique IDs
-     */
-    private int nextVisitorID;
-
-    /**
-     * First visitorID provided when library is created
-     */
-    private final int INITIAL_VISITOR_ID = 1000000000;
-
-    /**
      * Used to keep track of unique 10 digit generated ids
      */
     private Set<Integer> uniqueVisitorIds;
-
-    /**
-     * Max number of transactions for a visitor
-     */
-    private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
 
     /**
      * Updated when Visitor begins a visit. Used to calculate visit duration
