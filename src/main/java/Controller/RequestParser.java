@@ -1,12 +1,7 @@
 package Controller;
 
 import Controller.Request.*;
-import Model.Book.BookDB;
-import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
-import Model.Library.ReportGenerator;
-import Model.Library.TimeKeeper;
-import Model.Visitor.VisitorDB;
 
 /**
  * Parse strings into requests to be executed. Parsing checks for errors
@@ -19,14 +14,6 @@ public class RequestParser implements RequestUtil {
      * Library system to keep track of library state and system databases
      */
     private LibrarySystem librarySystem;
-    /**
-     * Keeps time consistent within the system.
-     */
-    private TimeKeeper timeKeeper;
-    /**
-     * Report Generator.
-     */
-    private ReportGenerator reporter;
 
     /**
      * A partial request
@@ -138,13 +125,13 @@ public class RequestParser implements RequestUtil {
                 //request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(params);
+                request = new AdvanceTime(librarySystem, params);
                 break;
             case DATE_TIME_REQUEST:
-                request = new CurrentDateTime();
+                request = new CurrentDateTime(librarySystem);
                 break;
             case REPORT_REQUEST:
-                request = new LibraryStatisticsReport(reporter, params);
+                request = new LibraryStatisticsReport(librarySystem, params);
                 break;
             default:
                 request = new Illegal();

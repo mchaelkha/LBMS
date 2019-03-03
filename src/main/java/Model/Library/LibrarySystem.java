@@ -26,13 +26,8 @@ public class LibrarySystem implements RequestUtil{
     /**
      * Represents the current state of the library (closed or open).
      */
-    public LibraryState currentLibraryState;
+    private LibraryState currentLibraryState;
 
-    /**
-     * Object used to update library time and to notify library when
-     * to close and open (Library state transition)
-     */
-    private TimeKeeper timeKeeper;
     /**
      * VisitorDataBase to help perform visitor requests dealing with visits
      */
@@ -46,19 +41,33 @@ public class LibrarySystem implements RequestUtil{
      */
     private BookDB bookDB;
     /**
+     * Object used to update library time and to notify library when
+     * to close and open (Library state transition)
+     */
+    private TimeKeeper timeKeeper;
+    /**
+     * Responsible for the creation of statistical reports
+     */
+    private ReportGenerator reporter;
+    /**
      * Tracks the last book search made by visitor in order to complete borrow book command
      */
     private Map<String,BookInfo> lastBookSearch;
 
-    public LibrarySystem(VisitorDB visitorDB, CheckoutDB checkoutDB, BookDB bookDB) {
+    /**
+     * Create the library system that is responsible for knowing about the system's model.
+     */
+    public LibrarySystem(VisitorDB visitorDB, CheckoutDB checkoutDB, BookDB bookDB,
+                         TimeKeeper timeKeeper, ReportGenerator reporter) {
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.bookDB = bookDB;
-
+        this.timeKeeper = timeKeeper;
+        this.reporter = reporter;
         //Add Library States
         libraryStates = new HashMap<>();
         libraryStates.put("LibraryClosed", new LibraryClosed());
-        libraryStates.put("LibraryOpen", new LibraryOpen());
+        libraryStates.put("LibraryOpen", new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
         currentLibraryState = libraryStates.get("LibraryOpen");
     }
 
@@ -75,7 +84,7 @@ public class LibrarySystem implements RequestUtil{
      * @return formatted string regarding the success of the registerVisitor command
      */
     public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
-        return visitorDB.registerVisitor(firstName, lastName, address, phoneNumber);
+        return visitorDB.registerVisitor(firstName, lastName, address, phoneNumber, timeKeeper.readDate());
     }
 
     /**
@@ -84,7 +93,7 @@ public class LibrarySystem implements RequestUtil{
      * @return formatted string regarding the success of the beginVisit command
      */
     public String beginVisit(String visitorID){
-        return currentLibraryState.beginVisit(visitorID, visitorDB);
+        return currentLibraryState.beginVisit(visitorID);
     }
 
     /**
@@ -93,7 +102,7 @@ public class LibrarySystem implements RequestUtil{
      * @return formatted string regarding the success of the endVisit command
      */
     public String endVisit(String visitorID) {
-        return visitorDB.endVisit(visitorID);
+        return visitorDB.endVisit(visitorID, timeKeeper.getClock(), timeKeeper.readTime());
     }
 
     /**
@@ -127,7 +136,7 @@ public class LibrarySystem implements RequestUtil{
                 return BORROW_REQUEST+DELIMITER+INVALID_BOOK_ID+DELIMITER+bookIdsString+TERMINATOR;
             }
         }
-        return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds, checkoutDB, visitorDB);
+        return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds);
     }
 
     //TODO delegate this request to checkoutDB and get the list of books borrowed by visitorID
@@ -165,14 +174,16 @@ public class LibrarySystem implements RequestUtil{
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
      */
-    public String advanceTime(int days){
+    public String advanceTime(int days, int hours){
         //delegate this command to timeKeeper object
-        return null;
+        timeKeeper.addDays(days);
+        timeKeeper.addHours(hours);
+        return ADVANCE_REQUEST + DELIMITER + SUCCESS;
     }
 
     //TODO
     public String currentDateTime(){
-        return null;
+        return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }
 
     //TODO

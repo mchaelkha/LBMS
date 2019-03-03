@@ -21,7 +21,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds) {
         return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY+TERMINATOR;
     }
 
@@ -31,7 +31,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID, VisitorDB visitorDB) {
+    public String beginVisit(String visitorID) {
         return ARRIVE_REQUEST+DELIMITER+CLOSED_LIBRARY+TERMINATOR;
     }
 }

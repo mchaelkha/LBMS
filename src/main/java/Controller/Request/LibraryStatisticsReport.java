@@ -1,14 +1,14 @@
 package Controller.Request;
 
-import Model.Library.ReportGenerator;
+import Model.Library.LibrarySystem;
 
 public class LibraryStatisticsReport implements Request{
 
-    private ReportGenerator reporter;
+    private LibrarySystem library;
     private String params;
 
-    public LibraryStatisticsReport(ReportGenerator reporter, String params) {
-        this.reporter = reporter;
+    public LibraryStatisticsReport(LibrarySystem library, String params) {
+        this.library = library;
         this.params = params;
     }
 

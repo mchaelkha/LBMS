@@ -2,6 +2,7 @@ package Model.Visitor;
 
 import Controller.Request.RequestUtil;
 import Model.Library.TimeKeeper;
+import Model.Library.TimeUtil;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.util.*;
  *
  * @author Luis Gutierrez
  */
-public class VisitorDB implements RequestUtil, Serializable{
+public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
 
     /**
      * All visitors that are registered in the library. (VisitorID, VisitorInfo)
@@ -66,7 +67,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * The new visitor is added into the map of visitors.
      * @return Response to user indicating success of registration.
      */
-    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
+    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber, String registeredDate) {
         //Create new visitorInfo object using params
         VisitorInfo newVisitorInfo = new VisitorInfo(firstName,lastName, address, phoneNumber);
 
@@ -82,8 +83,6 @@ public class VisitorDB implements RequestUtil, Serializable{
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
 
-        TimeKeeper timeKeeper = TimeKeeper.getInstance();
-        String registeredDate = timeKeeper.readDate();
         return REGISTER_REQUEST+DELIMITER+newVisitorIDString
                 +DELIMITER+registeredDate+TERMINATOR;
     }
@@ -92,7 +91,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Start a visit given the visitor id.
      * @param visitorID The visitor id to log a visit with
      */
-    public String beginVisit(String visitorID) {
+    public String beginVisit(String visitorID, LocalDateTime startVisitDayTime, String visitDate, String visitStartTime) {
         //Check if visitor with id already exists in currentVisitors
         if (currentVisitors.containsKey(visitorID)) {
             //Response = "arrive,duplicate;"
@@ -108,13 +107,8 @@ public class VisitorDB implements RequestUtil, Serializable{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
 
-            //Record visit date and time
-            TimeKeeper timeKeeper = TimeKeeper.getInstance();
-            String visitDate = timeKeeper.readDate();
-            String visitStartTime = timeKeeper.readTime();
-
-            //Get LocalDateTime for the startVisit time used for endVisit response
-            startVisitDayTime = timeKeeper.getClock();
+            // TODO: copy the local date time
+            this.startVisitDayTime = startVisitDayTime;
 
             //Response = "arrive,visitorID,visitDate,visitStartTime;"
             return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
@@ -126,7 +120,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * End a visit that is in progress given the visitor id.
      * @param visitorID The visitor id to end a visit for
      */
-    public String endVisit(String visitorID) {
+    public String endVisit(String visitorID, LocalDateTime endVisitDateTime, String visitEndTime) {
         //Check if visitorID is not in current visitors
         if(!currentVisitors.containsKey(visitorID)){
             //Response = "arrive,invalid-id;"
@@ -137,11 +131,7 @@ public class VisitorDB implements RequestUtil, Serializable{
         currentVisitors.remove(visitorID);
 
         //Response = "depart,visitorID,visitEndTime,visitDuration"
-        TimeKeeper timeKeeper = TimeKeeper.getInstance();
-        String visitEndTime = timeKeeper.readTime();
-
-        LocalDateTime endVisitDateTime = timeKeeper.getClock();
-        String visitDuration = timeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
+        String visitDuration = calculateDuration(startVisitDayTime, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
                 DELIMITER+visitDuration+TERMINATOR;

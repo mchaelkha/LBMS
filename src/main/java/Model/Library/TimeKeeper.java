@@ -2,6 +2,7 @@ package Model.Library;
 
 import Controller.Request.RequestUtil;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Timer;
@@ -13,12 +14,7 @@ import java.util.TimerTask;
  * testing.
  * @author Hersh Nagpal
  */
-public class TimeKeeper implements RequestUtil{
-    /**
-     * Singleton instance of time keeper
-     */
-    private static TimeKeeper timeKeeper;
-
+public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
     /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
@@ -49,7 +45,7 @@ public class TimeKeeper implements RequestUtil{
      * A TimerTask is used in conjunction with a timer
      * to ensure the time is updated every minute.
      */
-    private TimeKeeper() {
+    public TimeKeeper() {
         timer = new Timer();
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
@@ -59,17 +55,6 @@ public class TimeKeeper implements RequestUtil{
             }
         };
         timer.scheduleAtFixedRate(timerTask, TIMER_DELAY,TIMER_INTERVAL);
-    }
-
-    /**
-     * Get the single instance of time keeper.
-     * @return The single instance of time keeper
-     */
-    public static TimeKeeper getInstance() {
-        if (timeKeeper == null) {
-            timeKeeper = new TimeKeeper();
-        }
-        return timeKeeper;
     }
 
     /**
@@ -99,11 +84,12 @@ public class TimeKeeper implements RequestUtil{
     }
 
     /**
-     * Returns the clock LocalDateTime object
+     * Returns a copy of the clock LocalDateTime object
      * @return the clock
      */
     public LocalDateTime getClock() {
-        return clock;
+        return LocalDateTime.of(clock.getYear(), clock.getMonth(),
+                clock.getDayOfMonth(), clock.getHour(), clock.getMinute(), clock.getSecond());
     }
 
     /**
@@ -183,17 +169,5 @@ public class TimeKeeper implements RequestUtil{
     public void addHours(int hours){
         clock = clock.plusHours(hours);
     }
-    /**
-     * Calculates the duration between two LocalDayTime objects in hours:minutes:seconds
-     * @return String representation of duration between LocalDayTime objects
-     */
-    public String calculateDuration(LocalDateTime start, LocalDateTime end) {
-        String hours = Long.toString(ChronoUnit.HOURS.between(start, end)%24);
-        String minutes = Long.toString(ChronoUnit.MINUTES.between(start, end)%60);
-        String seconds = Long.toString(ChronoUnit.SECONDS.between(start, end)%60);
-
-        return hours+":"+minutes+":"+seconds;
-    }
-
 
 }

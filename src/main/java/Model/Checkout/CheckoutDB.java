@@ -2,7 +2,6 @@ package Model.Checkout;
 
 import Model.Book.BookDB;
 import Model.Visitor.VisitorDB;
-import Model.Checkout.Transaction;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
 package Controller.Request;
 
-import Model.Library.TimeKeeper;
+import Model.Library.LibrarySystem;
 
 /**
  * WIP
@@ -16,7 +16,7 @@ public class AdvanceTime implements Request {
     /**
      * Singleton timekeeper to keep time the same across the system.
      */
-    private TimeKeeper timeKeeper;
+    private LibrarySystem library;
     /**
      * the parameters for the command.
      */
@@ -34,8 +34,8 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(String params) {
-        this.timeKeeper = TimeKeeper.getInstance();
+    public AdvanceTime(LibrarySystem library, String params) {
+        this.library = library;
         this.params = params;
     }
 
@@ -66,8 +66,6 @@ public class AdvanceTime implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        timeKeeper.addDays(days);
-        timeKeeper.addHours(hours);
-        return ADVANCE_REQUEST + DELIMITER + SUCCESS;
+        return library.advanceTime(days, hours);
     }
 }

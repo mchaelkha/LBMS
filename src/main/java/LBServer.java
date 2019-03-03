@@ -3,6 +3,8 @@ import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;
 import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
+import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
 
 import java.io.*;
@@ -12,7 +14,6 @@ import java.util.Scanner;
 
 /**
  * Main class to start the library book management system.
- * TODO: add library system and time keeper possibly
  * @author Michael Kha
  */
 public class LBServer {
@@ -54,6 +55,15 @@ public class LBServer {
      * Database to keep track of book checkouts by visitors
      */
     private CheckoutDB checkoutDB;
+    /**
+     * Object used to update library time and to notify library when
+     * to close and open (Library state transition)
+     */
+    private TimeKeeper timeKeeper;
+    /**
+     * Responsible for the creation of statistical reports
+     */
+    private ReportGenerator reporter;
 
     /**
      * Create the main system by creating new databases.
@@ -62,7 +72,9 @@ public class LBServer {
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB(visitorDB, bookDB);
-        library = new LibrarySystem(visitorDB,checkoutDB,bookDB);
+        timeKeeper = new TimeKeeper();
+        reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
         parser = new RequestParser(library);
     }
 
@@ -72,11 +84,13 @@ public class LBServer {
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
      */
-    public LBServer(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+    public LBServer(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB, TimeKeeper timeKeeper) {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
-        this.library = new LibrarySystem(visitorDB, checkoutDB, bookDB);
+        this.timeKeeper = timeKeeper;
+        reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
         parser = new RequestParser(library);
     }
 
@@ -120,6 +134,7 @@ public class LBServer {
             items.add(bookDB);
             items.add(visitorDB);
             items.add(checkoutDB);
+            items.add(timeKeeper);
             oos.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,6 +150,7 @@ public class LBServer {
         BookDB bookDB;
         VisitorDB visitorDB;
         CheckoutDB checkoutDB;
+        TimeKeeper timeKeeper;
         try {
             FileInputStream fis = new FileInputStream(PATH + file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -143,7 +159,8 @@ public class LBServer {
             bookDB = (BookDB) items.get(0);
             visitorDB = (VisitorDB) items.get(1);
             checkoutDB = (CheckoutDB) items.get(2);
-            return new LBServer(bookDB, visitorDB, checkoutDB);
+            timeKeeper = (TimeKeeper) items.get(3);
+            return new LBServer(bookDB, visitorDB, checkoutDB, timeKeeper);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

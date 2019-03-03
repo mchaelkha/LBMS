@@ -18,12 +18,12 @@ public interface LibraryState {
      * @param visitorID the ID of the visitor checking out the books
      * @param bookIds the isbns of the books to check out
      */
-    String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkOutDB, VisitorDB visitorDB);
+    String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds);
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.
      * @param visitorID the visitor whose visit to start
      * @return a formatted string regarding the success of the operation.
      */
-    String beginVisit(String visitorID, VisitorDB visitorDB);
+    String beginVisit(String visitorID);
 }

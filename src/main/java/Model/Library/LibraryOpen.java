@@ -15,6 +15,16 @@ import java.util.List;
  */
 class LibraryOpen implements LibraryState,RequestUtil {
 
+    private TimeKeeper timeKeeper;
+    private CheckoutDB checkoutDB;
+    private VisitorDB visitorDB;
+
+    public LibraryOpen(TimeKeeper timeKeeper, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+        this.timeKeeper = timeKeeper;
+        this.checkoutDB = checkoutDB;
+        this.visitorDB = visitorDB;
+    }
+
     /**
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
@@ -22,7 +32,7 @@ class LibraryOpen implements LibraryState,RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds) {
         //Check if visitor has outstanding fine
         if (checkoutDB.hasOutstandingFine(visitorID)) {
             int fineAmount = checkoutDB.calculateFine(visitorID);
@@ -52,8 +62,8 @@ class LibraryOpen implements LibraryState,RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID, VisitorDB visitorDB) {
-        return visitorDB.beginVisit(visitorID);
+    public String beginVisit(String visitorID) {
+        return visitorDB.beginVisit(visitorID, timeKeeper.getClock(), timeKeeper.readDate(), timeKeeper.readTime());
     }
 
 } 
