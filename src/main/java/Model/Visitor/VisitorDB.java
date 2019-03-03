@@ -92,7 +92,6 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
 
-            // TODO: copy the local date time
             this.startVisitDayTime = startVisitDayTime;
 
             //Response = "arrive,visitorID,visitDate,visitStartTime;"

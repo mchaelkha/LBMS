@@ -39,7 +39,6 @@ public class BeginVisit implements Request {
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */

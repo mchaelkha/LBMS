@@ -14,7 +14,12 @@ import java.util.Map;
  * @author Michael Kha
  */
 public class LibraryBookSearch implements Request {
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "title,[{authors},isbn" +
+            "[,publisher[,sort order]]]";
     /**
      * The library system holding system databases
      */
@@ -56,7 +61,6 @@ public class LibraryBookSearch implements Request {
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */
@@ -70,6 +74,9 @@ public class LibraryBookSearch implements Request {
         String[] titleArr = firstSplit[0].split(",(?!\\s)");
         title = titleArr[0];
         String[] isbnPublisherSort = firstSplit[2].split(",(?!\\s)");
+        if (isbnPublisherSort.length != 4) {
+            return PARAM_MESSAGE;
+        }
         isbn = isbnPublisherSort[1];
         publisher = isbnPublisherSort[2];
         sort = isbnPublisherSort[3];

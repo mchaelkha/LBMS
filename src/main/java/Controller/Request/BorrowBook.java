@@ -12,7 +12,11 @@ import java.util.List;
  * @author Michael Kha
  */
 public class BorrowBook implements Request {
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "visitor ID,{id}";
     /**
      * The librarySystem. Used to check library closed or open state.
      */
@@ -42,7 +46,6 @@ public class BorrowBook implements Request {
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */
@@ -55,7 +58,7 @@ public class BorrowBook implements Request {
             bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**

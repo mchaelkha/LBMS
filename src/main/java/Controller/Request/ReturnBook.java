@@ -1,6 +1,5 @@
 package Controller.Request;
 
-import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
@@ -13,11 +12,11 @@ import java.util.List;
  * @author Michael Kha
  */
 public class ReturnBook implements Request {
-
     /**
-     * The checkout database of the library
+     * Message for missing parameters
      */
-   // private CheckoutDB checkoutDB;
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ARRIVE_REQUEST) + DELIMITER + "visitor ID,id[,ids]";
     /**
      * The LibrarySystem.
      */
@@ -48,7 +47,6 @@ public class ReturnBook implements Request {
     }
 
     /**
-     * TODO: proper missing parameter checking
      * Check the parameters to validate that the request is
      * @return If the parameters are correct
      */
@@ -75,7 +73,6 @@ public class ReturnBook implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
         return librarySystem.returnBooks(visitorID, bookIDs);
     }
 }
