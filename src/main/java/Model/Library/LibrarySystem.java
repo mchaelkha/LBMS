@@ -164,15 +164,21 @@ public class LibrarySystem implements RequestUtil{
         return null;
     }
 
-    //TODO
-    public String bookPurchase(){
-        return null;
+    /**
+     * Purchase the quantity of books from the book IDs.
+     * @param quantity Quantity of books
+     * @param bookIDs The list of book IDs
+     * @return Response for the books purchased
+     */
+    public String bookPurchase(int quantity, List<String> bookIDs){
+        return bookDB.purchase(quantity, bookIDs) + TERMINATOR;
     }
 
     /**
      * TODO
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
+     * @param hours The number of hours
      */
     public String advanceTime(int days, int hours){
         //delegate this command to timeKeeper object
