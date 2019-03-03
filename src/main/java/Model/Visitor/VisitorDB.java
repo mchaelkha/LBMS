@@ -1,7 +1,6 @@
 package main.java.Model.Visitor;
 
 import main.java.Controller.Request.RequestUtil;
-import main.java.Model.Checkout.Transaction;
 import main.java.Model.Library.TimeKeeper;
 
 import java.io.Serializable;
@@ -61,12 +60,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     /**
      * Register the visitor given properly formatted info.
      * The new visitor is added into the map of visitors.
-     * @param info The info needed to create a visitor
-     * @return Response to user indicating registration went through or Error.
+     * @return Response to user indicating success of registration.
      */
-    public String registerVisitor(String info) {
-        //Create new visitorInfo object using info string
-        VisitorInfo newVisitorInfo = new VisitorInfo(info);
+    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
+        //Create new visitorInfo object using params
+        VisitorInfo newVisitorInfo = new VisitorInfo(firstName,lastName, address, phoneNumber);
 
         //check for duplicate visitorInfo
         for (String currentKey : registeredVisitors.keySet()) {

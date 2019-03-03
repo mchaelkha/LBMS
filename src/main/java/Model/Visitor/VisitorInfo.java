@@ -15,22 +15,18 @@ public class VisitorInfo {
      * Visitor's first name
      */
     private String firstName;
-
     /**
      * Visitor's last name
      */
     private String lastName;
-
     /**
      * Visitor's address
      */
     private String address;
-
     /**
      * Visitor's phone number
      */
     private String phoneNumber;
-
     /**
      * All visits that a visitor has made
      */
@@ -46,17 +42,13 @@ public class VisitorInfo {
     private int visitorID;
 
     /**
-     * Create visitor info given a line of info.
-     * @param info Correctly formatted info
+     * Set visitor info.
      */
-    public VisitorInfo(String info) {
-        // break whole string to each part of info
-        visitorInformation = info.split(",");
-        firstName = visitorInformation[0];
-        lastName = visitorInformation[1];
-        address = visitorInformation[2];
-        phoneNumber = visitorInformation[3];
-        //transactionList = new ArrayList<>();
+    public VisitorInfo(String firstName, String lastName, String address, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     /**

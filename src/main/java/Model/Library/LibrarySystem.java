@@ -1,4 +1,5 @@
 package main.java.Model.Library;
+import main.java.Model.Book.BookDB;
 import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
@@ -28,19 +29,25 @@ public class LibrarySystem {
      * to close and open (Library state transition)
      */
     private TimeKeeper timeKeeper;
-
     /**
-     * VisitorDataBase to help complete visitor command functionality
+     * VisitorDataBase to help perform visitor requests dealing with visits
      */
     private VisitorDB visitorDB;
-
     /**
-     * CheckoutDataBase to help complete visitor command functionality
+     * CheckoutDataBase to help perform visitor requests dealing with transactions
      */
     private CheckoutDB checkoutDB;
+    /**
+     * BookDataBase to help perform visitor requests dealing with library books
+     */
+    private BookDB bookDB;
 
-    //TODO Add LibrarySystem constructor to set visitorDB and checkoutDB
-    //public LibrarySystem()
+
+    public LibrarySystem(VisitorDB visitorDB, CheckoutDB checkoutDB, BookDB bookDB) {
+        this.visitorDB = visitorDB;
+        this.checkoutDB = checkoutDB;
+        this.bookDB = bookDB;
+    }
 
     /**
      * Gives the status of the library
@@ -50,28 +57,31 @@ public class LibrarySystem {
         return timeKeeper.isLibraryOpen(OPEN_HOUR, CLOSE_HOUR);
     }
 
-    public String checkoutBook(String visitorID, String isbn) {
-        return checkoutBookHelper(visitorID, isbn, checkoutDB, visitorDB);
-    }
-
     /**
      * Delegates checkoutBook visitor command to library concrete state.
      * @param visitorID the visitor borrowing a book
      * @param isbn the book to be checked out
-     * @return a formatted string regarding the success of the command
+     * @return formatted string regarding the success of the command
      */
-    public String checkoutBookHelper(String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
-        return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn, checkoutDB, visitorDB);
+    public String checkoutBook(String visitorID, String isbn) {
+        return currentLibraryState.checkoutBook(timeKeeper.getClock(),visitorID, isbn, checkoutDB, visitorDB);
     }
 
     /**
      * Delegates beginVisit visitor command to library concrete state
      * @param visitorID the visitor returning the book
-     * @param visitorDB the visitor database to
      * @return the book to be returned by the visitor
      */
-    public String beginVisit(String visitorID, VisitorDB visitorDB){
+    public String beginVisit(String visitorID){
         return currentLibraryState.beginVisit(visitorID, visitorDB);
+    }
+
+    /**
+     * Delegates registerVisitor command to VisitorDB
+     * @return formatted string regarding the success of the command
+     */
+    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
+        return visitorDB.registerVisitor(firstName, lastName, address, phoneNumber);
     }
 
     /**

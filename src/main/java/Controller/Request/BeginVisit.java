@@ -9,11 +9,6 @@ import main.java.Model.Visitor.VisitorDB;
  * @author Michael Kha
  */
 public class BeginVisit implements Request {
-
-    /**
-     * The visitor database of the library
-     */
-    private VisitorDB visitorDB;
     /**
      * The librarySystem. Used to check library closed or open state.
      */
@@ -64,6 +59,6 @@ public class BeginVisit implements Request {
         }
         // TODO: implement by calling right methods in DB
         //Call beginVisit method in librarySystem first
-        return librarySystem.beginVisit(visitorID, visitorDB);
+        return librarySystem.beginVisit(visitorID);
     }
 }

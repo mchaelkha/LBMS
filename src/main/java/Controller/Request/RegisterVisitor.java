@@ -1,6 +1,6 @@
 package main.java.Controller.Request;
 
-import main.java.Model.Visitor.VisitorDB;
+import main.java.Model.Library.LibrarySystem;
 
 /**
  * Register visitor request to add visitors into the database.
@@ -10,9 +10,9 @@ import main.java.Model.Visitor.VisitorDB;
 public class RegisterVisitor implements Request{
 
     /**
-     * The visitor database of the library
+     * The library system holding system databases
      */
-    private VisitorDB visitorDB;
+    private LibrarySystem librarySystem;
     /**
      * Params in the command
      */
@@ -37,11 +37,11 @@ public class RegisterVisitor implements Request{
     /**
      * Create a new register visitor request given the visitor database
      * and the parameters for the request.
-     * @param visitorDB The visitor database
+     * @param librarySystem The librarySystem holding system databases
      * @param params The parameters that follow a request command
      */
-    public RegisterVisitor(VisitorDB visitorDB, String params) {
-        this.visitorDB = visitorDB;
+    public RegisterVisitor(LibrarySystem librarySystem, String params) {
+        this.librarySystem = librarySystem;
         this.params = params;
     }
 
@@ -73,7 +73,7 @@ public class RegisterVisitor implements Request{
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        return null;
+
+        return librarySystem.registerVisitor(firstName,lastName,address,phoneNumber);
     }
 }
