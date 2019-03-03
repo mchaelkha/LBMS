@@ -130,6 +130,11 @@ public class LibrarySystem implements RequestUtil{
         return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds, checkoutDB, visitorDB);
     }
 
+    //TODO delegate this request to checkoutDB and get the list of books borrowed by visitorID
+    public String findBorrowedBooks(String visitorID){
+        return null;
+    }
+
     /**
      * @param visitorID visitor
      * @param visitorDB visitor database
@@ -140,12 +145,39 @@ public class LibrarySystem implements RequestUtil{
         return null;
     }
 
+    //TODO delegate to checkoutDB and create method in checkoutDB to pay all or part of an outstanding fine
+    public String payFine(String visitorID, int amount){
+        return null;
+    }
+
+    //TODO
+    public String bookStoreSearch() {
+        return null;
+    }
+
+    //TODO
+    public String bookPurchase(){
+        return null;
+    }
+
     /**
+     * TODO
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
      */
-    public void moveDate(int days){
+    public String advanceTime(int days){
         //delegate this command to timeKeeper object
+        return null;
+    }
+
+    //TODO
+    public String currentDateTime(){
+        return null;
+    }
+
+    //TODO
+    public String libraryStatisticsReport(){
+        return null;
     }
 
     /**
