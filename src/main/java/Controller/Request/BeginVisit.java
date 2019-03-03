@@ -10,6 +10,11 @@ import Model.Visitor.VisitorDB;
  */
 public class BeginVisit implements Request {
     /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            ADVANCE_REQUEST) + DELIMITER + "visitorID";
+    /**
      * The librarySystem. Used to check library closed or open state.
      */
     private LibrarySystem librarySystem;
@@ -45,7 +50,7 @@ public class BeginVisit implements Request {
             visitorID = parts[0];
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**
