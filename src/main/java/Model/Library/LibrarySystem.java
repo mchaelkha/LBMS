@@ -15,8 +15,23 @@ import java.util.Map;
  * @author Hersh Nagpal
  */
 public class LibrarySystem implements RequestUtil{
-    private static int OPEN_HOUR = 9;
-    private static int CLOSE_HOUR = 12+9;
+
+    /**
+     * String to map to the open state
+     */
+    private static final String OPEN_STATE = "LibraryOpen";
+    /**
+     * String to to map to the closed state
+     */
+    private static final String CLOSED_STATE = "LibraryClosed";
+    /**
+     * The hour that the library becomes open
+     */
+    private static final int OPEN_HOUR = 9;
+    /**
+     * The hour that the library becomes closed
+     */
+    private static final int CLOSE_HOUR = 12+9;
 
     /**
      * Collection of library states used during state transitions.
@@ -66,9 +81,9 @@ public class LibrarySystem implements RequestUtil{
         this.reporter = reporter;
         //Add Library States
         libraryStates = new HashMap<>();
-        libraryStates.put("LibraryClosed", new LibraryClosed());
-        libraryStates.put("LibraryOpen", new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
-        currentLibraryState = libraryStates.get("LibraryOpen");
+        libraryStates.put(CLOSED_STATE, new LibraryClosed());
+        libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
+        currentLibraryState = libraryStates.get(OPEN_STATE);
     }
 
     /**
@@ -219,6 +234,7 @@ public class LibrarySystem implements RequestUtil{
      */
     public void closeLibrary() {
         //call clearVisitors() in VisitorDB
+        currentLibraryState = libraryStates.get(CLOSED_STATE);
     }
 
 }
