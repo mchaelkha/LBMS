@@ -24,7 +24,7 @@ public class LibraryStatisticsReport implements Request{
     private int days;
 
     /**
-     * Create a new find borrowed books request given the visitor database
+     * Create a new find borrowed books request given the library
      * and the parameters for the request.
      * @param library The library
      * @param params The parameters that follow a request command

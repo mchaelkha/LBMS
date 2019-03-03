@@ -13,7 +13,7 @@ public class BeginVisit implements Request {
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
-            ADVANCE_REQUEST) + DELIMITER + "visitorID";
+            ARRIVE_REQUEST) + DELIMITER + "visitorID";
     /**
      * The librarySystem. Used to check library closed or open state.
      */
