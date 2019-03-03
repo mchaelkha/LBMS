@@ -72,7 +72,7 @@ public class VisitorDB implements RequestUtil, Serializable{
         for (String currentKey : registeredVisitors.keySet()) {
             //Duplicate visitorInfo found
             if (registeredVisitors.get(currentKey).equals(newVisitorInfo)) {
-                return ARRIVE_REQUEST + DELIMITER + DUPLICATE + TERMINATOR;
+                return REGISTER_REQUEST + DELIMITER + DUPLICATE + TERMINATOR;
             }
         }
         //No duplicate was found. Register new visitor.
