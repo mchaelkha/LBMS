@@ -172,6 +172,7 @@ public class LibrarySystem implements RequestUtil{
 
         for(int i = 0; i < bookIDs.size(); i++){
             t = checkoutDB.returnBook(timeKeeper.getClock(), visitorID, bookIDs.get(i));
+            bookDB.returnCopy(bookIDs.get(i));
             if(t.getFineAmount() > 0){
                 totalFine = totalFine + t.getFineAmount();
                 overdue.add(bookIDs.get(i));
