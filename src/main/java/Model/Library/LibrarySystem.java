@@ -203,8 +203,14 @@ public class LibrarySystem implements RequestUtil{
         return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }
 
-    //TODO
-    public String libraryStatisticsReport(){
+    /**
+     * Create the library statistics report for a given number of days.
+     * If the number of days is zero, a report will be generated since the
+     * start of simulation.
+     * @param days Number of days
+     * @return Response containing a report about the library
+     */
+    public String libraryStatisticsReport(int days){
         return null;
     }
 
