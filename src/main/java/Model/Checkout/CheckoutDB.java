@@ -38,7 +38,7 @@ public class CheckoutDB implements Serializable {
     /**
      * Create a new checkout database that is empty
      */
-    public CheckoutDB(VisitorDB visitorDB, BookDB bookDB) {
+    public CheckoutDB() {
         openLoans = new HashMap<>();
         closedLoans = new HashMap<>();
         transactionsInProgress = new ArrayList<>();
