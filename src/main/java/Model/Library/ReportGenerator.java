@@ -5,16 +5,32 @@ import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
 /**
- *
+ * The report generator that aggregates the statistics from each individual
+ * database to create a report.
  *
  * @author Michael Kha
  */
 public class ReportGenerator {
 
+    /**
+     * The book database
+     */
     private BookDB bookDB;
+    /**
+     * The visitor database
+     */
     private VisitorDB visitorDB;
+    /**
+     * The checkout database
+     */
     private CheckoutDB checkoutDB;
 
+    /**
+     * Create the report generator that knows about the other databases.
+     * @param bookDB The book database
+     * @param visitorDB The visitor database
+     * @param checkoutDB The checkout database
+     */
     public ReportGenerator(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
@@ -22,18 +38,17 @@ public class ReportGenerator {
     }
 
     /**
-     * Generates the monthly info report.
-     * @param month Which month it currently is.
-     * @return A report of the relevant information for the month.
+     * Generates the info report.
+     * @param days Number of days back
+     * @return A report of the relevant information for the days back.
      */
-    public String generateInfoReport(String month){
+    public String generateInfoReport(int days){
+        if (days == 0) {
+
+        } else {
+
+        }
         return "";
     }
 
-    /**
-     * Backs up the library's data.
-     */
-    public void backupData(){
-
-    }
 }
