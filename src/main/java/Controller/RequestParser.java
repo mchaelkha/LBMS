@@ -9,7 +9,6 @@ import main.java.Model.Library.TimeKeeper;
 import main.java.Model.Visitor.VisitorDB;
 
 /**
- * Work in progress
  * Parse strings into requests to be executed. Parsing checks for errors
  * in invalid format.
  *
