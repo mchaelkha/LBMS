@@ -17,8 +17,23 @@ import java.util.Map;
  * @author Hersh Nagpal
  */
 public class LibrarySystem implements RequestUtil{
-    private static int OPEN_HOUR = 9;
-    private static int CLOSE_HOUR = 12+9;
+
+    /**
+     * String to map to the open state
+     */
+    private static final String OPEN_STATE = "LibraryOpen";
+    /**
+     * String to to map to the closed state
+     */
+    private static final String CLOSED_STATE = "LibraryClosed";
+    /**
+     * The hour that the library becomes open
+     */
+    private static final int OPEN_HOUR = 9;
+    /**
+     * The hour that the library becomes closed
+     */
+    private static final int CLOSE_HOUR = 12+9;
 
     /**
      * Collection of library states used during state transitions.
@@ -68,9 +83,9 @@ public class LibrarySystem implements RequestUtil{
         this.reporter = reporter;
         //Add Library States
         libraryStates = new HashMap<>();
-        libraryStates.put("LibraryClosed", new LibraryClosed());
-        libraryStates.put("LibraryOpen", new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
-        currentLibraryState = libraryStates.get("LibraryOpen");
+        libraryStates.put(CLOSED_STATE, new LibraryClosed());
+        libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
+        currentLibraryState = libraryStates.get(OPEN_STATE);
     }
 
     /**
@@ -176,20 +191,37 @@ public class LibrarySystem implements RequestUtil{
         return null;
     }
 
-    //TODO
-    public String bookStoreSearch() {
-        return null;
+    /**
+     * Search the book store for books with the given information.
+     * @param title The title
+     * @param authors The authors
+     * @param isbn The isbn
+     * @param publisher The publisher
+     * @param sort The sort order
+     * @return The mapping of hits to a unique ID
+     */
+    public Map<String, BookInfo> bookStoreSearch(String title,
+                                  List<String> authors,
+                                  String isbn,
+                                  String publisher, String sort) {
+        return bookDB.searchStore(title, authors, isbn, publisher, sort);
     }
 
-    //TODO
-    public String bookPurchase(){
-        return null;
+    /**
+     * Purchase the quantity of books from the book IDs.
+     * @param quantity Quantity of books
+     * @param bookIDs The list of book IDs
+     * @return Response for the books purchased
+     */
+    public String bookPurchase(int quantity, List<String> bookIDs){
+        return bookDB.purchase(quantity, bookIDs) + TERMINATOR;
     }
 
     /**
      * TODO
      * Moves the date forward by a certain number of days.
      * @param days The number of days to move forward.
+     * @param hours The number of hours
      */
     public String advanceTime(int days, int hours){
         //delegate this command to timeKeeper object
@@ -203,8 +235,14 @@ public class LibrarySystem implements RequestUtil{
         return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }
 
-    //TODO
-    public String libraryStatisticsReport(){
+    /**
+     * Create the library statistics report for a given number of days.
+     * If the number of days is zero, a report will be generated since the
+     * start of simulation.
+     * @param days Number of days
+     * @return Response containing a report about the library
+     */
+    public String libraryStatisticsReport(int days){
         return null;
     }
 
@@ -213,6 +251,7 @@ public class LibrarySystem implements RequestUtil{
      */
     public void closeLibrary() {
         //call clearVisitors() in VisitorDB
+        currentLibraryState = libraryStates.get(CLOSED_STATE);
     }
 
 }

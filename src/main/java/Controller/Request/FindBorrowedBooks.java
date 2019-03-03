@@ -1,6 +1,6 @@
 package Controller.Request;
 
-import Model.Visitor.VisitorDB;
+import Model.Library.LibrarySystem;
 
 /**
  * Find borrowed books request to check what books a visitor is borrowing.
@@ -10,9 +10,9 @@ import Model.Visitor.VisitorDB;
 public class FindBorrowedBooks implements Request {
 
     /**
-     * The visitor database of the library
+     * The library
      */
-    private VisitorDB visitorDB;
+    private LibrarySystem library;
     /**
      * Params in the command
      */
@@ -25,11 +25,11 @@ public class FindBorrowedBooks implements Request {
     /**
      * Create a new find borrowed books request given the visitor database
      * and the parameters for the request.
-     * @param visitorDB
-     * @param params
+     * @param library The library
+     * @param params The parameters that follow a request command
      */
-    public FindBorrowedBooks(VisitorDB visitorDB, String params) {
-        this.visitorDB = visitorDB;
+    public FindBorrowedBooks(LibrarySystem library, String params) {
+        this.library = library;
         this.params = params;
     }
 
@@ -57,7 +57,6 @@ public class FindBorrowedBooks implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        return null;
+        return library.findBorrowedBooks(visitorID);
     }
 }
