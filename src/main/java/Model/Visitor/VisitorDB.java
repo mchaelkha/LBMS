@@ -1,13 +1,11 @@
 package main.java.Model.Visitor;
 
 import main.java.Controller.Request.RequestUtil;
-import main.java.Model.Checkout.Transaction;
 import main.java.Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The visitor database that is used by the library to manage visitor commands
@@ -38,6 +36,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
+     * Used to keep track of unique 10 digit generated ids
+     */
+    private Set<Integer> uniqueVisitorIds;
+
+    /**
      * Max number of transactions for a visitor
      */
     private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
@@ -54,19 +57,18 @@ public class VisitorDB implements RequestUtil, Serializable{
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
 
-        //initialize nextVisitorID (All IDs need to be a 10 digit number)
-        nextVisitorID = INITIAL_VISITOR_ID;
+        //initialize uniqueVisitorIds (All IDs need to be unique 10 digit numbers)
+        uniqueVisitorIds = new HashSet<>();
     }
 
     /**
      * Register the visitor given properly formatted info.
      * The new visitor is added into the map of visitors.
-     * @param info The info needed to create a visitor
-     * @return Response to user indicating registration went through or Error.
+     * @return Response to user indicating success of registration.
      */
-    public String registerVisitor(String info) {
-        //Create new visitorInfo object using info string
-        VisitorInfo newVisitorInfo = new VisitorInfo(info);
+    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
+        //Create new visitorInfo object using params
+        VisitorInfo newVisitorInfo = new VisitorInfo(firstName,lastName, address, phoneNumber);
 
         //check for duplicate visitorInfo
         for (String currentKey : registeredVisitors.keySet()) {
@@ -76,10 +78,10 @@ public class VisitorDB implements RequestUtil, Serializable{
             }
         }
         //No duplicate was found. Register new visitor.
-        int newVisitorID = nextVisitorID;
-        nextVisitorID++;
+        int newVisitorID = generateVisitorID();
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
+
         TimeKeeper timeKeeper = TimeKeeper.getInstance();
         String registeredDate = timeKeeper.readDate();
         return REGISTER_REQUEST+DELIMITER+newVisitorIDString
@@ -93,28 +95,30 @@ public class VisitorDB implements RequestUtil, Serializable{
     public String beginVisit(String visitorID) {
         //Check if visitor with id already exists in currentVisitors
         if (currentVisitors.containsKey(visitorID)) {
-            //Response = "arrive,duplicate";
+            //Response = "arrive,duplicate;"
             return ARRIVE_REQUEST+DELIMITER+DUPLICATE+TERMINATOR;
         }
         //Check if visitor has not been registered yet
         else if (!registeredVisitors.containsKey(visitorID)){
-            //Response = "arrive,invalid-id";
+            //Response = "arrive,invalid-id;"
             return ARRIVE_REQUEST+DELIMITER+INVALID_ID+TERMINATOR;
         }
-        //Add visitor to currentVisitors and update its state
+        //Add visitor to currentVisitors
         else{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
+
+            //Record visit date and time
             TimeKeeper timeKeeper = TimeKeeper.getInstance();
             String visitDate = timeKeeper.readDate();
-            String visitTime = timeKeeper.readTime();
+            String visitStartTime = timeKeeper.readTime();
 
-            //Get LocalDateTime for the startVisit time
+            //Get LocalDateTime for the startVisit time used for endVisit response
             startVisitDayTime = timeKeeper.getClock();
 
-            //Response = "arrive,visitorID,visitDate,visitStartTime"
+            //Response = "arrive,visitorID,visitDate,visitStartTime;"
             return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
-                    +visitDate+DELIMITER+visitTime+TERMINATOR;
+                    +visitDate+DELIMITER+visitStartTime+TERMINATOR;
         }
     }
 
@@ -123,8 +127,8 @@ public class VisitorDB implements RequestUtil, Serializable{
      * @param visitorID The visitor id to end a visit for
      */
     public String endVisit(String visitorID) {
-        //Check if visitorID is not currently in current visitors
-        if(currentVisitors.containsKey(visitorID)){
+        //Check if visitorID is not in current visitors
+        if(!currentVisitors.containsKey(visitorID)){
             //Response = "arrive,invalid-id;"
             return DEPART_REQUEST+DELIMITER+INVALID_ID+TERMINATOR;
         }
@@ -140,7 +144,7 @@ public class VisitorDB implements RequestUtil, Serializable{
         String visitDuration = timeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
-                DELIMITER+visitDuration;
+                DELIMITER+visitDuration+TERMINATOR;
     }
 
     /**
@@ -158,5 +162,20 @@ public class VisitorDB implements RequestUtil, Serializable{
      */
     public boolean validCurrentVisitor(String visitorID) {
         return currentVisitors.containsKey(visitorID);
+    }
+
+    /**
+     * Generate unique random id
+     * @return unique 10 digit id
+     */
+    public int generateVisitorID(){
+        Random random = new Random();
+        int id = random.nextInt(999999999)+1000000000;
+        //Check if id is already in use
+        if(uniqueVisitorIds.contains(id)){
+            generateVisitorID();
+        }
+        return id;
+
     }
 }

@@ -16,21 +16,9 @@ import main.java.Model.Visitor.VisitorDB;
  */
 public class RequestParser implements RequestUtil {
     /**
-     * Library system to keep track of library state
+     * Library system to keep track of library state and system databases
      */
     private LibrarySystem librarySystem;
-    /**
-     * Database to keep track of books
-     */
-    private BookDB bookDB;
-    /**
-     * Database to keep track of visitors
-     */
-    private VisitorDB visitorDB;
-    /**
-     * Database to keep track of book checkouts by visitors
-     */
-    private CheckoutDB checkoutDB;
     /**
      * Keeps time consistent within the system.
      */
@@ -47,14 +35,10 @@ public class RequestParser implements RequestUtil {
 
     /**
      * Creates a new RequestParser
-     * @param bookDB The system's database of Books
-     * @param visitorDB The system's database of visitors
-     * @param checkoutDB The system's database of transactions (checkout, purchase, return)
+     * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
-    public RequestParser(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
-        this.bookDB = bookDB;
-        this.visitorDB = visitorDB;
-        this.checkoutDB = checkoutDB;
+    public RequestParser(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
         partial = "";
     }
 
@@ -119,34 +103,39 @@ public class RequestParser implements RequestUtil {
         }
         switch (command) {
             case REGISTER_REQUEST:
-                request = new RegisterVisitor(visitorDB, params);
+                request = new RegisterVisitor(librarySystem, params);
                 break;
             case ARRIVE_REQUEST:
                 request = new BeginVisit(librarySystem, params);
                 break;
             case DEPART_REQUEST:
-                request = new EndVisit(visitorDB, params);
+                request = new EndVisit(librarySystem, params);
                 break;
             case INFO_REQUEST:
-                request = new LibraryBookSearch(bookDB, params);
+                request = new LibraryBookSearch(librarySystem, params);
                 break;
             case BORROW_REQUEST:
                 request = new BorrowBook(librarySystem, params);
                 break;
             case BORROWED_REQUEST:
-                request = new FindBorrowedBooks(visitorDB, params);
+                request = null;
+                //request = new FindBorrowedBooks(visitorDB, params);
                 break;
             case RETURN_REQUEST:
-                request = new ReturnBook(checkoutDB, params);
+                request = null;
+                //request = new ReturnBook(checkoutDB, params);
                 break;
             case PAY_REQUEST:
-                request = new PayFine(checkoutDB, params);
+                request = null;
+                //request = new PayFine(checkoutDB, params);
                 break;
             case SEARCH_REQUEST:
-                request = new BookStoreSearch(bookDB, params);
+                request = null;
+                //request = new BookStoreSearch(bookDB, params);
                 break;
             case BUY_REQUEST:
-                request = new BookPurchase(bookDB, params);
+                request = null;
+                //request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
                 request = new AdvanceTime(params);

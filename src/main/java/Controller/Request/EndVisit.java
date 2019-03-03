@@ -1,5 +1,6 @@
 package main.java.Controller.Request;
 
+import main.java.Model.Library.LibrarySystem;
 import main.java.Model.Visitor.VisitorDB;
 
 /**
@@ -10,9 +11,9 @@ import main.java.Model.Visitor.VisitorDB;
 public class EndVisit implements Request {
 
     /**
-     * The visitor database of the library
+     * The library system holding system databases
      */
-    private VisitorDB visitorDB;
+    private LibrarySystem librarySystem;
     /**
      * Params in the command
      */
@@ -25,11 +26,11 @@ public class EndVisit implements Request {
     /**
      * Create a new end visit request given the visitor database
      * and the parameters for the request.
-     * @param visitorDB The visitor database
+     * @param librarySystem The visitor database
      * @param params The parameters that follow a request command
      */
-    public EndVisit(VisitorDB visitorDB, String params) {
-        this.visitorDB = visitorDB;
+    public EndVisit(LibrarySystem librarySystem, String params) {
+        this.librarySystem = librarySystem;
         this.params = params;
     }
 
@@ -43,6 +44,7 @@ public class EndVisit implements Request {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
             visitorID = parts[0];
+            return PROPER_PARAM;
         }
         return PARAM_COUNT;
     }
@@ -58,7 +60,6 @@ public class EndVisit implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        return null;
+        return librarySystem.endVisit(visitorID);
     }
 }

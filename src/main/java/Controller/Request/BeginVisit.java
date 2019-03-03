@@ -9,11 +9,6 @@ import main.java.Model.Visitor.VisitorDB;
  * @author Michael Kha
  */
 public class BeginVisit implements Request {
-
-    /**
-     * The visitor database of the library
-     */
-    private VisitorDB visitorDB;
     /**
      * The librarySystem. Used to check library closed or open state.
      */
@@ -30,7 +25,7 @@ public class BeginVisit implements Request {
     /**
      * Create a new begin visit request given the visitor database
      * and the parameters for the request.
-     * @param librarySystem The library system
+     * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
     public BeginVisit(LibrarySystem librarySystem, String params) {
@@ -48,6 +43,7 @@ public class BeginVisit implements Request {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
             visitorID = parts[0];
+            return PROPER_PARAM;
         }
         return PARAM_COUNT;
     }
@@ -62,8 +58,6 @@ public class BeginVisit implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        //Call beginVisit method in librarySystem first
-        return librarySystem.beginVisit(visitorID, visitorDB);
+        return librarySystem.beginVisit(visitorID);
     }
 }

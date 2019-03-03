@@ -60,11 +60,11 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
-        library = new LibrarySystem();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB(visitorDB, bookDB);
-        parser = new RequestParser(bookDB, visitorDB, checkoutDB);
+        library = new LibrarySystem(visitorDB,checkoutDB,bookDB);
+        parser = new RequestParser(library);
     }
 
     /**
@@ -77,7 +77,8 @@ public class LBServer {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
-        parser = new RequestParser(bookDB, visitorDB, checkoutDB);
+        this.library = new LibrarySystem(visitorDB, checkoutDB, bookDB);
+        parser = new RequestParser(library);
     }
 
     /**

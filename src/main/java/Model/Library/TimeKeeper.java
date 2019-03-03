@@ -188,9 +188,9 @@ public class TimeKeeper implements RequestUtil{
      * @return String representation of duration between LocalDayTime objects
      */
     public String calculateDuration(LocalDateTime start, LocalDateTime end) {
-        String hours = Long.toString(ChronoUnit.HOURS.between(start, end));
-        String minutes = Long.toString(ChronoUnit.MINUTES.between(start, end));
-        String seconds = Long.toString(ChronoUnit.SECONDS.between(start, end));
+        String hours = Long.toString(ChronoUnit.HOURS.between(start, end)%24);
+        String minutes = Long.toString(ChronoUnit.MINUTES.between(start, end)%60);
+        String seconds = Long.toString(ChronoUnit.SECONDS.between(start, end)%60);
 
         return hours+":"+minutes+":"+seconds;
     }
