@@ -4,6 +4,7 @@ import main.java.Model.Book.BookInfo;
 import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class LibrarySystem {
     /**
      * Collection of library states used during state transitions.
      */
-    private Map<String,LibraryState> states;
+    private Map<String,LibraryState> libraryStates;
 
     /**
      * Represents the current state of the library (closed or open).
@@ -49,6 +50,12 @@ public class LibrarySystem {
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.bookDB = bookDB;
+
+        //Add Library States
+        libraryStates = new HashMap<>();
+        libraryStates.put("LibraryClosed", new LibraryClosed());
+        libraryStates.put("LibraryOpen", new LibraryOpen());
+        currentLibraryState = libraryStates.get("LibraryOpen");
     }
 
     /**

@@ -44,6 +44,7 @@ public class EndVisit implements Request {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
             visitorID = parts[0];
+            return PROPER_PARAM;
         }
         return PARAM_COUNT;
     }

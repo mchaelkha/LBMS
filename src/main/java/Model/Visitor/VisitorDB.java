@@ -5,8 +5,7 @@ import main.java.Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The visitor database that is used by the library to manage visitor commands
@@ -37,6 +36,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
+     * Used to keep track of unique 10 digit generated ids
+     */
+    private Set<Integer> uniqueVisitorIds;
+
+    /**
      * Max number of transactions for a visitor
      */
     private static int MAX_NUMBER_OF_TRANSACTIONS = 5;
@@ -53,8 +57,8 @@ public class VisitorDB implements RequestUtil, Serializable{
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
 
-        //initialize nextVisitorID (All IDs need to be a 10 digit number)
-        nextVisitorID = INITIAL_VISITOR_ID;
+        //initialize uniqueVisitorIds (All IDs need to be unique 10 digit numbers)
+        uniqueVisitorIds = new HashSet<>();
     }
 
     /**
@@ -74,10 +78,10 @@ public class VisitorDB implements RequestUtil, Serializable{
             }
         }
         //No duplicate was found. Register new visitor.
-        int newVisitorID = nextVisitorID;
-        nextVisitorID++;
+        int newVisitorID = generateVisitorID();
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
+
         TimeKeeper timeKeeper = TimeKeeper.getInstance();
         String registeredDate = timeKeeper.readDate();
         return REGISTER_REQUEST+DELIMITER+newVisitorIDString
@@ -158,5 +162,20 @@ public class VisitorDB implements RequestUtil, Serializable{
      */
     public boolean validCurrentVisitor(String visitorID) {
         return currentVisitors.containsKey(visitorID);
+    }
+
+    /**
+     * Generate unique random id
+     * @return unique 10 digit id
+     */
+    public int generateVisitorID(){
+        Random random = new Random();
+        int id = random.nextInt(999999999)+1000000000;
+        //Check if id is already in use
+        if(uniqueVisitorIds.contains(id)){
+            generateVisitorID();
+        }
+        return id;
+
     }
 }
