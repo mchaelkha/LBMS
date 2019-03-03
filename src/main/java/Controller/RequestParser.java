@@ -110,8 +110,7 @@ public class RequestParser implements RequestUtil {
                 request = new BeginVisit(librarySystem, params);
                 break;
             case DEPART_REQUEST:
-                request = null;
-                //request = new EndVisit(visitorDB, params);
+                request = new EndVisit(librarySystem, params);
                 break;
             case INFO_REQUEST:
                 request = null;

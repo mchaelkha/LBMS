@@ -25,7 +25,7 @@ public class BeginVisit implements Request {
     /**
      * Create a new begin visit request given the visitor database
      * and the parameters for the request.
-     * @param librarySystem The library system
+     * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
     public BeginVisit(LibrarySystem librarySystem, String params) {

@@ -123,7 +123,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * @param visitorID The visitor id to end a visit for
      */
     public String endVisit(String visitorID) {
-        //Check if visitorID is not currently in current visitors
+        //Check if visitorID is not in current visitors
         if(currentVisitors.containsKey(visitorID)){
             //Response = "arrive,invalid-id;"
             return DEPART_REQUEST+DELIMITER+INVALID_ID+TERMINATOR;

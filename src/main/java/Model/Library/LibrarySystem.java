@@ -58,6 +58,32 @@ public class LibrarySystem {
     }
 
     /**
+     * Delegates registerVisitor command to VisitorDB
+     * @return formatted string regarding the success of the registerVisitor command
+     */
+    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
+        return visitorDB.registerVisitor(firstName, lastName, address, phoneNumber);
+    }
+
+    /**
+     * Delegates beginVisit visitor command to library concrete state
+     * @param visitorID the visitor returning the book
+     * @return formatted string regarding the success of the beginVisit command
+     */
+    public String beginVisit(String visitorID){
+        return currentLibraryState.beginVisit(visitorID, visitorDB);
+    }
+
+    /**
+     * Delegates endVisit visitor command to VisitorDB
+     * @param visitorID the visitor ending their visit
+     * @return formatted string regarding the success of the endVisit command
+     */
+    public String endVisit(String visitorID) {
+        return visitorDB.endVisit(visitorID);
+    }
+
+    /**
      * Delegates checkoutBook visitor command to library concrete state.
      * @param visitorID the visitor borrowing a book
      * @param isbn the book to be checked out
@@ -65,23 +91,6 @@ public class LibrarySystem {
      */
     public String checkoutBook(String visitorID, String isbn) {
         return currentLibraryState.checkoutBook(timeKeeper.getClock(),visitorID, isbn, checkoutDB, visitorDB);
-    }
-
-    /**
-     * Delegates beginVisit visitor command to library concrete state
-     * @param visitorID the visitor returning the book
-     * @return the book to be returned by the visitor
-     */
-    public String beginVisit(String visitorID){
-        return currentLibraryState.beginVisit(visitorID, visitorDB);
-    }
-
-    /**
-     * Delegates registerVisitor command to VisitorDB
-     * @return formatted string regarding the success of the command
-     */
-    public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
-        return visitorDB.registerVisitor(firstName, lastName, address, phoneNumber);
     }
 
     /**
