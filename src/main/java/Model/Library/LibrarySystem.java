@@ -3,8 +3,10 @@ import Controller.Request.RequestUtil;
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
+import Model.Checkout.Transaction;
 import Model.Visitor.VisitorDB;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,12 +148,27 @@ public class LibrarySystem implements RequestUtil{
 
     /**
      * @param visitorID visitor
-     * @param visitorDB visitor database
-     * @param checkoutDB checkout database
+     * @param bookIDs list of books to be returned
      * @return String whether returnBook command was successful
      */
-    public String returnBook(String visitorID, VisitorDB visitorDB, CheckoutDB checkoutDB) {
-        return null;
+    public String returnBooks(String visitorID, List<String> bookIDs) {
+        double totalFine = 0;
+        ArrayList<String> overdue = new ArrayList<>();
+        Transaction t;
+
+        for(int i = 0; i < bookIDs.size(); i++){
+            t = checkoutDB.returnBook(timeKeeper.getClock(), visitorID, bookIDs.get(i));
+            if(t.getFineAmount() > 0){
+                totalFine = totalFine + t.getFineAmount();
+                overdue.add(bookIDs.get(i));
+            }
+        }
+        if(overdue.size() > 0){
+            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + overdue.toString();
+        }
+        else {
+            return RETURN_REQUEST + SUCCESS;
+        }
     }
 
     //TODO delegate to checkoutDB and create method in checkoutDB to pay all or part of an outstanding fine

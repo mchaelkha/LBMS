@@ -136,26 +136,7 @@ public class CheckoutDB implements Serializable {
         return fines;
     }
 
-    /**
-     * Calculate the fines accrued by all visitors.
-     * @return The total fine amount
-     */
-    public int calculateTotalFines() {
-        int fines = 0;
-        for (List<Transaction> transactionList : openLoans.values()) {
-            for (Transaction t : transactionList) {
-                fines += t.getFineAmount();
-            }
-        }
 
-        for (List<Transaction> transactionList : closedLoans.values()) {
-            for (Transaction t : transactionList) {
-                fines += t.getFineAmount();
-            }
-        }
-
-        return fines;
-    }
 
     /**
      * Return to the Library a given book that the given visitor has checked out by isbn.
@@ -170,14 +151,16 @@ public class CheckoutDB implements Serializable {
             for (Transaction t: this.openLoans.get(visitorID)) {
                 if(t.getIsbn().equals(isbn)) {
                     t.returnBook(returnDate);
-                    this.openLoans.get(visitorID).remove(t);
+                    if(t.getFineAmount() == 0) {
+                        this.openLoans.get(visitorID).remove(t);
 
-                    //TODO remove transaction from visitorInfo transactions
+                        //TODO remove transaction from visitorInfo transactions
 
-                    if(!this.closedLoans.containsKey(visitorID)) {
-                        this.closedLoans.put(visitorID, new ArrayList<Transaction>());
+                        if (!this.closedLoans.containsKey(visitorID)) {
+                            this.closedLoans.put(visitorID, new ArrayList<Transaction>());
+                        }
+                        this.closedLoans.get(visitorID).add(t);
                     }
-                    this.closedLoans.get(visitorID).add(t);
 
                     return t;
                 }

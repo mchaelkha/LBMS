@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Checkout.CheckoutDB;
+import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,11 @@ public class ReturnBook implements Request {
     /**
      * The checkout database of the library
      */
-    private CheckoutDB checkoutDB;
+   // private CheckoutDB checkoutDB;
+    /**
+     * The LibrarySystem.
+     */
+    private LibrarySystem librarySystem;
     /**
      * Params in the command
      */
@@ -34,11 +39,11 @@ public class ReturnBook implements Request {
     /**
      * Create a new return book request given the checkout database
      * and the parameters for the request.
-     * @param checkoutDB The checkout database
+     * @param librarySystem The checkout database
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(CheckoutDB checkoutDB, String params) {
-        this.checkoutDB = checkoutDB;
+    public ReturnBook(LibrarySystem librarySystem, String params) {
+        this.librarySystem = librarySystem;
         this.params = params;
     }
 
@@ -71,6 +76,6 @@ public class ReturnBook implements Request {
             return check;
         }
         // TODO: implement by calling right methods in DB
-        return null;
+        return librarySystem.returnBooks(visitorID, bookIDs);
     }
 }

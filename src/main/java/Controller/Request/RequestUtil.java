@@ -33,6 +33,7 @@ public interface RequestUtil {
     String INVALID_BOOK_ID = "invalid-book-id";
     String OUTSTANDING_FINE = "outstanding-fine";
     String BOOK_LIMIT_EXCEDED = "book-limit-exceeded";
+    String OVERDUE = "overdue";
     String SUCCESS = "success";
     String CLOSED_LIBRARY = "closed-library";
     String NEW_LINE = System.lineSeparator();

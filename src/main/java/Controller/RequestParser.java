@@ -110,7 +110,7 @@ public class RequestParser implements RequestUtil {
                 break;
             case RETURN_REQUEST:
                 request = null;
-                //request = new ReturnBook(checkoutDB, params);
+                request = new ReturnBook(librarySystem, params);
                 break;
             case PAY_REQUEST:
                 request = null;
