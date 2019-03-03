@@ -108,7 +108,6 @@ public class RequestParser implements RequestUtil {
                 request = new FindBorrowedBooks(librarySystem, params);
                 break;
             case RETURN_REQUEST:
-                request = null;
                 request = new ReturnBook(librarySystem, params);
                 break;
             case PAY_REQUEST:
