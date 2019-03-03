@@ -67,12 +67,12 @@ public class LibraryBookSearch implements Request {
         if (authors.size() == 1 && authors.get(0).equals(IGNORE)) {
             authors.clear();
         }
-        String[] titleArr = firstSplit[0].split(DELIMITER);
+        String[] titleArr = firstSplit[0].split(",(?!\\s)");
         title = titleArr[0];
-        String[] isbnPublisherSort = firstSplit[2].split(DELIMITER);
-        isbn = isbnPublisherSort[0];
-        publisher = isbnPublisherSort[1];
-        sort = isbnPublisherSort[2];
+        String[] isbnPublisherSort = firstSplit[2].split(",(?!\\s)");
+        isbn = isbnPublisherSort[1];
+        publisher = isbnPublisherSort[2];
+        sort = isbnPublisherSort[3];
         return PROPER_PARAM;
     }
 
