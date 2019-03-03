@@ -57,8 +57,6 @@ public class BeginVisit implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        //Call beginVisit method in librarySystem first
         return librarySystem.beginVisit(visitorID);
     }
 }

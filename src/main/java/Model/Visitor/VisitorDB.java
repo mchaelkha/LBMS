@@ -91,28 +91,30 @@ public class VisitorDB implements RequestUtil, Serializable{
     public String beginVisit(String visitorID) {
         //Check if visitor with id already exists in currentVisitors
         if (currentVisitors.containsKey(visitorID)) {
-            //Response = "arrive,duplicate";
+            //Response = "arrive,duplicate;"
             return ARRIVE_REQUEST+DELIMITER+DUPLICATE+TERMINATOR;
         }
         //Check if visitor has not been registered yet
         else if (!registeredVisitors.containsKey(visitorID)){
-            //Response = "arrive,invalid-id";
+            //Response = "arrive,invalid-id;"
             return ARRIVE_REQUEST+DELIMITER+INVALID_ID+TERMINATOR;
         }
-        //Add visitor to currentVisitors and update its state
+        //Add visitor to currentVisitors
         else{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
+
+            //Record visit date and time
             TimeKeeper timeKeeper = TimeKeeper.getInstance();
             String visitDate = timeKeeper.readDate();
-            String visitTime = timeKeeper.readTime();
+            String visitStartTime = timeKeeper.readTime();
 
-            //Get LocalDateTime for the startVisit time
+            //Get LocalDateTime for the startVisit time used for endVisit response
             startVisitDayTime = timeKeeper.getClock();
 
-            //Response = "arrive,visitorID,visitDate,visitStartTime"
+            //Response = "arrive,visitorID,visitDate,visitStartTime;"
             return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
-                    +visitDate+DELIMITER+visitTime+TERMINATOR;
+                    +visitDate+DELIMITER+visitStartTime+TERMINATOR;
         }
     }
 
@@ -138,7 +140,7 @@ public class VisitorDB implements RequestUtil, Serializable{
         String visitDuration = timeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
-                DELIMITER+visitDuration;
+                DELIMITER+visitDuration+TERMINATOR;
     }
 
     /**
