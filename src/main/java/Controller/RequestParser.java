@@ -113,8 +113,7 @@ public class RequestParser implements RequestUtil {
                 request = new EndVisit(librarySystem, params);
                 break;
             case INFO_REQUEST:
-                request = null;
-                //request = new LibraryBookSearch(bookDB, params);
+                request = new LibraryBookSearch(librarySystem, params);
                 break;
             case BORROW_REQUEST:
                 request = new BorrowBook(librarySystem, params);

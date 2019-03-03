@@ -1,8 +1,10 @@
 package main.java.Model.Library;
 import main.java.Model.Book.BookDB;
+import main.java.Model.Book.BookInfo;
 import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,6 +83,20 @@ public class LibrarySystem {
      */
     public String endVisit(String visitorID) {
         return visitorDB.endVisit(visitorID);
+    }
+
+    /**
+     * Delegates searching books to Book Database
+     * @param title Book title
+     * @param authors Book author
+     * @param isbn Book isbn
+     * @param publisher Book publisher
+     * @param sort sort order (title, publish-date, book-status)
+     * @return
+     */
+    public Map<String, BookInfo> searchBooks(String title, List<String> authors,
+                                             String isbn, String publisher, String sort) {
+        return bookDB.searchBooks(title, authors, isbn, publisher, sort);
     }
 
     /**
