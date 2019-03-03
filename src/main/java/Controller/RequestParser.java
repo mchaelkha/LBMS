@@ -9,7 +9,6 @@ import main.java.Model.Library.TimeKeeper;
 import main.java.Model.Visitor.VisitorDB;
 
 /**
- * Work in progress
  * Parse strings into requests to be executed. Parsing checks for errors
  * in invalid format.
  *
@@ -132,7 +131,7 @@ public class RequestParser implements RequestUtil {
                 request = new LibraryBookSearch(bookDB, params);
                 break;
             case BORROW_REQUEST:
-                request = new BorrowBook(checkoutDB, params);
+                request = new BorrowBook(librarySystem, params);
                 break;
             case BORROWED_REQUEST:
                 request = new FindBorrowedBooks(visitorDB, params);
