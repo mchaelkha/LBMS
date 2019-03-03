@@ -70,14 +70,6 @@ public class BorrowBook implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        // TODO: implement by calling right methods in DB
-        //Call checkoutBook() in Library System -> checkoutBook() in CheckoutDB
-        // -> checkoutBook() in VisitorDB
-        String response;
-        for (String bookID : bookIDs) {
-            response = librarySystem.checkoutBook(visitorID,bookID);
-        }
-        //return librarySystem.checkoutBook(visitorID,)
-        return null;
+        return librarySystem.checkoutBooks(visitorID,bookIDs);
     }
 }

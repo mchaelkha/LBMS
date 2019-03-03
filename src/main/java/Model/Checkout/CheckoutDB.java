@@ -27,6 +27,11 @@ public class CheckoutDB implements Serializable {
      */
     private Map<String, List<Transaction>> closedLoans;
     /**
+     * Transactions to be added to openLoans if all books being
+     * borrowed by a visitor are valid
+     */
+    private List<Transaction> transactionsInProgress;
+    /**
      * The max number of transactions a visitor can haave.
      */
     private final static int MAX_NUM_OF_TRANSACTIONS = 5;
@@ -37,22 +42,59 @@ public class CheckoutDB implements Serializable {
     public CheckoutDB(VisitorDB visitorDB, BookDB bookDB) {
         openLoans = new HashMap<>();
         closedLoans = new HashMap<>();
+        transactionsInProgress = new ArrayList<>();
     }
 
     /**
      * Create a checkout transaction using a visitor ID and a book's ISBN.
      * @param checkoutDate the date and time of the transaction 
      * @param visitorID The visitor ID
-     * @param isbn The book's ISBN
+     * @param bookIds Book isbns
      * @return The new transaction if it was valid, otherwise null.
      */
-    public Transaction checkout(LocalDateTime checkoutDate, String visitorID, String isbn) {
-        Transaction transaction = new Transaction(checkoutDate, isbn);
-        if(!this.openLoans.containsKey(visitorID)) {
-            this.openLoans.put(visitorID, new ArrayList<Transaction>());
+    public List<Transaction> checkout(LocalDateTime checkoutDate, String visitorID, List<String> bookIds) {
+        transactionsInProgress.clear();
+        for (String isbn : bookIds) {
+            Transaction transaction = new Transaction(checkoutDate, isbn);
+            transactionsInProgress.add(transaction);
         }
-        this.openLoans.get(visitorID).add(transaction);
-        return transaction;
+        addTransactionsInProcess(visitorID);
+        return transactionsInProgress;
+    }
+
+    /**
+     * Check if visitor currently has book borrowing limit
+     * @param visitorID visitor borrowing
+     * @return true if visitor has book borrowing limit
+     */
+    public boolean hasBookLimit(String visitorID) {
+        return openLoans.get(visitorID).size()==MAX_NUM_OF_TRANSACTIONS;
+    }
+
+    /**
+     * Check if borrowing the books in a BookBorrow command will reach the book limit
+     * @param visitorID visitor doing the BookBorrow command
+     * @param bookIds books being borrowed
+     * @return true if adding these books will reach visitor book limit
+     */
+    public boolean willReachBookLimit(String visitorID, List<String> bookIds){
+        return (openLoans.get(visitorID).size()+bookIds.size())>=MAX_NUM_OF_TRANSACTIONS;
+    }
+
+    /**
+     * Used to add all the book transactions of a borrow book request
+     * if all single book checkout requests were valid.
+     */
+    public void addTransactionsInProcess(String visitorID){
+        for (Transaction transaction : transactionsInProgress) {
+            //Visitor's first time making a transaction
+            if(!openLoans.containsKey(visitorID)){
+                openLoans.put(visitorID,this.transactionsInProgress);
+            }
+            else{
+                openLoans.get(visitorID).add(transaction);
+            }
+        }
     }
 
     /**
@@ -71,11 +113,6 @@ public class CheckoutDB implements Serializable {
             }
         }
         return hasOutstandingFine;
-    }
-
-
-    public boolean hasBookLimit(String visitorID) {
-        return openLoans.get(visitorID).size()==MAX_NUM_OF_TRANSACTIONS;
     }
 
     /**

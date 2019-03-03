@@ -1,4 +1,5 @@
 package main.java.Model.Library;
+import main.java.Controller.Request.RequestUtil;
 import main.java.Model.Book.BookDB;
 import main.java.Model.Book.BookInfo;
 import main.java.Model.Checkout.CheckoutDB;
@@ -13,7 +14,7 @@ import java.util.Map;
  * almost all functionality to other Database and helper classes.
  * @author Hersh Nagpal
  */
-public class LibrarySystem {
+public class LibrarySystem implements RequestUtil{
     private static int OPEN_HOUR = 9;
     private static int CLOSE_HOUR = 12+9;
 
@@ -44,7 +45,10 @@ public class LibrarySystem {
      * BookDataBase to help perform visitor requests dealing with library books
      */
     private BookDB bookDB;
-
+    /**
+     * Tracks the last book search made by visitor in order to complete borrow book command
+     */
+    private Map<String,BookInfo> lastBookSearch;
 
     public LibrarySystem(VisitorDB visitorDB, CheckoutDB checkoutDB, BookDB bookDB) {
         this.visitorDB = visitorDB;
@@ -99,21 +103,31 @@ public class LibrarySystem {
      * @param isbn Book isbn
      * @param publisher Book publisher
      * @param sort sort order (title, publish-date, book-status)
-     * @return
+     * @return Map of (Isbns, BookInfos) representing a book search
      */
     public Map<String, BookInfo> searchBooks(String title, List<String> authors,
                                              String isbn, String publisher, String sort) {
-        return bookDB.searchBooks(title, authors, isbn, publisher, sort);
+        //Store last book search in library system for Borrow Book command
+        lastBookSearch = bookDB.searchBooks(title, authors, isbn, publisher, sort);
+        return lastBookSearch;
     }
 
     /**
      * Delegates checkoutBook visitor command to library concrete state.
      * @param visitorID the visitor borrowing a book
-     * @param isbn the book to be checked out
+     * @param bookIds the books to be checked out
      * @return formatted string regarding the success of the command
      */
-    public String checkoutBook(String visitorID, String isbn) {
-        return currentLibraryState.checkoutBook(timeKeeper.getClock(),visitorID, isbn, checkoutDB, visitorDB);
+    public String checkoutBooks(String visitorID, List<String> bookIds) {
+        //Check that isbns in Borrow Book request match the IDs in the most recent library book search
+        for (String isbn : bookIds) {
+            if (!lastBookSearch.containsKey(isbn)) {
+                //Response = "borrow,invalid-book-id,{id};"
+                String bookIdsString = String.join(",", bookIds);
+                return BORROW_REQUEST+DELIMITER+INVALID_BOOK_ID+DELIMITER+bookIdsString+TERMINATOR;
+            }
+        }
+        return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds, checkoutDB, visitorDB);
     }
 
     /**

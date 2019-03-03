@@ -4,6 +4,7 @@ import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The state interface that allows the Library's activities to change depending
@@ -15,9 +16,9 @@ public interface LibraryState {
     /**
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
-     * @param isbn the isbn of the book to check out
+     * @param bookIds the isbns of the books to check out
      */
-    String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkOutDB, VisitorDB visitorDB);
+    String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkOutDB, VisitorDB visitorDB);
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.

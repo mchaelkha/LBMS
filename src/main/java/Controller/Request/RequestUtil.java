@@ -30,6 +30,7 @@ public interface RequestUtil {
     String DUPLICATE = "duplicate";
     String INVALID_ID = "invalid-id";
     String INVALID_VISITOR_ID = "invalid-visitor-id";
+    String INVALID_BOOK_ID = "invalid-book-id";
     String OUTSTANDING_FINE = "outstanding-fine";
     String BOOK_LIMIT_EXCEDED = "book-limit-exceeded";
     String SUCCESS = "success";

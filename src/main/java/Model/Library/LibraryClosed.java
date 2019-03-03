@@ -5,6 +5,7 @@ import main.java.Model.Checkout.CheckoutDB;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The state of the Library when it is closed. Checkouts and visits not allowed.
@@ -16,11 +17,11 @@ public class LibraryClosed implements LibraryState, RequestUtil {
     /**
      * Returns error string notifying visitor of closed library state.
      * @param visitorID the ID of the visitor checking out the books
-     * @param isbn the isbn of the book to check out
+     * @param bookIds the isbns of the books to check out
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkoutDB, VisitorDB visitorDB) {
         return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY+TERMINATOR;
     }
 

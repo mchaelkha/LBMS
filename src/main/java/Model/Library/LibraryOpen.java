@@ -6,6 +6,7 @@ import main.java.Model.Checkout.Transaction;
 import main.java.Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The state of the Library when it is open. Checkouts and visits are allowed.
@@ -17,19 +18,19 @@ class LibraryOpen implements LibraryState,RequestUtil {
     /**
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
-     * @param isbn the isbn of the book to check out
+     * @param bookIds the isbns of the books to check out
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBook(LocalDateTime checkoutDate, String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds, CheckoutDB checkoutDB, VisitorDB visitorDB) {
         //Check if visitor has outstanding fine
         if (checkoutDB.hasOutstandingFine(visitorID)) {
             int fineAmount = checkoutDB.calculateFine(visitorID);
             //return "borrow,outstanding-fine,amount"
             return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount+TERMINATOR;
         }
-        //Check if visitor has book limit
-        else if(checkoutDB.hasBookLimit(visitorID)){
+        //Check if visitor has book limit or if request will exceed 5 borrowed book limit
+        else if(checkoutDB.hasBookLimit(visitorID) || checkoutDB.willReachBookLimit(visitorID,bookIds)){
             return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED+TERMINATOR;
         }
         //Check if visitorID is a valid id
@@ -37,9 +38,10 @@ class LibraryOpen implements LibraryState,RequestUtil {
             return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
         }
         else{
-            //call checkout() in CheckoutDB
-            Transaction transaction = checkoutDB.checkout(checkoutDate, visitorID, isbn);
-            String dueDate = transaction.getDueDate();
+            //Successful checkout
+            List<Transaction> transactions = checkoutDB.checkout(checkoutDate, visitorID, bookIds);
+            //All due dates for transactions made are the same
+            String dueDate = transactions.get(0).getDueDate();
             return BORROW_REQUEST+DELIMITER+dueDate+TERMINATOR;
         }
     }
