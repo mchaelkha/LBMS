@@ -30,11 +30,28 @@ public class LibrarySystem {
     private TimeKeeper timeKeeper;
 
     /**
+     * VisitorDataBase to help complete visitor command functionality
+     */
+    private VisitorDB visitorDB;
+
+    /**
+     * CheckoutDataBase to help complete visitor command functionality
+     */
+    private CheckoutDB checkoutDB;
+
+    //TODO Add LibrarySystem constructor to set visitorDB and checkoutDB
+    //public LibrarySystem()
+
+    /**
      * Gives the status of the library
      * @return Whether the library is open.
      */
     public boolean isOpen() {
         return timeKeeper.isLibraryOpen(OPEN_HOUR, CLOSE_HOUR);
+    }
+
+    public String checkoutBook(String visitorID, String isbn) {
+        return checkoutBookHelper(visitorID, isbn, checkoutDB, visitorDB);
     }
 
     /**
@@ -43,7 +60,7 @@ public class LibrarySystem {
      * @param isbn the book to be checked out
      * @return a formatted string regarding the success of the command
      */
-    public String checkoutBook(String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
+    public String checkoutBookHelper(String visitorID, String isbn, CheckoutDB checkoutDB, VisitorDB visitorDB) {
         return currentLibraryState.checkoutBook(timeKeeper.getClock(), visitorID, isbn, checkoutDB, visitorDB);
     }
 

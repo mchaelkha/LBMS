@@ -15,10 +15,6 @@ import java.util.List;
 public class BorrowBook implements Request {
 
     /**
-     * The checkout database of the library
-     */
-    private CheckoutDB checkoutDB;
-    /**
      * The librarySystem. Used to check library closed or open state.
      */
     private LibrarySystem librarySystem;
@@ -38,11 +34,11 @@ public class BorrowBook implements Request {
     /**
      * Create a new borrow book request given the book database and the
      * parameters for the request.
-     * @param checkoutDB The checkout database
+     * @param librarySystem used to delegate command actions
      * @param params The parameters that follow a request command
      */
-    public BorrowBook(CheckoutDB checkoutDB, String params) {
-        this.checkoutDB = checkoutDB;
+    public BorrowBook(LibrarySystem librarySystem, String params) {
+        this.librarySystem = librarySystem;
         this.params = params;
     }
 
@@ -77,9 +73,10 @@ public class BorrowBook implements Request {
         // TODO: implement by calling right methods in DB
         //Call checkoutBook() in Library System -> checkoutBook() in CheckoutDB
         // -> checkoutBook() in VisitorDB
-        /*for (String bookID : bookIDs) {
-            librarySystem.checkoutBook(visitorID,bookID);
-        }*/
+        String response;
+        for (String bookID : bookIDs) {
+            response = librarySystem.checkoutBook(visitorID,bookID);
+        }
         //return librarySystem.checkoutBook(visitorID,)
         return null;
     }
