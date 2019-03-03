@@ -75,7 +75,7 @@ public class LibrarySystem implements RequestUtil{
         //Add Library States
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
-        libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper, checkoutDB, visitorDB));
+        libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper, checkoutDB, visitorDB, bookDB));
         currentLibraryState = libraryStates.get(OPEN_STATE);
     }
 
