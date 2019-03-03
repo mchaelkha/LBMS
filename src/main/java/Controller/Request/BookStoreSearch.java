@@ -2,6 +2,7 @@ package Controller.Request;
 
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +17,9 @@ import java.util.Map;
 public class BookStoreSearch implements Request {
 
     /**
-     * The book database of the library
+     * The library
      */
-    private BookDB bookDB;
+    private LibrarySystem library;
     /**
      * Params in the command
      */
@@ -47,11 +48,11 @@ public class BookStoreSearch implements Request {
     /**
      * Create a new book store search request given the book database
      * and the parameters for the request.
-     * @param bookDB The book database
+     * @param library The library
      * @param params The parameters that follow a request command
      */
-    public BookStoreSearch(BookDB bookDB, String params) {
-        this.bookDB = bookDB;
+    public BookStoreSearch(LibrarySystem library, String params) {
+        this.library = library;
         this.params = params;
     }
 
@@ -86,8 +87,8 @@ public class BookStoreSearch implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        Map<String, BookInfo> search = bookDB.searchStore(
-                title, authors, isbn, publisher, sort);
+        Map<String, BookInfo> search = library.bookStoreSearch(title, authors,
+                isbn, publisher, sort);
         return buildString(search);
     }
 

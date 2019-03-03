@@ -159,9 +159,20 @@ public class LibrarySystem implements RequestUtil{
         return null;
     }
 
-    //TODO
-    public String bookStoreSearch() {
-        return null;
+    /**
+     * Search the book store for books with the given information.
+     * @param title The title
+     * @param authors The authors
+     * @param isbn The isbn
+     * @param publisher The publisher
+     * @param sort The sort order
+     * @return The mapping of hits to a unique ID
+     */
+    public Map<String, BookInfo> bookStoreSearch(String title,
+                                  List<String> authors,
+                                  String isbn,
+                                  String publisher, String sort) {
+        return bookDB.searchStore(title, authors, isbn, publisher, sort);
     }
 
     /**
