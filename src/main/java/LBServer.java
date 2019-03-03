@@ -120,6 +120,7 @@ public class LBServer {
             System.out.println(parser.processRequest(next));
         }
         scanner.close();
+        System.exit(0);
     }
 
     /**
