@@ -169,7 +169,7 @@ public class LibrarySystem implements RequestUtil{
     public String findBorrowedBooks(String visitorID){
         lastBorrowedBooks = new HashMap<>();
         List<Transaction> visitorTransactions = checkoutDB.findBorrowedBooks(visitorID);
-        String response = "";
+        String response = BORROWED_REQUEST + DELIMITER + visitorTransactions.size() + DELIMITER;
         //For each transaction, call method in visitorDB get book title and add to response string
         int id = 0;
         for(Transaction transaction: visitorTransactions){
