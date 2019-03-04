@@ -184,10 +184,10 @@ public class LibrarySystem implements RequestUtil{
             }
         }
         if(overdue.size() > 0){
-            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + overdue.toString();
+            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + overdue.toString() + TERMINATOR;
         }
         else {
-            return RETURN_REQUEST + SUCCESS;
+            return RETURN_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
         }
     }
 
