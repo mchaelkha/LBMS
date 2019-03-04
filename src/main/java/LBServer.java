@@ -71,7 +71,7 @@ public class LBServer {
     public LBServer() {
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
-        checkoutDB = new CheckoutDB(visitorDB, bookDB);
+        checkoutDB = new CheckoutDB();
         timeKeeper = new TimeKeeper();
         reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
@@ -84,7 +84,8 @@ public class LBServer {
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
      */
-    public LBServer(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB, TimeKeeper timeKeeper) {
+    public LBServer(BookDB bookDB, VisitorDB visitorDB,
+                    CheckoutDB checkoutDB, TimeKeeper timeKeeper) {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
