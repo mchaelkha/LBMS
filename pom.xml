@@ -8,6 +8,7 @@
     <artifactId>03-LBMS</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
+        <finalName>03-R1-project</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
