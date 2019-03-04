@@ -194,7 +194,7 @@ public class LibrarySystem implements RequestUtil{
      */
     public String returnBooks(String visitorID, List<String> bookIDs) {
         double totalFine = 0;
-        ArrayList<String> overdue = new ArrayList<>();
+        List<String> overdue = new ArrayList<>();
         Transaction t;
 
         for(int i = 0; i < bookIDs.size(); i++){
@@ -213,7 +213,8 @@ public class LibrarySystem implements RequestUtil{
             }
         }
         if(overdue.size() > 0){
-            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + overdue.toString() + TERMINATOR;
+            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + totalFine +
+                    DELIMITER + String.join(DELIMITER, overdue) + TERMINATOR;
         }
         else {
             return RETURN_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
