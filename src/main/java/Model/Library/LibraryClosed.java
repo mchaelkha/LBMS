@@ -1,8 +1,6 @@
 package Model.Library;
 
 import Controller.Request.RequestUtil;
-import Model.Checkout.CheckoutDB;
-import Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
 import java.util.List;
