@@ -213,8 +213,9 @@ public class LibrarySystem implements RequestUtil{
             }
         }
         if(overdue.size() > 0){
-            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER + totalFine +
-                    DELIMITER + String.join(DELIMITER, overdue) + TERMINATOR;
+            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER +
+                    String.format("$%.02f", totalFine) + DELIMITER +
+                    String.join(DELIMITER, overdue) + TERMINATOR;
         }
         else {
             return RETURN_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
@@ -240,8 +241,8 @@ public class LibrarySystem implements RequestUtil{
                 return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
             }
             else{
-                int remainingBalance = checkoutDB.payFine(visitorID, amount);
-                return PAY_REQUEST+SUCCESS+remainingBalance+TERMINATOR;
+                double remainingBalance = checkoutDB.payFine(visitorID, amount);
+                return PAY_REQUEST+DELIMITER+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
             }
         }
     }

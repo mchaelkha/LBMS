@@ -184,7 +184,6 @@ public class CheckoutDB implements Serializable {
      */
     public int payFine(String visitorID, int amount){
         List<Transaction> transactions = openLoans.get(visitorID);
-        transactions.addAll(closedLoans.get(visitorID));
         for (Transaction transaction : transactions) {
             int fineAmount = transaction.getFineAmount();
             if (fineAmount > 0) {
@@ -200,8 +199,7 @@ public class CheckoutDB implements Serializable {
                 }
             }
         }
-        int remainingBalance = calculateFine(visitorID);
-        return remainingBalance;
+        return calculateFine(visitorID);
     }
 
 }
