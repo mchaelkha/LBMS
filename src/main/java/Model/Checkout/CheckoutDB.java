@@ -67,7 +67,11 @@ public class CheckoutDB implements Serializable {
      * @return true if visitor has book borrowing limit
      */
     public boolean hasBookLimit(String visitorID) {
-        return openLoans.get(visitorID).size()==MAX_NUM_OF_TRANSACTIONS;
+        List<Transaction> transactions = openLoans.get(visitorID);
+        if (transactions == null) {
+            return false;
+        }
+        return transactions.size()==MAX_NUM_OF_TRANSACTIONS;
     }
 
     /**
@@ -77,7 +81,11 @@ public class CheckoutDB implements Serializable {
      * @return true if adding these books will reach visitor book limit
      */
     public boolean willReachBookLimit(String visitorID, List<String> bookIds){
-        return (openLoans.get(visitorID).size()+bookIds.size())>=MAX_NUM_OF_TRANSACTIONS;
+        List<Transaction> transactions = openLoans.get(visitorID);
+        if (transactions == null) {
+            return false;
+        }
+        return (transactions.size()+bookIds.size())>=MAX_NUM_OF_TRANSACTIONS;
     }
 
     /**
@@ -105,7 +113,11 @@ public class CheckoutDB implements Serializable {
         //Update fines in visitor's transactions and check for outstanding fines
         boolean hasOutstandingFine = false;
         //Iterate through visitor's transactions and check if there is an outstanding fine
-        for (Transaction transaction : openLoans.get(visitorID)) {
+        List<Transaction> transactions = openLoans.get(visitorID);
+        if (transactions == null) {
+            return false;
+        }
+        for (Transaction transaction : transactions) {
             transaction.setFine();
             if(transaction.getFineAmount()>0){
                 hasOutstandingFine = true;

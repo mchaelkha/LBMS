@@ -55,10 +55,11 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
         String response = "" + BUY_REQUEST + DELIMITER + SUCCESS + DELIMITER;
         List<BookInfo> booksPurchased = bookstore.purchaseBooks(
                 quantity, bookIDs);
-        response += String.valueOf(booksPurchased.size() * quantity);
+        response += String.valueOf(booksPurchased.size() * quantity) + DELIMITER;
         String isbn;
         BookInfo temp;
         for (BookInfo book : booksPurchased) {
+            response += NEW_LINE;
             isbn = book.getIsbn();
             // If book already in library, add copies
             if (books.containsKey(isbn)) {
@@ -70,9 +71,9 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
             }
             // Build response string
             response += book.toString();
-            response += DELIMITER + book.getTotalCopies() + NEW_LINE;
+            response += DELIMITER + book.getTotalCopies();
         }
-        return response;
+        return response + TERMINATOR;
     }
 
     /**

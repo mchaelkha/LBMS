@@ -64,6 +64,11 @@ public class LibrarySystem implements RequestUtil{
 
     /**
      * Create the library system that is responsible for knowing about the system's model.
+     * @param visitorDB The visitor database
+     * @param checkoutDB The checkout database
+     * @param bookDB The book database
+     * @param timeKeeper The time keeper
+     * @param reporter The reporter to create reports
      */
     public LibrarySystem(VisitorDB visitorDB, CheckoutDB checkoutDB, BookDB bookDB,
                          TimeKeeper timeKeeper, ReportGenerator reporter) {
@@ -89,6 +94,10 @@ public class LibrarySystem implements RequestUtil{
 
     /**
      * Delegates registerVisitor command to VisitorDB
+     * @param firstName First name
+     * @param lastName Last name
+     * @param address Address
+     * @param phoneNumber Phone number
      * @return formatted string regarding the success of the registerVisitor command
      */
     public String registerVisitor(String firstName, String lastName, String address, String phoneNumber) {
@@ -137,8 +146,8 @@ public class LibrarySystem implements RequestUtil{
      */
     public String checkoutBooks(String visitorID, List<String> bookIds) {
         //Check that isbns in Borrow Book request match the IDs in the most recent library book search
-        for (String isbn : bookIds) {
-            if (!lastBookSearch.containsKey(isbn)) {
+        for (String id : bookIds) {
+            if (!lastBookSearch.containsKey(id)) {
                 //Response = "borrow,invalid-book-id,{id};"
                 String bookIdsString = String.join(",", bookIds);
                 return BORROW_REQUEST+DELIMITER+INVALID_BOOK_ID+DELIMITER+bookIdsString+TERMINATOR;
@@ -215,7 +224,7 @@ public class LibrarySystem implements RequestUtil{
      * @return Response for the books purchased
      */
     public String bookPurchase(int quantity, List<String> bookIDs){
-        return bookDB.purchase(quantity, bookIDs) + TERMINATOR;
+        return bookDB.purchase(quantity, bookIDs);
     }
 
     /**
@@ -246,6 +255,7 @@ public class LibrarySystem implements RequestUtil{
      * @return Response containing a report about the library
      */
     public String libraryStatisticsReport(int days){
+        reporter.generateInfoReport(days);
         return null;
     }
 

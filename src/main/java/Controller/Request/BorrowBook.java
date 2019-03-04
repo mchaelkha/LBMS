@@ -51,7 +51,7 @@ public class BorrowBook implements Request {
      */
     @Override
     public String checkParams() {
-        String[] parts = params.split(DELIMITER, 2);
+        String[] parts = params.split(DELIMITER);
         if (parts.length > 1) {
             visitorID = parts[0];
             bookIDs = new ArrayList<>();
