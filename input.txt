@@ -7,7 +7,7 @@ borrow,1000000000,0,1,2;
 borrowed,1000000000;
 advance,7,2;
 return,1000000000,0;
-pay,???;
+pay,1000000000,8;
 datetime;
 advance,1;
 datetime;
