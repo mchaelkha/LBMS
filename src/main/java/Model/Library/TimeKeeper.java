@@ -41,12 +41,12 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
     /**
      * The delay in milliseconds before the task is performed the first time
      */
-    private static long TIMER_DELAY = 60000;
+    private static long TIMER_DELAY = 1000;
 
     /**
      * The delay milliseconds between time updates for the clock.
      */
-    private static long TIMER_INTERVAL = 60000; 
+    private static long TIMER_INTERVAL = 1000;
 
     /**
      * Constructs a new TimeKeeper. 
@@ -70,7 +70,7 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
      * Used by the TimerTask to keep track of time.
      */
     public void updateTime() {
-        this.clock = clock.plusMinutes(TIMER_INTERVAL/60000);
+        this.clock = clock.plusSeconds(1);
     }
 
     /**

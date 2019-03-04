@@ -1,7 +1,8 @@
 package Model.Library;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 public interface TimeUtil {
 
@@ -10,10 +11,14 @@ public interface TimeUtil {
      * @return String representation of duration between LocalDayTime objects
      */
     default String calculateDuration(LocalDateTime start, LocalDateTime end) {
-        String hours = Long.toString(ChronoUnit.HOURS.between(start, end)%24);
-        String minutes = Long.toString(ChronoUnit.MINUTES.between(start, end)%60);
-        String seconds = Long.toString(ChronoUnit.SECONDS.between(start, end)%60);
+        Duration dur = Duration.between(start, end);
+        long millis = dur.toMillis();
 
-        return hours+":"+minutes+":"+seconds;
+        return String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 }
