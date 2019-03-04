@@ -236,11 +236,11 @@ public class LibrarySystem implements RequestUtil{
             int balance = checkoutDB.calculateFine(visitorID);
             //Check for invalid amount
             if (amount < 0 || amount > balance) {
-                return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance;
+                return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
             }
             else{
-                int remainingBalance = checkoutDB.calculateFine(visitorID);
-                return PAY_REQUEST+SUCCESS+remainingBalance;
+                int remainingBalance = checkoutDB.payFine(visitorID, amount);
+                return PAY_REQUEST+SUCCESS+remainingBalance+TERMINATOR;
             }
         }
     }
