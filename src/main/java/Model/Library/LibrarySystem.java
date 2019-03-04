@@ -167,10 +167,11 @@ public class LibrarySystem implements RequestUtil{
         //For each transaction, call method in visitorDB get book title and add to response string
         int id = 0;
         for(Transaction transaction: visitorTransactions){
+            response += NEW_LINE;
             String isbn = transaction.getIsbn();
             String checkoutDate = transaction.getCheckoutDate();
-            String title = bookDB.getTitle(isbn);
-            response += id+DELIMITER+isbn+DELIMITER+title+DELIMITER+checkoutDate+NEW_LINE;
+            String title = transaction.getTitle();
+            response += id+DELIMITER+isbn+DELIMITER+title+DELIMITER+checkoutDate;
             id++;
         }
         response += ";";
@@ -178,6 +179,8 @@ public class LibrarySystem implements RequestUtil{
     }
 
     /**
+     * Return the books from the list of book IDs from the most recent
+     * borrowed books search.
      * @param visitorID visitor
      * @param bookIDs list of books to be returned
      * @return String whether returnBook command was successful

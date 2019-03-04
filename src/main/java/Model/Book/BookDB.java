@@ -55,7 +55,7 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
         String response = "" + BUY_REQUEST + DELIMITER + SUCCESS + DELIMITER;
         List<BookInfo> booksPurchased = bookstore.purchaseBooks(
                 quantity, bookIDs);
-        response += String.valueOf(booksPurchased.size() * quantity) + DELIMITER;
+        response += booksPurchased.size() * quantity + DELIMITER;
         String isbn;
         BookInfo temp;
         for (BookInfo book : booksPurchased) {

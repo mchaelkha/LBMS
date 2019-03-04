@@ -1,5 +1,7 @@
 package Model.Checkout;
 
+import Model.Book.BookInfo;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,13 +47,13 @@ public class CheckoutDB implements Serializable {
      * Create a checkout transaction using a visitor ID and a book's ISBN.
      * @param checkoutDate the date and time of the transaction 
      * @param visitorID The visitor ID
-     * @param bookIds Book isbns
+     * @param bookInfos The books to checkout
      * @return The new transaction if it was valid, otherwise null.
      */
-    public List<Transaction> checkout(LocalDateTime checkoutDate, String visitorID, List<String> bookIds) {
+    public List<Transaction> checkout(LocalDateTime checkoutDate, String visitorID, List<BookInfo> bookInfos) {
         transactionsInProgress.clear();
-        for (String isbn : bookIds) {
-            Transaction transaction = new Transaction(checkoutDate, isbn);
+        for (BookInfo bookInfo : bookInfos) {
+            Transaction transaction = new Transaction(checkoutDate, bookInfo);
             transactionsInProgress.add(transaction);
         }
         addTransactionsInProcess(visitorID);
@@ -74,15 +76,15 @@ public class CheckoutDB implements Serializable {
     /**
      * Check if borrowing the books in a BookBorrow command will reach the book limit
      * @param visitorID visitor doing the BookBorrow command
-     * @param bookIds books being borrowed
+     * @param amount amount of books
      * @return true if adding these books will reach visitor book limit
      */
-    public boolean willReachBookLimit(String visitorID, List<String> bookIds){
+    public boolean willReachBookLimit(String visitorID, int amount){
         List<Transaction> transactions = openLoans.get(visitorID);
         if (transactions == null) {
             return false;
         }
-        return (transactions.size()+bookIds.size())>=MAX_NUM_OF_TRANSACTIONS;
+        return (transactions.size()+amount)>=MAX_NUM_OF_TRANSACTIONS;
     }
 
     /**

@@ -2,6 +2,7 @@ package Model.Library;
 
 import Controller.Request.RequestUtil;
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
 import Model.Checkout.Transaction;
 import Model.Visitor.VisitorDB;
@@ -43,7 +44,7 @@ class LibraryOpen implements LibraryState,RequestUtil {
             return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount+TERMINATOR;
         }
         //Check if visitor has book limit or if request will exceed 5 borrowed book limit
-        else if(checkoutDB.hasBookLimit(visitorID) || checkoutDB.willReachBookLimit(visitorID,bookIds)){
+        else if(checkoutDB.hasBookLimit(visitorID) || checkoutDB.willReachBookLimit(visitorID,bookIds.size())){
             return BORROW_REQUEST+DELIMITER+BOOK_LIMIT_EXCEDED+TERMINATOR;
         }
         //Check if visitorID is a valid id
@@ -51,10 +52,10 @@ class LibraryOpen implements LibraryState,RequestUtil {
             return BORROW_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
         }
         else{
-            //Successful checkout
-            List<Transaction> transactions = checkoutDB.checkout(checkoutDate, visitorID, bookIds);
             //Update book number in BookDB
-            bookDB.borrowBooks(bookIds);
+            List<BookInfo> bookInfos = bookDB.borrowBooks(bookIds);
+            //Successful checkout
+            List<Transaction> transactions = checkoutDB.checkout(checkoutDate, visitorID, bookInfos);
             //All due dates for transactions made are the same
             String dueDate = transactions.get(0).getDueDate();
             return BORROW_REQUEST+DELIMITER+dueDate+TERMINATOR;
