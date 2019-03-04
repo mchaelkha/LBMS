@@ -1,0 +1,12 @@
+register,Leroy,Jenkins,2 Lomb Memorial Dr.,585-475-2411;
+arrive,0;
+search,Harry,{},*,*,*;
+buy,4,1,2,5,7;
+info,Harry,{},*,*,*;
+borrow,0,0,1,2;
+datetime;
+advance,1;
+datetime;
+advance,0,3;
+datetime;
+depart,0;
