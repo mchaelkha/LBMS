@@ -61,6 +61,10 @@ public class LibrarySystem implements RequestUtil{
      * Tracks the last book search made by visitor in order to complete borrow book command
      */
     private Map<String,BookInfo> lastBookSearch;
+    /**
+     * Tracks the last find borrowed books for a visitor query
+     */
+    private Map<String,BookInfo> lastBorrowedBooks;
 
     /**
      * Create the library system that is responsible for knowing about the system's model.
@@ -77,6 +81,7 @@ public class LibrarySystem implements RequestUtil{
         this.bookDB = bookDB;
         this.timeKeeper = timeKeeper;
         this.reporter = reporter;
+        lastBorrowedBooks = new HashMap<>();
         //Add Library States
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
@@ -162,6 +167,7 @@ public class LibrarySystem implements RequestUtil{
      * @return The string containing the books borrowed under the visitor
      */
     public String findBorrowedBooks(String visitorID){
+        lastBorrowedBooks = new HashMap<>();
         List<Transaction> visitorTransactions = checkoutDB.findBorrowedBooks(visitorID);
         String response = "";
         //For each transaction, call method in visitorDB get book title and add to response string
@@ -172,6 +178,7 @@ public class LibrarySystem implements RequestUtil{
             String checkoutDate = transaction.getCheckoutDate();
             String title = transaction.getTitle();
             response += id+DELIMITER+isbn+DELIMITER+title+DELIMITER+checkoutDate;
+            lastBorrowedBooks.put(String.valueOf(id), transaction.getBookInfo());
             id++;
         }
         response += ";";
@@ -191,11 +198,18 @@ public class LibrarySystem implements RequestUtil{
         Transaction t;
 
         for(int i = 0; i < bookIDs.size(); i++){
-            t = checkoutDB.returnBook(timeKeeper.getClock(), visitorID, bookIDs.get(i));
-            bookDB.returnCopy(bookIDs.get(i));
+            String id = bookIDs.get(i);
+            BookInfo book = lastBorrowedBooks.get(id);
+            if (book == null) {
+                return RETURN_REQUEST + DELIMITER + INVALID_BOOK_ID +
+                        DELIMITER + String.join(DELIMITER, bookIDs) + TERMINATOR;
+            }
+            String isbn = book.getIsbn();
+            t = checkoutDB.returnBook(timeKeeper.getClock(), visitorID, isbn);
+            bookDB.returnCopy(isbn);
             if(t.getFineAmount() > 0){
                 totalFine = totalFine + t.getFineAmount();
-                overdue.add(bookIDs.get(i));
+                overdue.add(id);
             }
         }
         if(overdue.size() > 0){
