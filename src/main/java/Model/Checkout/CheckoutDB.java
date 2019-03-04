@@ -98,9 +98,7 @@ public class CheckoutDB implements Serializable {
             openLoans.put(visitorID,this.transactionsInProgress);
         }
         else{
-            for (Transaction transaction : transactionsInProgress) {
-                openLoans.get(visitorID).add(transaction);
-            }
+            openLoans.get(visitorID).addAll(transactionsInProgress);
         }
     }
 
