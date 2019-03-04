@@ -99,6 +99,14 @@ public class Transaction {
     }
 
     /**
+     * Get the book info of this transaction.
+     * @return The book info
+     */
+    public BookInfo getBookInfo() {
+        return bookInfo;
+    }
+
+    /**
      * Get the isbn of the book associated with this Transaction
      * @return the isbn of the book associated with this Transaction
      */
