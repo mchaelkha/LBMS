@@ -57,8 +57,7 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
      * A TimerTask is used in conjunction with a timer
      * to ensure the time is updated every minute.
      */
-    public TimeKeeper(LibrarySystem librarySystem) {
-        this.librarySystemObserver = librarySystem;
+    public TimeKeeper() {
         timer = new Timer();
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
@@ -68,6 +67,14 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
             }
         };
         timer.scheduleAtFixedRate(timerTask, TIMER_DELAY,TIMER_INTERVAL);
+    }
+
+    /**
+     * Sets the librarySystemObserver
+     * @param librarySystem observer to be notified when clock hits open or closed hours
+     */
+    public void setLibrarySystemObserver(LibrarySystem librarySystem){
+        librarySystemObserver = librarySystem;
     }
 
     /**

@@ -72,9 +72,10 @@ public class LBServer {
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB();
+        timeKeeper = new TimeKeeper();
         reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
-        timeKeeper = new TimeKeeper(library);
+        timeKeeper.setLibrarySystemObserver(library);
         parser = new RequestParser(library);
     }
 
