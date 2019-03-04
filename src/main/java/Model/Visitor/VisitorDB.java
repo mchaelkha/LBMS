@@ -27,6 +27,16 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
     private Map<String, VisitorInfo> currentVisitors;
 
     /**
+     * Used for providing visitors with unique IDs
+     */
+    private int nextVisitorID;
+
+    /**
+     * First visitorID provided when library is created
+     */
+    private final int INITIAL_VISITOR_ID = 1000000000;
+
+    /**
      * Used to keep track of unique 10 digit generated ids
      */
     private Set<Integer> uniqueVisitorIds;
@@ -64,7 +74,9 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
             }
         }
         //No duplicate was found. Register new visitor.
-        int newVisitorID = generateVisitorID();
+        //int newVisitorID = generateVisitorID();
+        int newVisitorID = nextVisitorID;
+        nextVisitorID++;
         String newVisitorIDString = Integer.toString(newVisitorID);
         registeredVisitors.put(newVisitorIDString, newVisitorInfo);
 
