@@ -17,7 +17,7 @@ public abstract class BookData {
      * Available books mapped to their IBSNs
      */
     Map<String, BookInfo> books;
-    /**
+     /**
      * Books produced by the last search and mapped to an ID
      */
     Map<String, BookInfo> lastSearch;
@@ -133,5 +133,14 @@ public abstract class BookData {
             }
         }
         return true;
+    }
+
+    /**
+     * Gets the title for a book given the books isbn
+     * @param isbn book's isbn
+     * @return book's title
+     */
+    public String getTitle(String isbn){
+        return books.get(isbn).getTitle();
     }
 }

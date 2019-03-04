@@ -176,4 +176,10 @@ public class CheckoutDB implements Serializable {
         return null;
     }
 
+
+    public List<Transaction> findBorrowedBooks(String visitorID){
+        return openLoans.get(visitorID);
+
+    }
+
 }

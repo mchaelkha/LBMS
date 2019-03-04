@@ -105,9 +105,14 @@ public class Transaction {
     }
 
     public String getDueDate(){
-        return dueDate.getYear() + "/" + dueDate.getMonthValue() + "/" + dueDate.getDayOfMonth();
+        return returnDateString(dueDate);
     }
 
+    public String getCheckoutDate(){
+        return returnDateString(checkoutDate);
+    }
 
-
+    public String returnDateString(LocalDateTime localDateTime) {
+        return localDateTime.getYear() + "/" + localDateTime.getMonthValue() + "/" + localDateTime.getDayOfMonth();
+    }
 }
