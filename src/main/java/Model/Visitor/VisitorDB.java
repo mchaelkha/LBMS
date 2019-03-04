@@ -142,4 +142,8 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
         return currentVisitors.containsKey(visitorID);
     }
 
+    public boolean validRegisteredVisitor(String visitorID) {
+        return registeredVisitors.containsKey(visitorID);
+    }
+
 }

@@ -104,15 +104,41 @@ public class Transaction {
         return this.isbn;
     }
 
+    /**
+     * @return String representation of due date
+     */
     public String getDueDate(){
         return returnDateString(dueDate);
     }
 
+    /**
+     * @return String representation of checkoutDate
+     */
     public String getCheckoutDate(){
         return returnDateString(checkoutDate);
     }
 
+    /**
+     * Helper method for returning localDateTime strings
+     * @param localDateTime localDateTime being turned into string
+     * @return string representation of localDateTime
+     */
     public String returnDateString(LocalDateTime localDateTime) {
         return localDateTime.getYear() + "/" + localDateTime.getMonthValue() + "/" + localDateTime.getDayOfMonth();
+    }
+
+    /**
+     * Used to clear transaction fine when visitor pays fine
+     */
+    public void clearFine(){
+        fineAmount = 0;
+    }
+
+    /**
+     * Helper method to decrease fine amount
+     * @param amount amount that fineAmount is being decreased by
+     */
+    public void decreaseFineAmount(int amount){
+        fineAmount -= amount;
     }
 }

@@ -182,4 +182,32 @@ public class CheckoutDB implements Serializable {
 
     }
 
+    /**
+     * Pays all or part of an outstanding fine
+     * @param visitorID visitor's id
+     * @param amount amount that visitor is paying
+     * @return remaining balance of fines due for visitor
+     */
+    public int payFine(String visitorID, int amount){
+        List<Transaction> transactions = openLoans.get(visitorID);
+        transactions.addAll(closedLoans.get(visitorID));
+        for (Transaction transaction : transactions) {
+            int fineAmount = transaction.getFineAmount();
+            if (fineAmount > 0) {
+                //Amount greater than transaction.fine -> clear fine and decrease amount
+                if(amount > fineAmount){
+                    amount -= fineAmount;
+                    transaction.clearFine();
+                }
+                //Amount less than fine (or equal)-> clear amount and decrease fine
+                else {
+                    transaction.decreaseFineAmount(amount);
+                    amount = 0;
+                }
+            }
+        }
+        int remainingBalance = calculateFine(visitorID);
+        return remainingBalance;
+    }
+
 }

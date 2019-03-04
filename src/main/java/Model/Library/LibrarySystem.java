@@ -210,7 +210,22 @@ public class LibrarySystem implements RequestUtil{
      * @return String indicating if successful or not and the new balance
      */
     public String payFine(String visitorID, int amount){
-        return null;
+        //Check visitor ID corresponds to a registered visitor
+        if(!visitorDB.validRegisteredVisitor(visitorID)){
+            return PAY_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
+        }
+        else{
+            //Get visitor's balance
+            int balance = checkoutDB.calculateFine(visitorID);
+            //Check for invalid amount
+            if (amount < 0 || amount > balance) {
+                return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance;
+            }
+            else{
+                int remainingBalance = checkoutDB.calculateFine(visitorID);
+                return PAY_REQUEST+SUCCESS+remainingBalance;
+            }
+        }
     }
 
     /**
