@@ -207,7 +207,7 @@ public class LibrarySystem implements RequestUtil{
     }
 
     /**
-     * Pay the fines under a visitor by some amount.
+     * Pay the fines under a visitor by some amount. 
      * @param visitorID The visitor to pay their fines for
      * @param amount The amount to add to
      * @return String indicating if successful or not and the new balance
