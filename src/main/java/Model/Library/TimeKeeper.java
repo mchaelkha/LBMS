@@ -39,6 +39,11 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
     private Timer timer;
 
     /**
+     * The LibrarySystem will be notified when the LocalDate
+     */
+    private LibrarySystem librarySystemObserver;
+
+    /**
      * The delay in milliseconds before the task is performed the first time
      */
     private static long TIMER_DELAY = 1000;
@@ -53,7 +58,8 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
      * A TimerTask is used in conjunction with a timer
      * to ensure the time is updated every minute.
      */
-    public TimeKeeper() {
+    public TimeKeeper(LibrarySystem librarySystem) {
+        this.librarySystemObserver = librarySystem;
         timer = new Timer();
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
@@ -71,6 +77,13 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
      */
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
+        int hour = this.clock.getHour();
+        if(hour == OPEN_HOUR){
+            librarySystemObserver.openLibrary();
+        }
+        if (hour == CLOSE_HOUR) {
+            librarySystemObserver.closeLibrary();
+        }
     }
 
     /**
