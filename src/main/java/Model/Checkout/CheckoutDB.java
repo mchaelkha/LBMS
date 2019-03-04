@@ -93,12 +93,12 @@ public class CheckoutDB implements Serializable {
      * if all single book checkout requests were valid.
      */
     public void addTransactionsInProcess(String visitorID){
-        for (Transaction transaction : transactionsInProgress) {
-            //Visitor's first time making a transaction
-            if(!openLoans.containsKey(visitorID)){
-                openLoans.put(visitorID,this.transactionsInProgress);
-            }
-            else{
+        //Visitor's first time making a transaction
+        if(!openLoans.containsKey(visitorID)){
+            openLoans.put(visitorID,this.transactionsInProgress);
+        }
+        else{
+            for (Transaction transaction : transactionsInProgress) {
                 openLoans.get(visitorID).add(transaction);
             }
         }
