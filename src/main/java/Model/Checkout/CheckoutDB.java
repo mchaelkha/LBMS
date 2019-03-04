@@ -130,16 +130,8 @@ public class CheckoutDB implements Serializable {
      */
     public int calculateFine(String visitorID) {
         int fines = 0;
-        if(this.openLoans.containsKey(visitorID)) {
-            for (Transaction t : this.openLoans.get(visitorID)) {
-                fines += t.getFineAmount();
-            }
-        }
-
-        if(this.closedLoans.containsKey(visitorID)) {
-            for (Transaction t : this.closedLoans.get(visitorID)) {
-                fines += t.getFineAmount();
-            }
+        for (Transaction t : this.openLoans.get(visitorID)) {
+            fines += t.getFineAmount();
         }
 
         return fines;
