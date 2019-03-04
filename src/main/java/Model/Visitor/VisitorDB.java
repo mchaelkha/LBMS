@@ -37,11 +37,6 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
     private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
-     * Used to keep track of unique 10 digit generated ids
-     */
-    private Set<Integer> uniqueVisitorIds;
-
-    /**
      * Updated when Visitor begins a visit. Used to calculate visit duration
      */
     private LocalDateTime startVisitDayTime;
@@ -52,9 +47,7 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
     public VisitorDB() {
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
-
-        //initialize uniqueVisitorIds (All IDs need to be unique 10 digit numbers)
-        uniqueVisitorIds = new HashSet<>();
+        nextVisitorID = INITIAL_VISITOR_ID;
     }
 
     /**
@@ -150,18 +143,4 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
         return currentVisitors.containsKey(visitorID);
     }
 
-    /**
-     * Generate unique random id
-     * @return unique 10 digit id
-     */
-    public int generateVisitorID(){
-        Random random = new Random();
-        int id = random.nextInt(999999999)+1000000000;
-        //Check if id is already in use
-        if(uniqueVisitorIds.contains(id)){
-            generateVisitorID();
-        }
-        return id;
-
-    }
 }
