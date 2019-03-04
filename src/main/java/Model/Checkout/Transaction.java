@@ -1,5 +1,7 @@
 package Model.Checkout;
 
+import Model.Book.BookInfo;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -37,9 +39,9 @@ public class Transaction {
      */
     private LocalDateTime returnDate;
     /**
-     * The book's ISBN
+     * The book
      */
-    private String isbn;
+    private BookInfo bookInfo;
     /**
      * The fine amount of the transaction
      */
@@ -48,11 +50,11 @@ public class Transaction {
     /**
      * Create a new transaction given a checkout date and the book.
      * @param checkoutDate The checkout date
-     * @param isbn The book's ISBN
+     * @param bookInfo The book
      */
-    public Transaction(LocalDateTime checkoutDate, String isbn) {
+    public Transaction(LocalDateTime checkoutDate, BookInfo bookInfo) {
         this.checkoutDate = checkoutDate;
-        this.isbn = isbn;
+        this.bookInfo = bookInfo;
         this.dueDate = checkoutDate.plusDays(MAX_CHECKOUT_PERIOD);
 
         fineAmount = 0;
@@ -97,31 +99,41 @@ public class Transaction {
     }
 
     /**
-     * Returns the isbn of the book associated with this Transaction
+     * Get the isbn of the book associated with this Transaction
      * @return the isbn of the book associated with this Transaction
      */
     public String getIsbn() {
-        return this.isbn;
+        return bookInfo.getIsbn();
     }
 
     /**
-     * @return String representation of due date
+     * Get the title of the book associated with this Transaction
+     * @return The title of the book
+     */
+    public String getTitle() {
+        return bookInfo.getTitle();
+    }
+
+    /**
+     * Get the due date
+     * @return The due date
      */
     public String getDueDate(){
         return returnDateString(dueDate);
     }
 
     /**
-     * @return String representation of checkoutDate
+     * Get the checkout date
+     * @return The checkout date
      */
     public String getCheckoutDate(){
         return returnDateString(checkoutDate);
     }
 
     /**
-     * Helper method for returning localDateTime strings
-     * @param localDateTime localDateTime being turned into string
-     * @return string representation of localDateTime
+     * Get the date string of the local date time.
+     * @param localDateTime The local date and time
+     * @return Formatted date string
      */
     public String returnDateString(LocalDateTime localDateTime) {
         return localDateTime.getYear() + "/" + localDateTime.getMonthValue() + "/" + localDateTime.getDayOfMonth();

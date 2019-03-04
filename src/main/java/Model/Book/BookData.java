@@ -134,13 +134,4 @@ public abstract class BookData {
         }
         return true;
     }
-
-    /**
-     * Gets the title for a book given the books isbn
-     * @param isbn book's isbn
-     * @return book's title
-     */
-    public String getTitle(String isbn){
-        return books.get(isbn).getTitle();
-    }
 }
