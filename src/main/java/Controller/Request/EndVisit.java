@@ -1,7 +1,6 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
-import Model.Visitor.VisitorDB;
 
 /**
  * End visit request to start a visit for a visitor.

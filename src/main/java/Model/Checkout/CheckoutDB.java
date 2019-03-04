@@ -1,8 +1,5 @@
 package Model.Checkout;
 
-import Model.Book.BookDB;
-import Model.Visitor.VisitorDB;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

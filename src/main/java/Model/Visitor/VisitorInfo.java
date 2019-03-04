@@ -1,9 +1,5 @@
 package Model.Visitor;
 
-import Model.Checkout.Transaction;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,15 +27,6 @@ public class VisitorInfo {
      * All visits that a visitor has made
      */
     private Map<String, String> visits;
-    /**
-     * Identifying information for a visitor including name, address, and
-     * phone number
-     */
-    private String[] visitorInformation;
-    /**
-     * The unique visitor id
-     */
-    private int visitorID;
 
     /**
      * Set visitor info.
