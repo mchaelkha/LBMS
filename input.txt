@@ -14,3 +14,8 @@ datetime;
 advance,0,3;
 datetime;
 depart,1000000000;
+
+//Show library closing kicks out current visitors but they remain registered
+arrive,1000000000;
+advance,0,11;
+arrive,1000000000;

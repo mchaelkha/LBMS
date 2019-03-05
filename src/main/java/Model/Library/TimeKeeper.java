@@ -19,11 +19,11 @@ public class TimeKeeper implements RequestUtil, Serializable {
     /**
      * Library's open hour
      */
-    private static int OPEN_HOUR = 9;
+    private static int OPEN_HOUR = 8;
     /**
      * Library's close hour
      */
-    private static int CLOSE_HOUR = 12+9;
+    private static int CLOSE_HOUR = 19;
     /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
@@ -85,11 +85,17 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
-        int hour = this.clock.getHour();
-        if(hour == OPEN_HOUR){
+        setLibraryState();
+    }
+
+    /**
+     * Helper method to set the library state
+     */
+    public void setLibraryState(){
+        if(isLibraryOpen()){
             librarySystemObserver.openLibrary();
         }
-        if (hour == CLOSE_HOUR) {
+        else{
             librarySystemObserver.closeLibrary();
         }
     }
@@ -107,7 +113,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public boolean isLibraryOpen() {
         int currentHour = clock.getHour();
-        return (OPEN_HOUR <= currentHour) && (CLOSE_HOUR >= currentHour);
+        return (OPEN_HOUR <= currentHour) && (CLOSE_HOUR > currentHour);
     }
 
     /**

@@ -86,7 +86,14 @@ public class LibrarySystem implements RequestUtil{
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
         libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper, checkoutDB, visitorDB, bookDB));
-        currentLibraryState = libraryStates.get(OPEN_STATE);
+
+        //Set initial state based on current time
+        if(timeKeeper.isLibraryOpen()){
+            openLibrary();
+        }
+        else{
+            closeLibrary();
+        }
     }
 
     /**
@@ -282,6 +289,8 @@ public class LibrarySystem implements RequestUtil{
         //delegate this command to timeKeeper object
         timeKeeper.addDays(days);
         timeKeeper.addHours(hours);
+        //Update libraryState
+        timeKeeper.setLibraryState();
         return ADVANCE_REQUEST + DELIMITER + SUCCESS;
     }
 
