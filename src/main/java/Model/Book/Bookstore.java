@@ -1,8 +1,6 @@
 package Model.Book;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -30,15 +28,14 @@ public class Bookstore extends BookData implements Serializable {
      * Initialize the state of the bookstore by reading a book file.
      */
     private void init() {
-        try (Scanner scanner = new Scanner(new File(STORE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(STORE_PATH)))) {
             String line;
             BookInfo bookInfo;
-            while (scanner.hasNextLine()) {
-                line = scanner.nextLine();
+            while ((line = br.readLine()) != null) {
                 bookInfo = generateBookInfoFromLine(line);
                 books.put(bookInfo.getIsbn(), bookInfo);
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
