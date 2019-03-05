@@ -19,11 +19,11 @@ public class TimeKeeper implements RequestUtil, Serializable {
     /**
      * Library's open hour
      */
-    private static int OPEN_HOUR = 9;
+    private static int OPEN_HOUR = 8;
     /**
      * Library's close hour
      */
-    private static int CLOSE_HOUR = 12+9;
+    private static int CLOSE_HOUR = 19;
     /**
      * The object that holds the current time formatted nicely and is easy to manipulate.
      */
