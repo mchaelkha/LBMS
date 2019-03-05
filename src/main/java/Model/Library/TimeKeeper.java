@@ -85,11 +85,17 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
-        int hour = this.clock.getHour();
-        if(hour == OPEN_HOUR){
+        setLibraryState();
+    }
+
+    /**
+     * Helper method to set the library state
+     */
+    public void setLibraryState(){
+        if(isLibraryOpen()){
             librarySystemObserver.openLibrary();
         }
-        if (hour == CLOSE_HOUR) {
+        else{
             librarySystemObserver.closeLibrary();
         }
     }
@@ -107,7 +113,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public boolean isLibraryOpen() {
         int currentHour = clock.getHour();
-        return (OPEN_HOUR <= currentHour) && (CLOSE_HOUR >= currentHour);
+        return (OPEN_HOUR <= currentHour) && (CLOSE_HOUR > currentHour);
     }
 
     /**
