@@ -1,1 +1,1 @@
-java -cp 03-R1-project.jar LBServer
+java -jar 03-R1-project.jar
