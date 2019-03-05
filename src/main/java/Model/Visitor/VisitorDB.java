@@ -1,7 +1,7 @@
 package Model.Visitor;
 
 import Controller.Request.RequestUtil;
-import Model.Library.TimeUtil;
+import Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Luis Gutierrez
  */
-public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
+public class VisitorDB implements RequestUtil, Serializable{
 
     /**
      * All visitors that are registered in the library. (VisitorID, VisitorInfo)
@@ -119,7 +119,7 @@ public class VisitorDB implements RequestUtil, TimeUtil, Serializable{
         currentVisitors.remove(visitorID);
 
         //Response = "depart,visitorID,visitEndTime,visitDuration"
-        String visitDuration = calculateDuration(startVisitDayTime, endVisitDateTime);
+        String visitDuration = TimeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
                 DELIMITER+visitDuration+TERMINATOR;

@@ -3,9 +3,11 @@ package Model.Library;
 import Controller.Request.RequestUtil;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A helper class for Library that tracks the current date. This information is used by the library to track
@@ -13,7 +15,7 @@ import java.util.TimerTask;
  * testing.
  * @author Hersh Nagpal
  */
-public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
+public class TimeKeeper implements RequestUtil, Serializable {
     /**
      * Library's open hour
      */
@@ -193,6 +195,22 @@ public class TimeKeeper implements RequestUtil, TimeUtil, Serializable {
      */
     public void addHours(int hours){
         clock = clock.plusHours(hours);
+    }
+
+    /**
+     * Calculates the duration between two LocalDayTime objects in hours:minutes:seconds
+     * @return String representation of duration between LocalDayTime objects
+     */
+    public static String calculateDuration(LocalDateTime start, LocalDateTime end) {
+        Duration dur = Duration.between(start, end);
+        long millis = dur.toMillis();
+
+        return String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
 }
