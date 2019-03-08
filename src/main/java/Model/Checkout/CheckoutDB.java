@@ -1,6 +1,9 @@
 package Model.Checkout;
 
+import Controller.Request.RequestUtil;
+import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Library.TimeKeeper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,8 +16,9 @@ import java.util.Map;
  * The database that manages all information about checkout and return 
  * transactions and fines performed by visitors to the library.
  * @author Hersh Nagpal
+ * @author Luis Gutierrez
  */
-public class CheckoutDB implements Serializable {
+public class CheckoutDB implements Serializable,RequestUtil {
 
     /**
      * The open transaction loans of each visitor
@@ -29,6 +33,10 @@ public class CheckoutDB implements Serializable {
      * borrowed by a visitor are valid
      */
     private List<Transaction> transactionsInProgress;
+    /**
+     * Tracks the last find borrowed books for a visitor query
+     */
+    private Map<String,BookInfo> lastBorrowedBooks;
     /**
      * The max number of transactions a visitor can haave.
      */
@@ -137,7 +145,42 @@ public class CheckoutDB implements Serializable {
         return fines;
     }
 
+    /**
+     * Return the books from the list of book IDs from the most recent
+     * borrowed books search.
+     * @param visitorID visitor
+     * @param bookIDs list of books to be returned
+     * @return String whether returnBook command was successful
+     */
+    public String returnBooks(String visitorID, List<String> bookIDs, BookDB bookDB, TimeKeeper timeKeeper) {
+        double totalFine = 0;
+        List<String> overdue = new ArrayList<>();
+        Transaction t;
 
+        for(int i = 0; i < bookIDs.size(); i++){
+            String id = bookIDs.get(i);
+            BookInfo book = lastBorrowedBooks.get(id);
+            if (book == null) {
+                return RETURN_REQUEST + DELIMITER + INVALID_BOOK_ID +
+                        DELIMITER + String.join(DELIMITER, bookIDs) + TERMINATOR;
+            }
+            String isbn = book.getIsbn();
+            t = returnBook(timeKeeper.getClock(), visitorID, isbn);
+            bookDB.returnCopy(isbn);
+            if(t.getFineAmount() > 0){
+                totalFine = totalFine + t.getFineAmount();
+                overdue.add(id);
+            }
+        }
+        if(overdue.size() > 0){
+            return RETURN_REQUEST + DELIMITER + OVERDUE + DELIMITER +
+                    String.format("$%.02f", totalFine) + DELIMITER +
+                    String.join(DELIMITER, overdue) + TERMINATOR;
+        }
+        else {
+            return RETURN_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
+        }
+    }
 
     /**
      * Return to the Library a given book that the given visitor has checked out by isbn.
@@ -170,10 +213,28 @@ public class CheckoutDB implements Serializable {
         return null;
     }
 
-
-    public List<Transaction> findBorrowedBooks(String visitorID){
-        return openLoans.get(visitorID);
-
+    /**
+     * Find the borrowed books under a visitor by getting the visitor info.
+     * @param visitorID The visitor to find the borrowed books
+     * @return The string containing the books borrowed under the visitor
+     */
+    public String findBorrowedBooks(String visitorID){
+        lastBorrowedBooks = new HashMap<>();
+        List<Transaction> visitorTransactions = openLoans.get(visitorID);
+        String response = BORROWED_REQUEST + DELIMITER + visitorTransactions.size() + DELIMITER;
+        //For each transaction, call method in visitorDB get book title and add to response string
+        int id = 0;
+        for(Transaction transaction: visitorTransactions){
+            response += NEW_LINE;
+            String isbn = transaction.getIsbn();
+            String checkoutDate = transaction.getCheckoutDate();
+            String title = transaction.getTitle();
+            response += id+DELIMITER+isbn+DELIMITER+title+DELIMITER+checkoutDate;
+            lastBorrowedBooks.put(String.valueOf(id), transaction.getBookInfo());
+            id++;
+        }
+        response += TERMINATOR;
+        return response;
     }
 
     /**

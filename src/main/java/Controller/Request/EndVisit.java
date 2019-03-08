@@ -1,6 +1,7 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
+import Model.Visitor.VisitorDB;
 
 /**
  * End visit request to start a visit for a visitor.
@@ -14,9 +15,14 @@ public class EndVisit implements Request {
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             ARRIVE_REQUEST) + DELIMITER + "visitor ID";
     /**
-     * The library system holding system databases
+     * Visitor database used to update currentVisitors by removing visitor ending their visit.
      */
-    private LibrarySystem librarySystem;
+    private VisitorDB visitorDB;
+    /**
+     * TimeKeeper used to build response to user by including the simulation date and time,
+     * which represent the time the visitor left the library.
+     */
+    private TimeKeeper timeKeeper;
     /**
      * Params in the command
      */
@@ -29,11 +35,13 @@ public class EndVisit implements Request {
     /**
      * Create a new end visit request given the visitor database
      * and the parameters for the request.
-     * @param librarySystem The visitor database
+     * TODO finish commenting request, LBServer, request parser classes
+     * @param visitorDB The visitor database
      * @param params The parameters that follow a request command
      */
-    public EndVisit(LibrarySystem librarySystem, String params) {
-        this.librarySystem = librarySystem;
+    public EndVisit(VisitorDB visitorDB, TimeKeeper timeKeeper, String params) {
+        this.visitorDB = visitorDB;
+        this.timeKeeper = timeKeeper;
         this.params = params;
     }
 
@@ -62,6 +70,6 @@ public class EndVisit implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return librarySystem.endVisit(visitorID);
+        return visitorDB.endVisit(visitorID, timeKeeper.getClock(), timeKeeper.readTime());
     }
 }

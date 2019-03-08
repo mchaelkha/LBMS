@@ -4,6 +4,8 @@ import java.util.Map;
 
 /**
  * Represents a registered visitor in the Library System
+ *
+ * @author Luis Gutierrez
  */
 public class VisitorInfo {
 

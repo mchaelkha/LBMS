@@ -1,6 +1,8 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
+import Model.Library.TimeKeeper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +20,11 @@ public class ReturnBook implements Request {
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             ARRIVE_REQUEST) + DELIMITER + "visitor ID,id[,ids]";
     /**
-     * The LibrarySystem.
+     * Checkout database used to .
      */
-    private LibrarySystem librarySystem;
+    private CheckoutDB checkoutDB;
+    private BookDB bookDB;
+    private TimeKeeper timeKeeper;
     /**
      * Params in the command
      */
@@ -38,11 +42,14 @@ public class ReturnBook implements Request {
     /**
      * Create a new return book request given the checkout database
      * and the parameters for the request.
-     * @param librarySystem The checkout database
+     * @param checkoutDB The checkout database
+     * @param bookDB The book database
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(LibrarySystem librarySystem, String params) {
-        this.librarySystem = librarySystem;
+    public ReturnBook(CheckoutDB checkoutDB, BookDB bookDB, TimeKeeper timeKeeper, String params) {
+        this.checkoutDB = checkoutDB;
+        this.bookDB = bookDB;
+        this.timeKeeper = timeKeeper;
         this.params = params;
     }
 
@@ -73,6 +80,6 @@ public class ReturnBook implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return librarySystem.returnBooks(visitorID, bookIDs);
+        return checkoutDB.returnBooks(visitorID, bookIDs, bookDB, timeKeeper);
     }
 }

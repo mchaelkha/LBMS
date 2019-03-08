@@ -21,6 +21,12 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     private Bookstore bookstore;
 
     /**
+     * Tracks the last book search made by visitor in order to complete borrow book command
+     * (Key,Value) = (BookId, BookInfo)
+     */
+    private Map<String,BookInfo> lastBookSearch;
+
+    /**
      * Create a new book database that is empty.
      */
     public BookDB() {
@@ -41,7 +47,8 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
                                              List<String> authors,
                                              String isbn,
                                              String publisher, String sort) {
-        return bookstore.searchBooks(title, authors, isbn, publisher, sort);
+        lastBookSearch = bookstore.searchBooks(title, authors, isbn, publisher, sort);
+        return lastBookSearch;
     }
 
     /**
@@ -74,6 +81,21 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
             response += DELIMITER + book.getTotalCopies();
         }
         return response + TERMINATOR;
+    }
+
+    /**
+     * Helps checkoutBooks request validate that bookIds being borrowed are contained
+     * in the last book search.
+     * @param bookIds
+     * @return
+     */
+    public boolean bookIdsMatchSearch(List<String> bookIds){
+        for (String id : bookIds) {
+            if (!lastBookSearch.containsKey(id)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

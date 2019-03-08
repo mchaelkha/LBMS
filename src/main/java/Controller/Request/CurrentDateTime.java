@@ -1,6 +1,6 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
 
 /**
  * Gives the system's current date and time.
@@ -9,15 +9,15 @@ import Model.Library.LibrarySystem;
 public class CurrentDateTime implements Request {
 
     /**
-     * Singleton timekeeper to keep time the same across the system.
+     * Used to build a response returned to the user including the simulation's date and time.
      */
-    private LibrarySystem library;
+    private TimeKeeper timeKeeper;
 
     /**
      * Creates a new CurrentDateTime command.
      */
-    public CurrentDateTime(LibrarySystem library) {
-        this.library = library;
+    public CurrentDateTime(TimeKeeper timeKeeper) {
+        this.timeKeeper = timeKeeper;
     }
 
     /**
@@ -35,6 +35,6 @@ public class CurrentDateTime implements Request {
      */
     @Override
     public String execute() {
-        return library.currentDateTime();
+        return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
     }
 }

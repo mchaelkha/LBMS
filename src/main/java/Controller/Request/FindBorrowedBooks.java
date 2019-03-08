@@ -1,5 +1,6 @@
 package Controller.Request;
 
+import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
 
 /**
@@ -14,9 +15,9 @@ public class FindBorrowedBooks implements Request {
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             ARRIVE_REQUEST) + DELIMITER + "visitor ID";
     /**
-     * The library
+     * Checkout database used to find the borrowed books under a visitor
      */
-    private LibrarySystem library;
+    private CheckoutDB checkoutDB;
     /**
      * Params in the command
      */
@@ -29,11 +30,11 @@ public class FindBorrowedBooks implements Request {
     /**
      * Create a new find borrowed books request given the visitor database
      * and the parameters for the request.
-     * @param library The library
+     * @param checkoutDB checkout database to find visitors borrowed books
      * @param params The parameters that follow a request command
      */
-    public FindBorrowedBooks(LibrarySystem library, String params) {
-        this.library = library;
+    public FindBorrowedBooks(CheckoutDB checkoutDB, String params) {
+        this.checkoutDB = checkoutDB;
         this.params = params;
     }
 
@@ -61,6 +62,6 @@ public class FindBorrowedBooks implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return library.findBorrowedBooks(visitorID);
+        return checkoutDB.findBorrowedBooks(visitorID);
     }
 }

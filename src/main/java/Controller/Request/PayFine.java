@@ -1,6 +1,7 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
+import Model.Checkout.CheckoutDB;
+import Model.Visitor.VisitorDB;
 
 /**
  * Pay fine request to pay the fines a visitor has accumulated from borrowing
@@ -14,10 +15,9 @@ public class PayFine implements Request {
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             PAY_REQUEST) + DELIMITER + "visitor ID,amount";
-    /**
-     * The library
-     */
-    private LibrarySystem library;
+    //TODO comment
+    private CheckoutDB checkoutDB;
+    private VisitorDB visitorDB;
     /**
      * Params in the command
      */
@@ -34,11 +34,12 @@ public class PayFine implements Request {
     /**
      * Create a new pay request given the library
      * and the parameters for the request.
-     * @param library The library
+     * TODO finish comment
      * @param params The parameters that follow a request command
      */
-    public PayFine(LibrarySystem library, String params) {
-        this.library = library;
+    public PayFine(CheckoutDB checkoutDB, VisitorDB visitorDB, String params) {
+        this.checkoutDB = checkoutDB;
+        this.visitorDB = visitorDB;
         this.params = params;
     }
 
@@ -67,6 +68,22 @@ public class PayFine implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return library.payFine(visitorID, amount);
+
+        //Check visitor ID corresponds to a registered visitor
+        if(!visitorDB.validRegisteredVisitor(visitorID)){
+            return PAY_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
+        }
+        else{
+            //Get visitor's balance
+            int balance = checkoutDB.calculateFine(visitorID);
+            //Check for invalid amount
+            if (amount < 0 || amount > balance) {
+                return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
+            }
+            else{
+                double remainingBalance = checkoutDB.payFine(visitorID, amount);
+                return PAY_REQUEST+DELIMITER+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
+            }
+        }
     }
 }

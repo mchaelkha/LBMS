@@ -1,7 +1,12 @@
 package Controller;
 
 import Controller.Request.*;
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
+import Model.Library.TimeKeeper;
+import Model.Visitor.VisitorDB;
 
 /**
  * Parse strings into requests to be executed. Parsing checks for errors
@@ -15,6 +20,16 @@ public class RequestParser implements RequestUtil {
      */
     private LibrarySystem librarySystem;
 
+    private BookDB bookDB;
+
+    private VisitorDB visitorDB;
+
+    private CheckoutDB checkoutDB;
+
+    private TimeKeeper timeKeeper;
+
+    private ReportGenerator reportGenerator;
+
     /**
      * A partial request
      */
@@ -24,8 +39,14 @@ public class RequestParser implements RequestUtil {
      * Creates a new RequestParser
      * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
-    public RequestParser(LibrarySystem librarySystem) {
+    public RequestParser(LibrarySystem librarySystem, BookDB bookDB, VisitorDB visitorDB,
+                         CheckoutDB checkoutDB, TimeKeeper timeKeeper, ReportGenerator reportGenerator) {
         this.librarySystem = librarySystem;
+        this.bookDB = bookDB;
+        this.visitorDB = visitorDB;
+        this.checkoutDB = checkoutDB;
+        this.timeKeeper = timeKeeper;
+        this.reportGenerator = reportGenerator;
         partial = "";
     }
 
@@ -90,43 +111,43 @@ public class RequestParser implements RequestUtil {
         }
         switch (command) {
             case REGISTER_REQUEST:
-                request = new RegisterVisitor(librarySystem, params);
+                request = new RegisterVisitor(visitorDB, timeKeeper, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(librarySystem, params);
+                request = new BeginVisit(librarySystem, visitorDB, params);
                 break;
             case DEPART_REQUEST:
-                request = new EndVisit(librarySystem, params);
+                request = new EndVisit(visitorDB, timeKeeper, params);
                 break;
             case INFO_REQUEST:
-                request = new LibraryBookSearch(librarySystem, params);
+                request = new LibraryBookSearch(bookDB, params);
                 break;
             case BORROW_REQUEST:
-                request = new BorrowBook(librarySystem, params);
+                request = new BorrowBook(librarySystem, checkoutDB, visitorDB, bookDB, params);
                 break;
             case BORROWED_REQUEST:
-                request = new FindBorrowedBooks(librarySystem, params);
+                request = new FindBorrowedBooks(checkoutDB, params);
                 break;
             case RETURN_REQUEST:
-                request = new ReturnBook(librarySystem, params);
+                request = new ReturnBook(checkoutDB,bookDB, timeKeeper, params);
                 break;
             case PAY_REQUEST:
-                request = new PayFine(librarySystem, params);
+                request = new PayFine(checkoutDB, visitorDB, params);
                 break;
             case SEARCH_REQUEST:
-                request = new BookStoreSearch(librarySystem, params);
+                request = new BookStoreSearch(bookDB, params);
                 break;
             case BUY_REQUEST:
-                request = new BookPurchase(librarySystem, params);
+                request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(librarySystem, params);
+                request = new AdvanceTime(timeKeeper, params);
                 break;
             case DATE_TIME_REQUEST:
-                request = new CurrentDateTime(librarySystem);
+                request = new CurrentDateTime(timeKeeper);
                 break;
             case REPORT_REQUEST:
-                request = new LibraryStatisticsReport(librarySystem, params);
+                request = new LibraryStatisticsReport(reportGenerator, params);
                 break;
             default:
                 request = new Illegal();

@@ -1,5 +1,6 @@
 package Controller.Request;
 
+import Model.Book.BookDB;
 import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class BookPurchase implements Request {
     /**
      * The book database of the library
      */
-    private LibrarySystem library;
+    private BookDB bookDB;
     /**
      * Params in the command
      */
@@ -37,11 +38,11 @@ public class BookPurchase implements Request {
     /**
      * Create a new book purchase request given the book database
      * and the parameters for the request.
-     * @param library The library system
+     * TODO finish commenting this class
      * @param params The parameters that follow a request command
      */
-    public BookPurchase(LibrarySystem library, String params) {
-        this.library = library;
+    public BookPurchase(BookDB bookDB, String params) {
+        this.bookDB = bookDB;
         this.params = params;
     }
 
@@ -71,6 +72,6 @@ public class BookPurchase implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return library.bookPurchase(quantity, bookIDs);
+        return bookDB.purchase(quantity, bookIDs);
     }
 }

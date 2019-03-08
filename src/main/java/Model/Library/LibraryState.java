@@ -1,5 +1,9 @@
 package Model.Library;
 
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
+import Model.Visitor.VisitorDB;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,12 +19,13 @@ public interface LibraryState {
      * @param visitorID the ID of the visitor checking out the books
      * @param bookIds the isbns of the books to check out
      */
-    String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds);
+    String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds,
+                         CheckoutDB checkoutDB, VisitorDB visitorDB, BookDB bookDB);
 
     /**
      * Starts a new visit for the given visitor, which allows them to access the library's services.
      * @param visitorID the visitor whose visit to start
      * @return a formatted string regarding the success of the operation.
      */
-    String beginVisit(String visitorID);
+    String beginVisit(String visitorID, VisitorDB visitorDB);
 }

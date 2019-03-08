@@ -63,7 +63,7 @@ public class LBServer {
     /**
      * Responsible for the creation of statistical reports
      */
-    private ReportGenerator reporter;
+    private ReportGenerator reportGenerator;
 
     /**
      * Create the main system by creating new databases.
@@ -73,10 +73,10 @@ public class LBServer {
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB();
         timeKeeper = new TimeKeeper();
-        reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
-        library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
+        reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        parser = new RequestParser(library);
+        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
     }
 
     /**
@@ -91,9 +91,9 @@ public class LBServer {
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.timeKeeper = timeKeeper;
-        reporter = new ReportGenerator(bookDB, visitorDB, checkoutDB);
-        library = new LibrarySystem(visitorDB, checkoutDB, bookDB, timeKeeper, reporter);
-        parser = new RequestParser(library);
+        reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
+        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
     }
 
     /**

@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
 
 /**
  * Library statistics report request to get the statistics of the library
@@ -11,9 +12,9 @@ import Model.Library.LibrarySystem;
 public class LibraryStatisticsReport implements Request{
 
     /**
-     * The library
+     * Responsible for the creation of statistical reports
      */
-    private LibrarySystem library;
+    private ReportGenerator reportGenerator;
     /**
      * Params in the command
      */
@@ -26,11 +27,11 @@ public class LibraryStatisticsReport implements Request{
     /**
      * Create a new find borrowed books request given the library
      * and the parameters for the request.
-     * @param library The library
+     * @param reportGenerator ReportGenerator
      * @param params The parameters that follow a request command
      */
-    public LibraryStatisticsReport(LibrarySystem library, String params) {
-        this.library = library;
+    public LibraryStatisticsReport(ReportGenerator reportGenerator, String params) {
+        this.reportGenerator = reportGenerator;
         this.params = params;
     }
 
@@ -56,6 +57,6 @@ public class LibraryStatisticsReport implements Request{
     @Override
     public String execute() {
         checkParams();
-        return library.libraryStatisticsReport(days);
+        return reportGenerator.generateInfoReport(days);
     }
 }

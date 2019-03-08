@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Visitor.VisitorDB;
 
 /**
  * Begin visit request to start a visit for a visitor.
@@ -18,6 +19,10 @@ public class BeginVisit implements Request {
      */
     private LibrarySystem librarySystem;
     /**
+     * The Visitor database. Used to add the visitor to the collection of current visitors.
+     */
+    private VisitorDB visitorDB;
+    /**
      * Params in the command
      */
     private String params;
@@ -32,8 +37,9 @@ public class BeginVisit implements Request {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(LibrarySystem librarySystem, String params) {
+    public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB, String params) {
         this.librarySystem = librarySystem;
+        this.visitorDB = visitorDB;
         this.params = params;
     }
 
@@ -61,6 +67,7 @@ public class BeginVisit implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return librarySystem.beginVisit(visitorID);
+        //Library.beginVisit()->currentLibraryState.beginVisit()->
+        return librarySystem.beginVisit(visitorID, visitorDB);
     }
 }

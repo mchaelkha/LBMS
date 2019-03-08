@@ -1,6 +1,9 @@
 package Controller.Request;
 
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
+import Model.Visitor.VisitorDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +25,16 @@ public class BorrowBook implements Request {
      */
     private LibrarySystem librarySystem;
     /**
+     * Used to verify that visitor can borrow a book and to create a new transaction
+     */
+    private CheckoutDB checkoutDB;
+    /**
+     * Used to check for valid visitor id.
+     */
+    private VisitorDB visitorDB;
+
+    private BookDB bookDB;
+    /**
      * Params in the command
      */
     private String params;
@@ -40,8 +53,12 @@ public class BorrowBook implements Request {
      * @param librarySystem used to delegate command actions
      * @param params The parameters that follow a request command
      */
-    public BorrowBook(LibrarySystem librarySystem, String params) {
+    public BorrowBook(LibrarySystem librarySystem, CheckoutDB checkoutDB,
+                      VisitorDB visitorDB, BookDB bookDB, String params) {
         this.librarySystem = librarySystem;
+        this.checkoutDB = checkoutDB;
+        this.visitorDB = visitorDB;
+        this.bookDB = bookDB;
         this.params = params;
     }
 
@@ -72,6 +89,7 @@ public class BorrowBook implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return librarySystem.checkoutBooks(visitorID,bookIDs);
+        //library.checkoutBooks()->currLibraryState.checkoutBooks()->checkoutDB.checkout()
+        return librarySystem.checkoutBooks(visitorID,bookIDs,checkoutDB,visitorDB,bookDB);
     }
 }

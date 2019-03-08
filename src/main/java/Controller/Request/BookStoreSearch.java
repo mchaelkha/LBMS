@@ -1,5 +1,6 @@
 package Controller.Request;
 
+import Model.Book.BookDB;
 import Model.Book.BookInfo;
 import Model.Library.LibrarySystem;
 
@@ -21,9 +22,9 @@ public class BookStoreSearch implements Request {
             ARRIVE_REQUEST) + DELIMITER + "title,[{authors},isbn" +
             "[,publisher[,sort order]]]";
     /**
-     * The library
+     * Book database used to buy and store new library books
      */
-    private LibrarySystem library;
+    private BookDB bookDB;
     /**
      * Params in the command
      */
@@ -52,11 +53,11 @@ public class BookStoreSearch implements Request {
     /**
      * Create a new book store search request given the book database
      * and the parameters for the request.
-     * @param library The library
+     * TODO finish commenting
      * @param params The parameters that follow a request command
      */
-    public BookStoreSearch(LibrarySystem library, String params) {
-        this.library = library;
+    public BookStoreSearch(BookDB bookDB, String params) {
+        this.bookDB = bookDB;
         this.params = params;
     }
 
@@ -93,7 +94,7 @@ public class BookStoreSearch implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        Map<String, BookInfo> search = library.bookStoreSearch(title, authors,
+        Map<String, BookInfo> search = bookDB.searchStore(title, authors,
                 isbn, publisher, sort);
         return buildString(search);
     }

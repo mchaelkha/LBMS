@@ -1,6 +1,8 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
+import Model.Visitor.VisitorDB;
 
 /**
  * Register visitor request to add visitors into the database.
@@ -14,9 +16,13 @@ public class RegisterVisitor implements Request{
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             ARRIVE_REQUEST) + DELIMITER + "first name,last name,address,phone-number";
     /**
-     * The library system holding system databases
+     * The Visitor database to add visitor to registered visitors
      */
-    private LibrarySystem librarySystem;
+    private VisitorDB visitorDB;
+    /**
+     * Allows register action to record the register date
+     */
+    private TimeKeeper timeKeeper;
     /**
      * Params in the command
      */
@@ -41,11 +47,12 @@ public class RegisterVisitor implements Request{
     /**
      * Create a new register visitor request given the visitor database
      * and the parameters for the request.
-     * @param librarySystem The librarySystem holding system databases
+     * TODO finish commenting request classes
      * @param params The parameters that follow a request command
      */
-    public RegisterVisitor(LibrarySystem librarySystem, String params) {
-        this.librarySystem = librarySystem;
+    public RegisterVisitor(VisitorDB visitorDB, TimeKeeper timeKeeper, String params) {
+        this.visitorDB = visitorDB;
+        this.timeKeeper = timeKeeper;
         this.params = params;
     }
 
@@ -76,6 +83,6 @@ public class RegisterVisitor implements Request{
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return librarySystem.registerVisitor(firstName,lastName,address,phoneNumber);
+        return visitorDB.registerVisitor(firstName,lastName,address,phoneNumber, timeKeeper.readDate());
     }
 }

@@ -1,6 +1,9 @@
 package Model.Library;
 
 import Controller.Request.RequestUtil;
+import Model.Book.BookDB;
+import Model.Checkout.CheckoutDB;
+import Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +22,8 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds) {
+    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds,
+                                CheckoutDB checkoutDB, VisitorDB visitorDB, BookDB bookDB) {
         return BORROW_REQUEST+DELIMITER+CLOSED_LIBRARY+TERMINATOR;
     }
 
@@ -29,7 +33,7 @@ public class LibraryClosed implements LibraryState, RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID) {
+    public String beginVisit(String visitorID, VisitorDB visitorDB) {
         return ARRIVE_REQUEST+DELIMITER+CLOSED_LIBRARY+TERMINATOR;
     }
 }

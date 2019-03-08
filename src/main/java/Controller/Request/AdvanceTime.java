@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
 
 /**
  * WIP
@@ -14,9 +15,9 @@ public class AdvanceTime implements Request {
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             ADVANCE_REQUEST) + DELIMITER + "number-of-days[,number-of-hours]";
     /**
-     * Singleton timekeeper to keep time the same across the system.
+     * TimeKeeper used to update simulation time
      */
-    private LibrarySystem library;
+    private TimeKeeper timeKeeper;
     /**
      * the parameters for the command.
      */
@@ -34,8 +35,8 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(LibrarySystem library, String params) {
-        this.library = library;
+    public AdvanceTime(TimeKeeper timeKeeper, String params) {
+        this.timeKeeper = timeKeeper;
         this.params = params;
     }
 
@@ -66,6 +67,11 @@ public class AdvanceTime implements Request {
         if (!check.equals(PROPER_PARAM)) {
             return check;
         }
-        return library.advanceTime(days, hours);
+        //Move simulation time forward by "days" and "hours"
+        timeKeeper.addDays(days);
+        timeKeeper.addHours(hours);
+        //Update libraryState
+        timeKeeper.setLibraryStateAdvance();
+        return ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
     }
 }
