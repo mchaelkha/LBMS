@@ -92,6 +92,18 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * Helper method to set the library state
      */
     public void setLibraryState(){
+        if(clock.getHour() == OPEN_HOUR){
+            librarySystemObserver.openLibrary();
+        }
+        else if(clock.getHour() == CLOSE_HOUR){
+            librarySystemObserver.closeLibrary();
+        }
+    }
+
+    /**
+     * Helper method to set the library state when advance request is performed
+     */
+    public void setLibraryStateAdvance(){
         if(isLibraryOpen()){
             librarySystemObserver.openLibrary();
         }

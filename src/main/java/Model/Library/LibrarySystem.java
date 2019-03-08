@@ -188,7 +188,7 @@ public class LibrarySystem implements RequestUtil{
             lastBorrowedBooks.put(String.valueOf(id), transaction.getBookInfo());
             id++;
         }
-        response += ";";
+        response += TERMINATOR;
         return response;
     }
 
@@ -290,8 +290,8 @@ public class LibrarySystem implements RequestUtil{
         timeKeeper.addDays(days);
         timeKeeper.addHours(hours);
         //Update libraryState
-        timeKeeper.setLibraryState();
-        return ADVANCE_REQUEST + DELIMITER + SUCCESS;
+        timeKeeper.setLibraryStateAdvance();
+        return ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
     }
 
     /**
