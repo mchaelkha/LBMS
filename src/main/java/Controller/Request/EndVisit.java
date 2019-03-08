@@ -36,6 +36,7 @@ public class EndVisit implements Request {
      * Create a new end visit request given the visitor database
      * and the parameters for the request.
      * TODO finish commenting request, LBServer, request parser classes
+     * @param timeKeeper TimeKeeper
      * @param visitorDB The visitor database
      * @param params The parameters that follow a request command
      */
