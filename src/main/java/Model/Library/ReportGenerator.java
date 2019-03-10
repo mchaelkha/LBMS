@@ -4,11 +4,15 @@ import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The report generator that aggregates the statistics from each individual
  * database to create a report.
  *
  * @author Michael Kha
+ * @author Luis Gutierrez
  */
 public class ReportGenerator {
 
@@ -26,6 +30,11 @@ public class ReportGenerator {
     private CheckoutDB checkoutDB;
 
     /**
+     * Holds all StatisticsReports generated every day.
+     */
+    private List<StatisticsReport> statisticsReportList;
+
+    /**
      * Create the report generator that knows about the other databases.
      * @param bookDB The book database
      * @param visitorDB The visitor database
@@ -35,6 +44,7 @@ public class ReportGenerator {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
+        this.statisticsReportList = new ArrayList<>();
     }
 
     /**
@@ -44,9 +54,9 @@ public class ReportGenerator {
      */
     public String generateInfoReport(int days){
         if (days == 0) {
-
+            //TODO return StatisticsReport representing overall simulation stats
         } else {
-
+            //TODO
         }
         return "";
     }

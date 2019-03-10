@@ -79,6 +79,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
         librarySystemObserver = librarySystem;
     }
 
+    //TODO add method to add ReportGenerator Observer to be notified every day at library closing time + add field for new observer
     /**
      * Adds the TimerInterval in seconds to the clock. 
      * Used by the TimerTask to keep track of time.
@@ -86,6 +87,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
         setLibraryState();
+        //TODO calculate fines every day at closing time for StatisticReports
     }
 
     /**

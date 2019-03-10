@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Class that stores information about checkout transactions performed by Visitors.
  * @author Hersh Nagpal
+ * @author Luis Gutierrez
  */
 public class Transaction {
 
