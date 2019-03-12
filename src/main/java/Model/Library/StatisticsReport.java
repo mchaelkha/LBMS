@@ -1,11 +1,13 @@
 package Model.Library;
 
+import Controller.Request.RequestUtil;
+
 /**
  * A Library Statistics Report encapsulating summary information of the simulation.
  *
  * @author Luis Gutierrez
  */
-public class StatisticsReport {
+public class StatisticsReport implements RequestUtil {
 
     private String dateGenerated;
     private int numBooksInLibrary;
@@ -45,7 +47,14 @@ public class StatisticsReport {
      * Used to update general StatisticsReport holding statistics for the whole simulation.
      */
     public void updateReport(StatisticsReport statisticsReport) {
-
+        numBooksInLibrary += statisticsReport.numBooksInLibrary;
+        numRegisteredVisitors += statisticsReport.numRegisteredVisitors;
+        // TODO: Re-average length of visit?
+        // avgLengthVisit = ?
+        numBooksPurchased += statisticsReport.numBooksPurchased;
+        // Fines must always be updated outside of the report
+        finesCollected = statisticsReport.finesCollected;
+        finesUncollected = statisticsReport.finesUncollected;
     }
 
     public String getDateGenerated() {
@@ -74,5 +83,19 @@ public class StatisticsReport {
 
     public int getFinesUncollected() {
         return finesUncollected;
+    }
+
+    /**
+     * String representation of the statistics report to be used as a response.
+     * @return The string form of the report
+     */
+    @Override
+    public String toString() {
+        return "Number of Books: " + numBooksInLibrary + NEW_LINE +
+                "Number of Visitors: " + numRegisteredVisitors + NEW_LINE +
+                "Average Length of Visit: " + avgLengthVisit + NEW_LINE +
+                "Number of Books Purchased: " + numBooksPurchased + NEW_LINE +
+                "Fines Collected: " + finesCollected + NEW_LINE +
+                "Fines Outstanding: " + finesUncollected + NEW_LINE + TERMINATOR;
     }
 }
