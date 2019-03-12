@@ -30,6 +30,11 @@ public class ReportGenerator {
     private CheckoutDB checkoutDB;
 
     /**
+     * Used to get the Statistics Report date generated
+     */
+    private TimeKeeper timeKeeper;
+
+    /**
      * Holds all StatisticsReports generated every day.
      */
     private List<StatisticsReport> statisticsReportList;
@@ -59,6 +64,14 @@ public class ReportGenerator {
             //TODO
         }
         return "";
+    }
+
+    public void generateDailyReport(String dateGenerated, int numBooksInLibrary, int numRegisteredVisitors,
+                                    String avgLengthVisit, int numBooksPurchased, int finesCollected, int finesUncollected) {
+        //bookDB: get numBooksInLibrary,
+        //checkoutDB: get numBooksPurchased, get finesCollected, get finesUncollected
+        //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
+        //TimeKeeper: get dateGenerated
     }
 
 }
