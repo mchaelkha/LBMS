@@ -76,7 +76,6 @@ public class LBServer {
         reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        timeKeeper.setReportGeneratorObserver(reportGenerator);
         parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
     }
 

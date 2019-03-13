@@ -45,12 +45,6 @@ public class TimeKeeper implements RequestUtil, Serializable {
     private LibrarySystem librarySystemObserver;
 
     /**
-     * TODO: remove this dependency
-     * The ReportGenerator will be notified when its closing hour.
-     */
-    private ReportGenerator reportGeneratorObserver;
-
-    /**
      * The delay in milliseconds before the task is performed the first time
      */
     private static long TIMER_DELAY = 1000;
@@ -86,14 +80,6 @@ public class TimeKeeper implements RequestUtil, Serializable {
     }
 
     /**
-     * Sets the reportGeneratorObserver
-     * @param reportGenerator observer to be notified when clock hits closing hour
-     */
-    public void setReportGeneratorObserver(ReportGenerator reportGenerator) {
-        reportGeneratorObserver = reportGenerator;
-    }
-
-    /**
      * Adds the TimerInterval in seconds to the clock. 
      * Used by the TimerTask to keep track of time.
      */
@@ -111,7 +97,6 @@ public class TimeKeeper implements RequestUtil, Serializable {
         }
         else if(clock.getHour() == CLOSE_HOUR && librarySystemObserver.isOpen()){
             librarySystemObserver.closeLibrary();
-            reportGeneratorObserver.generateDailyReport(readDate());
         }
     }
 
