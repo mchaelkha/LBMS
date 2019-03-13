@@ -12,7 +12,6 @@ public class BookInfo implements Serializable {
 
     /**
      * Book attributes
-     * TODO: record when books are purchased Map of num-purchased, date
      */
     private String isbn;
     private String title;
@@ -51,13 +50,6 @@ public class BookInfo implements Serializable {
         pageCount = other.pageCount;
         totalCopies = copies;
         totalCopiesAvailable = copies;
-    }
-
-    /**
-     * Adds a copy of this book to the library.
-     */
-    public void addCopy(){
-        totalCopies++;
     }
 
     /**

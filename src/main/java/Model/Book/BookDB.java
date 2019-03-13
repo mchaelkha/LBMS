@@ -86,8 +86,8 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     /**
      * Helps checkoutBooks request validate that bookIds being borrowed are contained
      * in the last book search.
-     * @param bookIds
-     * @return
+     * @param bookIds The list of book IDs to check
+     * @return If there is no mismatch
      */
     public boolean bookIdsMatchSearch(List<String> bookIds){
         for (String id : bookIds) {
@@ -96,15 +96,6 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
             }
         }
         return true;
-    }
-
-    /**
-     * Get the number of copies of a book currently in the library.
-     * @param book the ISBN of the book.
-     * @return The number of copies of the book.
-     */
-    public int getNumCopies(String book){
-        return books.get(book).getTotalCopies();
     }
 
     /**
@@ -124,16 +115,6 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
             }
         }
         return books;
-    }
-
-    /**
-     * Removes a copy of a book from the library.
-     * @param book the ISBN of the book.
-     * @return Whether a copy of the book was removed.
-     */
-    public boolean removeCopy(String book) {
-        BookInfo bookInfo = books.get(book);
-        return bookInfo.checkOutCopy();
     }
 
     /**
