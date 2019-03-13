@@ -15,7 +15,7 @@ public class Transaction {
     /**
      * The base fine
      */
-    private static int BASE_FINE = 8;
+    private static int BASE_FINE = 10;
 
     /**
      * The amount the fine increases with each day past the due date
@@ -95,7 +95,7 @@ public class Transaction {
         if(returnDate.isBefore(dueDate)) {
             this.fineAmount = 0;
         } else {
-            this.fineAmount = BASE_FINE + FINE_DAILY_INCREMENT * (int)ChronoUnit.DAYS.between(dueDate, returnDate);
+            this.fineAmount = BASE_FINE + FINE_DAILY_INCREMENT * calculateNumLateDays();
         }
     }
 

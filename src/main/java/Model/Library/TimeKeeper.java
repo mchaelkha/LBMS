@@ -40,9 +40,14 @@ public class TimeKeeper implements RequestUtil, Serializable {
     private Timer timer;
 
     /**
-     * The LibrarySystem will be notified when the LocalDate
+     * The LibrarySystem will be notified when its open or closing hour.
      */
     private LibrarySystem librarySystemObserver;
+
+    /**
+     * The ReportGenerator will be notified when its closing hour.
+     */
+    private ReportGenerator reportGeneratorObserver;
 
     /**
      * The delay in milliseconds before the task is performed the first time
@@ -79,7 +84,14 @@ public class TimeKeeper implements RequestUtil, Serializable {
         librarySystemObserver = librarySystem;
     }
 
-    //TODO add method to add ReportGenerator Observer to be notified every day at library closing time + add field for new observer
+    /**
+     * Sets the reportGeneratorObserver
+     * @param reportGenerator observer to be notified when clock hits closing hour
+     */
+    public void setReportGeneratorObserver(ReportGenerator reportGenerator) {
+        reportGeneratorObserver = reportGenerator;
+    }
+
     /**
      * Adds the TimerInterval in seconds to the clock. 
      * Used by the TimerTask to keep track of time.
@@ -87,7 +99,15 @@ public class TimeKeeper implements RequestUtil, Serializable {
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
         setLibraryState();
+        notifyReportGenerator();
         //TODO calculate fines every day at closing time for StatisticReports
+    }
+
+    /**
+     * Notify ReportGenerator to generate new daily report if its closing time
+     */
+    public void notifyReportGenerator(){
+
     }
 
     /**

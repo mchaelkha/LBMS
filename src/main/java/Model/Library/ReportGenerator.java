@@ -40,6 +40,12 @@ public class ReportGenerator {
     private List<StatisticsReport> statisticsReportList;
 
     /**
+     * Report to hold all data from start of simulation.
+     * Used when days param is not specified in report request
+     */
+    private StatisticsReport generalStatisticsReport;
+
+    /**
      * Create the report generator that knows about the other databases.
      * @param bookDB The book database
      * @param visitorDB The visitor database
@@ -60,6 +66,7 @@ public class ReportGenerator {
     public String generateInfoReport(int days){
         if (days == 0) {
             //TODO return StatisticsReport representing overall simulation stats
+            return generalStatisticsReport.toString();
         } else {
             //TODO
         }

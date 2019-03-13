@@ -34,6 +34,7 @@ public interface RequestUtil {
     String INVALID_AMOUNT = "invalid-amount";
     String OUTSTANDING_FINE = "outstanding-fine";
     String BOOK_LIMIT_EXCEDED = "book-limit-exceeded";
+    String NOT_ENOUGH_COPIES = "book-no-longer-available";
     String OVERDUE = "overdue";
     String SUCCESS = "success";
     String CLOSED_LIBRARY = "closed-library";

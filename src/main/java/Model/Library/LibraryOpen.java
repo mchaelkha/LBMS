@@ -56,6 +56,10 @@ class LibraryOpen implements LibraryState,RequestUtil {
         else{
             //Update book number in BookDB
             List<BookInfo> bookInfos = bookDB.borrowBooks(bookIds);
+            //Not enough copies are available at the library
+            if(bookInfos == null){
+                return BORROW_REQUEST+DELIMITER+NOT_ENOUGH_COPIES+TERMINATOR;
+            }
             //Successful checkout
             List<Transaction> transactions = checkoutDB.checkout(checkoutDate, visitorID, bookInfos);
             //All due dates for transactions made are the same

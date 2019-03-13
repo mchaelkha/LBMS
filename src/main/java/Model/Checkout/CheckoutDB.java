@@ -38,7 +38,17 @@ public class CheckoutDB implements Serializable,RequestUtil {
      */
     private Map<String,BookInfo> lastBorrowedBooks;
     /**
-     * The max number of transactions a visitor can haave.
+     * Amount of fines collected during a day.
+     * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
+     */
+    private int collectedFines;
+    /**
+     * Amount of fines uncollected during a day.
+     * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
+     */
+    private int uncollectedFines;
+    /**
+     * The max number of transactions a visitor can have.
      */
     private final static int MAX_NUM_OF_TRANSACTIONS = 5;
 
@@ -261,6 +271,14 @@ public class CheckoutDB implements Serializable,RequestUtil {
             }
         }
         return calculateFine(visitorID);
+    }
+
+    public int getCollectedFines() {
+        return collectedFines;
+    }
+
+    public int getUncollectedFines() {
+        return uncollectedFines;
     }
 
 }

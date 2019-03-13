@@ -117,12 +117,8 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
         List<BookInfo> books = new ArrayList<>();
         for (String bookID : bookIDs) {
             BookInfo book = lastSearch.get(bookID);
-            // All IDs must match
-            if (book == null) {
-                return null;
-            }
             books.add(book);
-            // Book no longer available
+            // Book no longer available. Not enough copies
             if (!book.checkOutCopy()) {
                 return null;
             }
