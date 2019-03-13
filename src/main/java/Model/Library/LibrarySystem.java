@@ -40,15 +40,15 @@ public class LibrarySystem implements RequestUtil{
     private VisitorDB visitorDB;
 
     /**
+     * The report generator to create daily reports
+     */
+    private ReportGenerator reporter;
+
+    /**
      * Object used to update library time and to notify library when
      * to close and open (Library state transition)
      */
     private TimeKeeper timeKeeper;
-
-    /**
-     * Tracks the last find borrowed books for a visitor query
-     */
-    //private Map<String,BookInfo> lastBorrowedBooks;
 
     /**
      * Create the library system that is responsible for knowing about the system's model.
@@ -59,6 +59,7 @@ public class LibrarySystem implements RequestUtil{
     public LibrarySystem(VisitorDB visitorDB, TimeKeeper timeKeeper, ReportGenerator reporter) {
         this.visitorDB = visitorDB;
         this.timeKeeper = timeKeeper;
+        this.reporter = reporter;
         //Add Library States
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
@@ -78,7 +79,7 @@ public class LibrarySystem implements RequestUtil{
      * @return Whether the library is open.
      */
     public boolean isOpen() {
-        return timeKeeper.isLibraryOpen();
+        return currentLibraryState == libraryStates.get(OPEN_STATE);
     }
 
     /**
@@ -106,22 +107,29 @@ public class LibrarySystem implements RequestUtil{
      * Called by TimeKeeper to close the library.
      */
     public void closeLibrary() {
-        //clear current visitors
-        visitorDB.clearCurrentVisitors();
+        if (isOpen()) {
+            //clear current visitors
+            visitorDB.clearCurrentVisitors(timeKeeper.getClock());
 
-        //clear visitLengths
-        visitorDB.clearVisitLengths();
+            //TODO update string parameter
+            reporter.generateDailyReport("");
 
-        //Transition library state to closed
-        currentLibraryState = libraryStates.get(CLOSED_STATE);
+            //clear visitLengths
+            visitorDB.clearVisitLengths();
+
+            //Transition library state to closed
+            currentLibraryState = libraryStates.get(CLOSED_STATE);
+        }
     }
 
     /**
      * Called by TimeKeeper to open the library.
      */
     public void openLibrary(){
-        //Transition state to open
-        currentLibraryState = libraryStates.get(OPEN_STATE);
+        if (!isOpen()) {
+            //Transition state to open
+            currentLibraryState = libraryStates.get(OPEN_STATE);
+        }
     }
 
 }

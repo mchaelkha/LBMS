@@ -41,11 +41,6 @@ public class VisitorDB implements RequestUtil, Serializable{
     private final int INITIAL_VISITOR_ID = 1000000000;
 
     /**
-     * Updated when Visitor begins a visit. Used to calculate visit duration
-     */
-    private LocalDateTime startVisitDayTime;
-
-    /**
      * Create a new visitor database that is empty.
      */
     public VisitorDB() {
@@ -102,7 +97,8 @@ public class VisitorDB implements RequestUtil, Serializable{
             VisitorInfo visitor = registeredVisitors.get(visitorID);
             currentVisitors.put(visitorID, visitor);
 
-            this.startVisitDayTime = startVisitDayTime;
+            visitor.startVisit(startVisitDayTime);
+            //this.startVisitDayTime = startVisitDayTime;
 
             //Response = "arrive,visitorID,visitDate,visitStartTime;"
             return ARRIVE_REQUEST+DELIMITER+visitorID+DELIMITER
@@ -122,13 +118,14 @@ public class VisitorDB implements RequestUtil, Serializable{
         }
 
         //Remove visitor from currentVisitors
-        currentVisitors.remove(visitorID);
+        VisitorInfo visitor = currentVisitors.remove(visitorID);
+        LocalDateTime start = visitor.getVisitStart();
 
         //Record visit duration for ReportGenerator
-        visitLengths.add(TimeKeeper.calculateDurationMillis(startVisitDayTime, endVisitDateTime));
+        visitLengths.add(TimeKeeper.calculateDurationMillis(start, endVisitDateTime));
 
         //Response = "depart,visitorID,visitEndTime,visitDuration"
-        String visitDuration = TimeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
+        String visitDuration = TimeKeeper.calculateDuration(start, endVisitDateTime);
 
         return DEPART_REQUEST+DELIMITER+visitorID+DELIMITER+visitEndTime+
                 DELIMITER+visitDuration+TERMINATOR;
@@ -136,8 +133,19 @@ public class VisitorDB implements RequestUtil, Serializable{
 
     /**
      * Clear all the current visitors that are logged. Called when Library closes.
+     * @param end The local date time when the visitors are leaving
      */
-    public void clearCurrentVisitors() {
+    public void clearCurrentVisitors(LocalDateTime end) {
+        // End the visits for all current visitors upon closing
+        VisitorInfo visitor;
+        LocalDateTime start;
+        for (String visitorID : currentVisitors.keySet()) {
+            visitor = currentVisitors.get(visitorID);
+            start = visitor.getVisitStart();
+            visitor.endVisit(end);
+            visitLengths.add(TimeKeeper.calculateDurationMillis(start, end));
+        }
+        // Clear outside of iterator
         currentVisitors.clear();
     }
 

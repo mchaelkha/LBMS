@@ -1,6 +1,8 @@
 package Model.Visitor;
 
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a registered visitor in the Library System
@@ -26,9 +28,13 @@ public class VisitorInfo {
      */
     private String phoneNumber;
     /**
-     * All visits that a visitor has made
+     * All visits that a visitor has made from start to end
      */
-    private Map<String, String> visits;
+    private List<Visit> visits;
+    /**
+     * Current visit tracked by the start
+     */
+    private Visit current;
 
     /**
      * Set visitor info.
@@ -38,6 +44,33 @@ public class VisitorInfo {
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        visits = new ArrayList<>();
+    }
+
+    /**
+     * Set the current starting time of a visit.
+     * @param start The start of a visit
+     */
+    public void startVisit(LocalDateTime start) {
+        current = new Visit(start);
+    }
+
+    /**
+     * End a current visit by adding the visit's start and end to the visits.
+     * @param end The date of visiting
+     */
+    public void endVisit(LocalDateTime end) {
+        current.end(end);
+        visits.add(current);
+        current = null;
+    }
+
+    /**
+     * Get the start of the visit
+     * @return The time and date of the start of the visit
+     */
+    public LocalDateTime getVisitStart() {
+        return current.getStart();
     }
 
     /**

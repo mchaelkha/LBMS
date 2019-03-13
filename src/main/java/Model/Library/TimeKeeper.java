@@ -45,6 +45,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
     private LibrarySystem librarySystemObserver;
 
     /**
+     * TODO: remove this dependency
      * The ReportGenerator will be notified when its closing hour.
      */
     private ReportGenerator reportGeneratorObserver;
@@ -105,10 +106,10 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * Helper method to set the library state and notify ReportGenerator.
      */
     public void updateObservers(){
-        if(clock.getHour() == OPEN_HOUR){
+        if(clock.getHour() == OPEN_HOUR && !librarySystemObserver.isOpen()){
             librarySystemObserver.openLibrary();
         }
-        else if(clock.getHour() == CLOSE_HOUR){
+        else if(clock.getHour() == CLOSE_HOUR && librarySystemObserver.isOpen()){
             librarySystemObserver.closeLibrary();
             reportGeneratorObserver.generateDailyReport(readDate());
         }
