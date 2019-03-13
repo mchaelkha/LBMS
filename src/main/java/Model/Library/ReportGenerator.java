@@ -4,6 +4,7 @@ import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Michael Kha
  * @author Luis Gutierrez
  */
-public class ReportGenerator {
+public class ReportGenerator implements Serializable {
 
     /**
      * The book database

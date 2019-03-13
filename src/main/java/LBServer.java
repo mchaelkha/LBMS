@@ -1,4 +1,3 @@
-
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;
@@ -86,12 +85,13 @@ public class LBServer {
      * @param checkoutDB The checkout database
      */
     public LBServer(BookDB bookDB, VisitorDB visitorDB,
-                    CheckoutDB checkoutDB, TimeKeeper timeKeeper) {
+                    CheckoutDB checkoutDB, TimeKeeper timeKeeper,
+                    ReportGenerator reportGenerator) {
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.timeKeeper = timeKeeper;
-        reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        this.reportGenerator = reportGenerator;
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
     }
@@ -138,6 +138,7 @@ public class LBServer {
             items.add(visitorDB);
             items.add(checkoutDB);
             items.add(timeKeeper);
+            items.add(reportGenerator);
             oos.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,6 +155,7 @@ public class LBServer {
         VisitorDB visitorDB;
         CheckoutDB checkoutDB;
         TimeKeeper timeKeeper;
+        ReportGenerator reportGenerator;
         try {
             FileInputStream fis = new FileInputStream(PATH + file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -163,7 +165,8 @@ public class LBServer {
             visitorDB = (VisitorDB) items.get(1);
             checkoutDB = (CheckoutDB) items.get(2);
             timeKeeper = (TimeKeeper) items.get(3);
-            return new LBServer(bookDB, visitorDB, checkoutDB, timeKeeper);
+            reportGenerator = (ReportGenerator) items.get(4);
+            return new LBServer(bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
