@@ -26,6 +26,11 @@ public class VisitorDB implements RequestUtil, Serializable{
     private Map<String, VisitorInfo> currentVisitors;
 
     /**
+     * List of visit lengths to calculate average visit length for StatisticReports
+     */
+    private List<Long> visitLengths;
+
+    /**
      * Used for providing visitors with unique IDs
      */
     private int nextVisitorID;
@@ -46,6 +51,7 @@ public class VisitorDB implements RequestUtil, Serializable{
     public VisitorDB() {
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
+        visitLengths = new ArrayList<>();
         nextVisitorID = INITIAL_VISITOR_ID;
     }
 
@@ -118,6 +124,9 @@ public class VisitorDB implements RequestUtil, Serializable{
         //Remove visitor from currentVisitors
         currentVisitors.remove(visitorID);
 
+        //Record visit duration for ReportGenerator
+        visitLengths.add(TimeKeeper.calculateDurationMillis(startVisitDayTime, endVisitDateTime));
+
         //Response = "depart,visitorID,visitEndTime,visitDuration"
         String visitDuration = TimeKeeper.calculateDuration(startVisitDayTime, endVisitDateTime);
 
@@ -126,11 +135,17 @@ public class VisitorDB implements RequestUtil, Serializable{
     }
 
     /**
-     * Clear all the current visitors that are logged.
-     * Called when Library closes.
+     * Clear all the current visitors that are logged. Called when Library closes.
      */
     public void clearCurrentVisitors() {
         currentVisitors.clear();
+    }
+
+    /**
+     * Clear visitLengths. Called when library closes.
+     */
+    public void clearVisitLengths() {
+        visitLengths.clear();
     }
 
     /**
@@ -146,4 +161,23 @@ public class VisitorDB implements RequestUtil, Serializable{
         return registeredVisitors.containsKey(visitorID);
     }
 
+    /**
+     * Helper method for ReportGenerator to get current number of registered visitors
+     */
+    public int getNumRegisteredVisitors(){
+        return registeredVisitors.size();
+    }
+
+    /**
+     * Helper method for ReportGenerator to get average length of visit
+     * @return average length of visit
+     */
+    public String getAverageLengthVisit(){
+        long averageLengthVisit = 0;
+        for (Long visitLength : visitLengths) {
+            averageLengthVisit += visitLength;
+        }
+        averageLengthVisit = averageLengthVisit/(visitLengths.size());
+        return TimeKeeper.calculateDurationString(averageLengthVisit);
+    }
 }

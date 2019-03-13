@@ -73,12 +73,23 @@ public class ReportGenerator {
         return "";
     }
 
-    public void generateDailyReport(String dateGenerated, int numBooksInLibrary, int numRegisteredVisitors,
-                                    String avgLengthVisit, int numBooksPurchased, int finesCollected, int finesUncollected) {
+    /**
+     * Method called by timeKeeper to generate a daily report when it is closing hour
+     * @param dateGenerated current string date passed by timeKeeper
+     */
+    public void generateDailyReport(String dateGenerated) {
         //bookDB: get numBooksInLibrary,
         //checkoutDB: get numBooksPurchased, get finesCollected, get finesUncollected
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated
+
+        int numRegisteredVisitors = visitorDB.getNumRegisteredVisitors();
+        String avgLengthVisit = visitorDB.getAverageLengthVisit();
+
+
+        //TODO clear visitLengths list in visitorDB,
+        //StatisticsReport statisticsReport = new StatisticsReport()
+        //return statisticsReport
     }
 
 }

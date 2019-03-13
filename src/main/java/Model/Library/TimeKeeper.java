@@ -98,27 +98,20 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
-        setLibraryState();
-        notifyReportGenerator();
+        updateObservers();
         //TODO calculate fines every day at closing time for StatisticReports
     }
 
     /**
-     * Notify ReportGenerator to generate new daily report if its closing time
+     * Helper method to set the library state and notify ReportGenerator.
      */
-    public void notifyReportGenerator(){
-
-    }
-
-    /**
-     * Helper method to set the library state
-     */
-    public void setLibraryState(){
+    public void updateObservers(){
         if(clock.getHour() == OPEN_HOUR){
             librarySystemObserver.openLibrary();
         }
         else if(clock.getHour() == CLOSE_HOUR){
             librarySystemObserver.closeLibrary();
+            reportGeneratorObserver.generateDailyReport(readDate());
         }
     }
 
@@ -242,9 +235,27 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * @return String representation of duration between LocalDayTime objects
      */
     public static String calculateDuration(LocalDateTime start, LocalDateTime end) {
+        return calculateDurationString(calculateDurationMillis(start,end));
+    }
+
+    /**
+     * Helper method for VisitorDB to store durations of visits in millis.
+     * @param start starting time
+     * @param end ending time
+     * @return duration between start and end in millis
+     */
+    public static long calculateDurationMillis(LocalDateTime start, LocalDateTime end) {
         Duration dur = Duration.between(start, end);
         long millis = dur.toMillis();
+        return millis;
+    }
 
+    /**
+     * Helper method for VisitorDB to build response strings needing visit durations.
+     * @param millis visit duration time
+     * @return formatted string of visit duration
+     */
+    public static String calculateDurationString(long millis){
         return String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) -

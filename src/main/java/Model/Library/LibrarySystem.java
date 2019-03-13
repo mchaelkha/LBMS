@@ -106,8 +106,13 @@ public class LibrarySystem implements RequestUtil{
      * Called by TimeKeeper to close the library.
      */
     public void closeLibrary() {
-        //call clearVisitors() in VisitorDB and transition state
+        //clear current visitors
         visitorDB.clearCurrentVisitors();
+
+        //clear visitLengths
+        visitorDB.clearVisitLengths();
+
+        //Transition library state to closed
         currentLibraryState = libraryStates.get(CLOSED_STATE);
     }
 
