@@ -87,7 +87,7 @@ public class ReportGenerator {
         String avgLengthVisit = visitorDB.getAverageLengthVisit();
 
 
-        //TODO clear visitLengths list in visitorDB,
+        //TODO calculate fines before getting finesUncollected from checkoutDB
         //StatisticsReport statisticsReport = new StatisticsReport()
         //return statisticsReport
     }

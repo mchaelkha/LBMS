@@ -99,7 +99,6 @@ public class TimeKeeper implements RequestUtil, Serializable {
     public void updateTime() {
         this.clock = clock.plusSeconds(1);
         updateObservers();
-        //TODO calculate fines every day at closing time for StatisticReports
     }
 
     /**
