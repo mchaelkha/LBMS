@@ -64,7 +64,7 @@ public class LibrarySystem implements RequestUtil{
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
         libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper));
-
+        currentLibraryState = libraryStates.get(CLOSED_STATE);
         //Set initial state based on current time
         if(timeKeeper.isLibraryOpen()){
             openLibrary();

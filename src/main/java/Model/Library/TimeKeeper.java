@@ -92,10 +92,13 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * Helper method to set the library state and notify ReportGenerator.
      */
     public void updateObservers(){
-        if(clock.getHour() == OPEN_HOUR && !librarySystemObserver.isOpen()){
+        int hour = clock.getHour();
+        if(hour >= OPEN_HOUR && hour <= CLOSE_HOUR &&
+                !librarySystemObserver.isOpen()){
             librarySystemObserver.openLibrary();
         }
-        else if(clock.getHour() == CLOSE_HOUR && librarySystemObserver.isOpen()){
+        else if((hour <= OPEN_HOUR || hour >= CLOSE_HOUR) &&
+                librarySystemObserver.isOpen()){
             librarySystemObserver.closeLibrary();
         }
     }

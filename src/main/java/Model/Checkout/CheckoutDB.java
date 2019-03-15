@@ -148,7 +148,11 @@ public class CheckoutDB implements Serializable,RequestUtil {
      */
     public int calculateFine(String visitorID) {
         int fines = 0;
-        for (Transaction t : this.openLoans.get(visitorID)) {
+        List<Transaction> transactions = openLoans.get(visitorID);
+        if (transactions == null) {
+            return fines;
+        }
+        for (Transaction t : transactions) {
             fines += t.getFineAmount();
         }
 
@@ -231,6 +235,9 @@ public class CheckoutDB implements Serializable,RequestUtil {
     public String findBorrowedBooks(String visitorID){
         lastBorrowedBooks = new HashMap<>();
         List<Transaction> visitorTransactions = openLoans.get(visitorID);
+        if (visitorTransactions == null) {
+            return BORROWED_REQUEST + DELIMITER + 0 + TERMINATOR;
+        }
         String response = BORROWED_REQUEST + DELIMITER + visitorTransactions.size() + DELIMITER;
         //For each transaction, call method in visitorDB get book title and add to response string
         int id = 0;
