@@ -181,6 +181,9 @@ public class VisitorDB implements RequestUtil, Serializable{
      * @return average length of visit
      */
     public String getAverageLengthVisit(){
+        if (visitLengths.isEmpty()) {
+            return TimeKeeper.calculateDurationString(0);
+        }
         long averageLengthVisit = 0;
         for (Long visitLength : visitLengths) {
             averageLengthVisit += visitLength;
