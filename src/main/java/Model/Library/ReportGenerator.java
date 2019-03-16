@@ -79,13 +79,16 @@ public class ReportGenerator implements Serializable {
      * @param dateGenerated current string date passed by timeKeeper
      */
     public void generateDailyReport(String dateGenerated) {
-        //bookDB: get numBooksInLibrary,
-        //checkoutDB: get numBooksPurchased, get finesCollected, get finesUncollected
+        //Some Fields are cleared in databases when new report is generated
+        //bookDB: get numBooksInLibrary (from BookData books.size), get numBooksPurchased
+        //checkoutDB: get finesCollected, get finesUncollected
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated
 
         int numRegisteredVisitors = visitorDB.getNumRegisteredVisitors();
         String avgLengthVisit = visitorDB.getAverageLengthVisit();
+        int numBooksInLibrary = bookDB.getNumBooksInLibrary();
+        int numBooksPurchased = bookDB.getNumBooksPurchased();
 
 
         //TODO calculate fines before getting finesUncollected from checkoutDB

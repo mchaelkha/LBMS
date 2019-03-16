@@ -27,6 +27,11 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     private Map<String,BookInfo> lastBookSearch;
 
     /**
+     * Number of books purchased during the current simulation day (Used for ReportGenerator)
+     */
+    private int numBooksPurchased;
+
+    /**
      * Create a new book database that is empty.
      */
     public BookDB() {
@@ -80,6 +85,7 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
             response += book.toString();
             response += DELIMITER + book.getTotalCopies();
         }
+        numBooksPurchased += booksPurchased.size();
         return response + TERMINATOR;
     }
 
@@ -124,6 +130,22 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     public void returnCopy(String book){
         if (books.containsKey(book))
             books.get(book).returnCopy();
+    }
+
+    /**
+     * Helper method for reportGenerator to retrieve number of books in library
+     * @return number of books in library
+     */
+    public int getNumBooksInLibrary(){
+        return books.size();
+    }
+
+    /**
+     * Helper method for reportGenerator to retrieve number of books purchased
+     * @return number of books purchased
+     */
+    public int getNumBooksPurchased(){
+        return numBooksPurchased;
     }
 
 }
