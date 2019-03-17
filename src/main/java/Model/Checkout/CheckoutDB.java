@@ -133,7 +133,6 @@ public class CheckoutDB implements Serializable,RequestUtil {
             return false;
         }
         for (Transaction transaction : transactions) {
-            transaction.setFine();
             if(transaction.getFineAmount()>0){
                 hasOutstandingFine = true;
             }
@@ -182,7 +181,8 @@ public class CheckoutDB implements Serializable,RequestUtil {
             t = returnBook(timeKeeper.getClock(), visitorID, isbn);
             bookDB.returnCopy(isbn);
             if(t.getFineAmount() > 0){
-                totalFine = totalFine + t.getFineAmount();
+                totalFine += t.getFineAmount();
+                uncollectedFines += t.getFineAmount();
                 overdue.add(id);
             }
         }
@@ -208,12 +208,11 @@ public class CheckoutDB implements Serializable,RequestUtil {
         if(this.openLoans.containsKey(visitorID)) {
             for (Transaction t: this.openLoans.get(visitorID)) {
                 if(t.getIsbn().equals(isbn)) {
+                    //Calculates transaction fine and sets returnDate
                     t.returnBook(returnDate);
+                    //Remove transaction from openLoans if it has no fine
                     if(t.getFineAmount() == 0) {
                         this.openLoans.get(visitorID).remove(t);
-
-                        //TODO remove transaction from visitorInfo transactions
-
                         if (!this.closedLoans.containsKey(visitorID)) {
                             this.closedLoans.put(visitorID, new ArrayList<Transaction>());
                         }
@@ -277,6 +276,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
                 }
             }
         }
+        collectedFines += amount;
         return calculateFine(visitorID);
     }
 

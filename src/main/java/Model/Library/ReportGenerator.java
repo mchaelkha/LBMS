@@ -69,16 +69,26 @@ public class ReportGenerator implements Serializable {
             //TODO return StatisticsReport representing overall simulation stats
             return generalStatisticsReport.toString();
         } else {
-            //TODO
+            //Create new report using daily reports to be included
+            List<StatisticsReport> reportsIncluded = new ArrayList<>();
+            int reportIndex = statisticsReportList.size();
+            int count = days;
+            while(count > 0){
+                reportsIncluded.add(statisticsReportList.get(reportIndex));
+                reportIndex -= 1;
+                count--;
+            }
+
+            StatisticsReport statisticsReport = new StatisticsReport(reportsIncluded);
+            return statisticsReport.toString();
         }
-        return "";
     }
 
     /**
      * Method called by timeKeeper to generate a daily report when it is closing hour
      * @param dateGenerated current string date passed by timeKeeper
      */
-    public void generateDailyReport(String dateGenerated) {
+    public StatisticsReport generateDailyReport(String dateGenerated) {
         //Some Fields are cleared in databases when new report is generated
         //bookDB: get numBooksInLibrary (from BookData books.size), get numBooksPurchased
         //checkoutDB: get finesCollected, get finesUncollected
@@ -89,11 +99,15 @@ public class ReportGenerator implements Serializable {
         String avgLengthVisit = visitorDB.getAverageLengthVisit();
         int numBooksInLibrary = bookDB.getNumBooksInLibrary();
         int numBooksPurchased = bookDB.getNumBooksPurchased();
+        int collectedFines = checkoutDB.getCollectedFines();
+        int uncollectedFines = checkoutDB.getUncollectedFines();
 
+        StatisticsReport statisticsReport = new StatisticsReport(dateGenerated, numBooksInLibrary,
+                numRegisteredVisitors, avgLengthVisit, numBooksPurchased, collectedFines, uncollectedFines);
 
-        //TODO calculate fines before getting finesUncollected from checkoutDB
-        //StatisticsReport statisticsReport = new StatisticsReport()
-        //return statisticsReport
+        statisticsReportList.add(statisticsReport);
+
+        return statisticsReport;
     }
 
 }

@@ -2,6 +2,8 @@ package Model.Library;
 
 import Controller.Request.RequestUtil;
 
+import java.util.List;
+
 /**
  * A Library Statistics Report encapsulating summary information of the simulation.
  *
@@ -38,6 +40,14 @@ public class StatisticsReport implements RequestUtil {
         this.numBooksPurchased = numBooksPurchased;
         this.finesCollected = finesCollected;
         this.finesUncollected = finesUncollected;
+    }
+
+    /**
+     * Constructor for a statistics report accumulating stats from a list of statistics reports
+     * @param statisticsReportList
+     */
+    public StatisticsReport(List<StatisticsReport> statisticsReportList){
+
     }
 
     //TODO create constructor that takes a list of StatisticsReports and accumulates stats into one statisticsReport
