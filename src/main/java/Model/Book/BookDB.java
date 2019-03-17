@@ -148,4 +148,11 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
         return numBooksPurchased;
     }
 
+    /**
+     * Clear daily statistic "numBooksPurchased" when daily report is generated
+     */
+    public void clearNumBooksPurchased(){
+        numBooksPurchased = 0;
+    }
+
 }

@@ -41,12 +41,12 @@ public class CheckoutDB implements Serializable,RequestUtil {
      * Amount of fines collected during a day.
      * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
      */
-    private int collectedFines;
+    private int dailyCollectedFines;
     /**
      * Amount of fines uncollected during a day.
      * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
      */
-    private int uncollectedFines;
+    private int dailyUncollectedFines;
     /**
      * The max number of transactions a visitor can have.
      */
@@ -182,7 +182,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
             bookDB.returnCopy(isbn);
             if(t.getFineAmount() > 0){
                 totalFine += t.getFineAmount();
-                uncollectedFines += t.getFineAmount();
+                dailyUncollectedFines += t.getFineAmount();
                 overdue.add(id);
             }
         }
@@ -276,16 +276,21 @@ public class CheckoutDB implements Serializable,RequestUtil {
                 }
             }
         }
-        collectedFines += amount;
+        dailyCollectedFines += amount;
         return calculateFine(visitorID);
     }
 
     public int getCollectedFines() {
-        return collectedFines;
+        return dailyCollectedFines;
     }
 
     public int getUncollectedFines() {
-        return uncollectedFines;
+        return dailyUncollectedFines;
+    }
+
+    public void clearDailyFineFields(){
+        dailyCollectedFines = 0;
+        dailyUncollectedFines = 0;
     }
 
 }

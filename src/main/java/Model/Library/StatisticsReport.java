@@ -2,6 +2,7 @@ package Model.Library;
 
 import Controller.Request.RequestUtil;
 
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -11,19 +12,16 @@ import java.util.List;
  */
 public class StatisticsReport implements RequestUtil {
 
-    private String dateGenerated;
     private int numBooksInLibrary;
     private int numRegisteredVisitors;
     private String avgLengthVisit;
+    private long avgLengthVisitLong;
     private int numBooksPurchased;
     private int finesCollected;
     private int finesUncollected;
 
     /**
-     * TODO Create new StatisticsReport when simulation is started (Fields set to 0) this will represent overall stats
-     * TODO Create new StatisticsReport every library closing (In timekeeper when hour = 12)
-     * TODO
-     * @param dateGenerated
+     * Constructor setting the report statistics
      * @param numBooksInLibrary
      * @param numRegisteredVisitors
      * @param avgLengthVisit
@@ -31,12 +29,13 @@ public class StatisticsReport implements RequestUtil {
      * @param finesCollected
      * @param finesUncollected
      */
-    public StatisticsReport(String dateGenerated, int numBooksInLibrary, int numRegisteredVisitors,
-                            String avgLengthVisit, int numBooksPurchased, int finesCollected, int finesUncollected) {
-        this.dateGenerated = dateGenerated;
+    public StatisticsReport(int numBooksInLibrary, int numRegisteredVisitors,
+                            long avgLengthVisitLong, String avgLengthVisit, int numBooksPurchased,
+                            int finesCollected, int finesUncollected) {
         this.numBooksInLibrary = numBooksInLibrary;
         this.numRegisteredVisitors = numRegisteredVisitors;
         this.avgLengthVisit = avgLengthVisit;
+        this.avgLengthVisitLong = avgLengthVisitLong;
         this.numBooksPurchased = numBooksPurchased;
         this.finesCollected = finesCollected;
         this.finesUncollected = finesUncollected;
@@ -47,52 +46,21 @@ public class StatisticsReport implements RequestUtil {
      * @param statisticsReportList
      */
     public StatisticsReport(List<StatisticsReport> statisticsReportList){
+        //Number of Books in Library is the most recent num of books in library (from first report in list)
+        numBooksInLibrary = statisticsReportList.get(0).numBooksInLibrary;
+        //Number of Registered Visitors from most recent report
+        numRegisteredVisitors = statisticsReportList.get(0).numRegisteredVisitors;
+        //Fines Uncollected from most recent report
+        finesUncollected = statisticsReportList.get(0).finesUncollected;
 
-    }
-
-    //TODO create constructor that takes a list of StatisticsReports and accumulates stats into one statisticsReport
-
-    /**
-     * Update current report with information from a new report.
-     * Used to update general StatisticsReport holding statistics for the whole simulation.
-     */
-    public void updateReport(StatisticsReport statisticsReport) {
-        numBooksInLibrary += statisticsReport.numBooksInLibrary;
-        numRegisteredVisitors += statisticsReport.numRegisteredVisitors;
-        // TODO: Re-average length of visit?
-        // avgLengthVisit = ?
-        numBooksPurchased += statisticsReport.numBooksPurchased;
-        // Fines must always be updated outside of the report
-        finesCollected = statisticsReport.finesCollected;
-        finesUncollected = statisticsReport.finesUncollected;
-    }
-
-    public String getDateGenerated() {
-        return dateGenerated;
-    }
-
-    public int getNumBooksInLibrary() {
-        return numBooksInLibrary;
-    }
-
-    public int getNumRegisteredVisitors() {
-        return numRegisteredVisitors;
-    }
-
-    public String getAvgLengthVisit() {
-        return avgLengthVisit;
-    }
-
-    public int getNumBooksPurchased() {
-        return numBooksPurchased;
-    }
-
-    public int getFinesCollected() {
-        return finesCollected;
-    }
-
-    public int getFinesUncollected() {
-        return finesUncollected;
+        long avgLengthVisits = 0;
+        for (StatisticsReport statisticsReport : statisticsReportList) {
+            avgLengthVisits += statisticsReport.avgLengthVisitLong;
+            numBooksPurchased += statisticsReport.numBooksPurchased;
+            finesCollected += statisticsReport.finesCollected;
+        }
+        avgLengthVisitLong = avgLengthVisits/statisticsReportList.size();
+        avgLengthVisit = TimeKeeper.calculateDurationString(avgLengthVisits);
     }
 
     /**

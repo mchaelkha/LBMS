@@ -1,5 +1,6 @@
 package Model.Library;
 
+import Controller.Request.RequestUtil;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Michael Kha
  * @author Luis Gutierrez
  */
-public class ReportGenerator implements Serializable {
+public class ReportGenerator implements RequestUtil, Serializable {
 
     /**
      * The book database
@@ -41,12 +42,6 @@ public class ReportGenerator implements Serializable {
     private List<StatisticsReport> statisticsReportList;
 
     /**
-     * Report to hold all data from start of simulation.
-     * Used when days param is not specified in report request
-     */
-    private StatisticsReport generalStatisticsReport;
-
-    /**
      * Create the report generator that knows about the other databases.
      * @param bookDB The book database
      * @param visitorDB The visitor database
@@ -66,12 +61,14 @@ public class ReportGenerator implements Serializable {
      */
     public String generateInfoReport(int days){
         if (days == 0) {
-            //TODO return StatisticsReport representing overall simulation stats
-            return generalStatisticsReport.toString();
-        } else {
+            StatisticsReport generalStatisticsReport = new StatisticsReport(statisticsReportList);
+            String response = REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+generalStatisticsReport.toString();
+            return response;
+        }
+        else {
             //Create new report using daily reports to be included
             List<StatisticsReport> reportsIncluded = new ArrayList<>();
-            int reportIndex = statisticsReportList.size();
+            int reportIndex = statisticsReportList.size()-1;
             int count = days;
             while(count > 0){
                 reportsIncluded.add(statisticsReportList.get(reportIndex));
@@ -80,32 +77,38 @@ public class ReportGenerator implements Serializable {
             }
 
             StatisticsReport statisticsReport = new StatisticsReport(reportsIncluded);
-            return statisticsReport.toString();
+            String response = REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+statisticsReport.toString();
+            return response;
         }
     }
 
     /**
      * Method called by timeKeeper to generate a daily report when it is closing hour
-     * @param dateGenerated current string date passed by timeKeeper
      */
-    public StatisticsReport generateDailyReport(String dateGenerated) {
-        //Some Fields are cleared in databases when new report is generated
+    public StatisticsReport generateDailyReport() {
+        //Fields are cleared in databases when new report is generated
         //bookDB: get numBooksInLibrary (from BookData books.size), get numBooksPurchased
         //checkoutDB: get finesCollected, get finesUncollected
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated
 
         int numRegisteredVisitors = visitorDB.getNumRegisteredVisitors();
-        String avgLengthVisit = visitorDB.getAverageLengthVisit();
+        long avgLengthVisitLong = visitorDB.getAverageLengthVisit();
+        String avgLengthVisit = TimeKeeper.calculateDurationString(avgLengthVisitLong);
         int numBooksInLibrary = bookDB.getNumBooksInLibrary();
         int numBooksPurchased = bookDB.getNumBooksPurchased();
         int collectedFines = checkoutDB.getCollectedFines();
         int uncollectedFines = checkoutDB.getUncollectedFines();
 
-        StatisticsReport statisticsReport = new StatisticsReport(dateGenerated, numBooksInLibrary,
-                numRegisteredVisitors, avgLengthVisit, numBooksPurchased, collectedFines, uncollectedFines);
-
+        StatisticsReport statisticsReport = new StatisticsReport(numBooksInLibrary,
+                numRegisteredVisitors, avgLengthVisitLong, avgLengthVisit, numBooksPurchased,
+                collectedFines, uncollectedFines);
         statisticsReportList.add(statisticsReport);
+
+        //Clear daily stats in DataBases
+        checkoutDB.clearDailyFineFields();
+        visitorDB.clearVisitLengths();
+        bookDB.clearNumBooksPurchased();
 
         return statisticsReport;
     }

@@ -106,11 +106,8 @@ public class LibrarySystem implements RequestUtil{
             //clear current visitors
             visitorDB.clearCurrentVisitors(timeKeeper.getClock());
 
-            //TODO update string parameter
-            reporter.generateDailyReport("");
-
-            //clear visitLengths
-            visitorDB.clearVisitLengths();
+            //Generate daily report
+            reporter.generateDailyReport();
 
             //Transition library state to closed
             currentLibraryState = libraryStates.get(CLOSED_STATE);

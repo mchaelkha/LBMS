@@ -180,15 +180,17 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Helper method for ReportGenerator to get average length of visit
      * @return average length of visit
      */
-    public String getAverageLengthVisit(){
+    public long getAverageLengthVisit(){
         if (visitLengths.isEmpty()) {
-            return TimeKeeper.calculateDurationString(0);
+            return 0;
+            //return TimeKeeper.calculateDurationString(0);
         }
         long averageLengthVisit = 0;
         for (Long visitLength : visitLengths) {
             averageLengthVisit += visitLength;
         }
         averageLengthVisit = averageLengthVisit/(visitLengths.size());
-        return TimeKeeper.calculateDurationString(averageLengthVisit);
+        return averageLengthVisit;
+        //return TimeKeeper.calculateDurationString(averageLengthVisit);
     }
 }
