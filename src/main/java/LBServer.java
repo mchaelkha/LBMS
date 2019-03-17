@@ -1,3 +1,6 @@
+import Controller.Parser;
+import Controller.ProxyParser;
+import Controller.Request.Request;
 import Model.Account.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
@@ -9,7 +12,6 @@ import Model.Visitor.VisitorDB;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -37,13 +39,9 @@ public class LBServer {
     private static final String EXIT = "/exit";
 
     /**
-     * List of client IDs that have connected to the server
-     */
-    private List<String> clients;
-    /**
      * Parser used to process possible requests
      */
-    private RequestParser parser;
+    private Parser parser;
     /**
      * System that determines when the library is open or closed
      */
@@ -78,7 +76,6 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
-        clients = new ArrayList<>();
         accountDB = new AccountDB();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
@@ -87,7 +84,7 @@ public class LBServer {
         reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
     }
 
     /**
@@ -102,7 +99,6 @@ public class LBServer {
     public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
                     CheckoutDB checkoutDB, TimeKeeper timeKeeper,
                     ReportGenerator reportGenerator) {
-        clients = new ArrayList<>();
         this.accountDB = accountDB;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
@@ -110,7 +106,7 @@ public class LBServer {
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
     }
 
     /**
@@ -136,9 +132,10 @@ public class LBServer {
             if (next.matches("^" + EXIT)) {
                 break;
             }
-            // TODO: add connect, disconnect requests
+            // TODO: add connect, disconnect requests via proxy parser
             // Next line must be a request to be processed
-            System.out.println(parser.processRequest(next));
+            Request request = parser.processRequest(next);
+            System.out.println(request.execute());
         }
         scanner.close();
         System.exit(0);

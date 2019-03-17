@@ -14,7 +14,7 @@ import Model.Visitor.VisitorDB;
  *
  * @author Michael Kha
  */
-public class RequestParser implements RequestUtil {
+public class RequestParser implements Parser {
     /**
      * Library system to keep track of library state and system databases
      */
@@ -55,9 +55,9 @@ public class RequestParser implements RequestUtil {
      * @param request A string containing the request (partial or complete)
      * @return the result of the command which was executed.
      */
-    public String processRequest(String request) {
-        Request command = determineRequest(request);
-        return command.execute();
+    @Override
+    public Request processRequest(String request) {
+        return determineRequest(request);
     }
 
     /**
@@ -65,7 +65,7 @@ public class RequestParser implements RequestUtil {
      * @param request The request to be parsed.
      * @return a partial request, or a call to create the request depending on whether the request was complete.
      */
-    public Request determineRequest(String request) {
+    private Request determineRequest(String request) {
         // Check if partial request first
         if (!request.endsWith(TERMINATOR) || !partial.isEmpty()) {
             partial += request;
