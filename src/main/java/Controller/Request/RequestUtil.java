@@ -22,6 +22,16 @@ public interface RequestUtil {
     String DATE_TIME_REQUEST = "datetime";
     String REPORT_REQUEST = "report";
 
+    String CONNECT_REQUEST = "connect";
+    String DISCONNECT_REQUEST = "disconnect";
+    String CREATE_REQUEST = "create";
+    String LOGIN_REQUEST = "login";
+    String LOGOUT_REQUEST = "logout";
+    String UNDO_REQUEST = "undo";
+    String REDO_REQUEST = "redo";
+    String SERVICE_REQUEST = "service";
+    String NOT_AUTHORIZED = "not-authorized";
+
     String PARAM_COUNT = "Too little or too many params";
     // Use String.format to insert request name
     String MISSING_PARAM = "<%s>" + DELIMITER + "missing-parameters";
