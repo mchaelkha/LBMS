@@ -72,7 +72,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
             int reportIndex = statisticsReportList.size()-1;
             int count = days;
             //Check that days param is lower than daily reports generated
-            if (days >= statisticsReportList.size()) {
+            if (days > statisticsReportList.size()) {
                 return REPORT_REQUEST+DELIMITER+"invalid-number-of-days";
             }
             while(count > 0){
