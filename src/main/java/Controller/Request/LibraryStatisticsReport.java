@@ -44,8 +44,12 @@ public class LibraryStatisticsReport implements Request{
         String[] parts = params.split(",");
         if (parts.length == 1) {
             days = Integer.parseInt(parts[0]);
-        } else {
+        }
+        else if(parts.length == 0){
             days = 0;
+        }
+        else{
+            return PARAM_COUNT;
         }
         return PROPER_PARAM;
     }
@@ -56,7 +60,10 @@ public class LibraryStatisticsReport implements Request{
      */
     @Override
     public String execute() {
-        checkParams();
+        String check = checkParams();
+        if (!check.equals(PROPER_PARAM)) {
+            return check;
+        }
         return reportGenerator.generateInfoReport(days);
     }
 }
