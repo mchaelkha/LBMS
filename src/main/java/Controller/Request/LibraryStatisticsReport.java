@@ -43,10 +43,12 @@ public class LibraryStatisticsReport implements Request{
     public String checkParams() {
         String[] parts = params.split(",");
         if (parts.length == 1) {
-            days = Integer.parseInt(parts[0]);
-        }
-        else if(parts.length == 0){
-            days = 0;
+            if(parts[0].equals("")){
+                days = 0;
+            }
+            else{
+                days = Integer.parseInt(parts[0]);
+            }
         }
         else{
             return PARAM_COUNT;
