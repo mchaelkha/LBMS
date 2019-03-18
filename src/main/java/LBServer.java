@@ -81,10 +81,12 @@ public class LBServer {
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB();
         timeKeeper = new TimeKeeper();
-        reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
+        reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
+        //TODO change back to ProxyParser after testing reportGenerator
+        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        //parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
     }
 
     /**

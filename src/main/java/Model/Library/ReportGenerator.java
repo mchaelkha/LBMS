@@ -6,6 +6,7 @@ import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ReportGenerator implements RequestUtil, Serializable {
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
      */
-    public ReportGenerator(BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+    public ReportGenerator(TimeKeeper timeKeeper,BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
+        this.timeKeeper = timeKeeper;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
@@ -62,14 +64,17 @@ public class ReportGenerator implements RequestUtil, Serializable {
     public String generateInfoReport(int days){
         if (days == 0) {
             StatisticsReport generalStatisticsReport = new StatisticsReport(statisticsReportList);
-            String response = REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+generalStatisticsReport.toString();
-            return response;
+            return REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+generalStatisticsReport.toString();
         }
         else {
             //Create new report using daily reports to be included
             List<StatisticsReport> reportsIncluded = new ArrayList<>();
             int reportIndex = statisticsReportList.size()-1;
             int count = days;
+            //Check that days param is lower than daily reports generated
+            if (days >= statisticsReportList.size()) {
+                return REPORT_REQUEST+DELIMITER+"invalid-number-of-days";
+            }
             while(count > 0){
                 reportsIncluded.add(statisticsReportList.get(reportIndex));
                 reportIndex -= 1;
@@ -77,8 +82,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
             }
 
             StatisticsReport statisticsReport = new StatisticsReport(reportsIncluded);
-            String response = REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+statisticsReport.toString();
-            return response;
+            return REPORT_REQUEST+DELIMITER+ timeKeeper.readDate()+NEW_LINE+statisticsReport.toString();
         }
     }
 

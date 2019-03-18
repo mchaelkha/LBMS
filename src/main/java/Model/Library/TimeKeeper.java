@@ -93,11 +93,11 @@ public class TimeKeeper implements RequestUtil, Serializable {
      */
     public void updateLibrary(){
         int hour = clock.getHour();
-        if(hour >= OPEN_HOUR && hour <= CLOSE_HOUR &&
+        if(hour >= OPEN_HOUR && hour < CLOSE_HOUR &&
                 !librarySystemObserver.isOpen()){
             librarySystemObserver.openLibrary();
         }
-        else if((hour <= OPEN_HOUR || hour >= CLOSE_HOUR) &&
+        else if(hour < OPEN_HOUR && hour >= CLOSE_HOUR &&
                 librarySystemObserver.isOpen()){
             librarySystemObserver.closeLibrary();
         }
