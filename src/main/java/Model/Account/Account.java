@@ -64,5 +64,16 @@ public class Account {
         undoHistory = new Stack<>();
     }
 
+    /**
+     * Authenticate an account for login by validating username and password
+     * are correct (matching).
+     * @param username The username to match
+     * @param password The password to match
+     * @return If both username and password match
+     */
+    public boolean authenticate(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
     // TODO: add helper methods to call requests in the role field
 }

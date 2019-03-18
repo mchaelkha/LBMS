@@ -1,5 +1,7 @@
 package Model.Account;
 
+import Controller.Request.RequestUtil;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class AccountDB implements Serializable {
+public class AccountDB implements Serializable, RequestUtil {
 
     /**
      * All the accounts that have been created with usernames as keys
@@ -18,7 +20,12 @@ public class AccountDB implements Serializable {
     private Map<String, Account> accounts;
 
     /**
-     * All logged in accounts. The client ID mapped to an account after
+     * All the accounts that have been created with visitor IDs as keys
+     */
+    private Map<String, Account> visitors;
+
+    /**
+     * Only logged in accounts. The client ID mapped to an account after
      * being logged in. Logging out removes the account from being active.
      */
     private Map<String, Account> activeAccounts;
@@ -28,27 +35,39 @@ public class AccountDB implements Serializable {
      */
     public AccountDB() {
         accounts = new HashMap<>();
+        visitors = new HashMap<>();
         activeAccounts = new HashMap<>();
     }
 
     /**
      * TODO: check visitor ID exists before calling...to reduce coupling
      * Create an account using the necessary credentials.
+     * @param clientID The client ID creating the account
      * @param username Username to use
      * @param password Password to use
      * @param role The account role, either visitor or employee
      * @param visitorID The associated visitor ID
      * @return An error or success response about the creation of the account
      */
-    public String createAccount(String username, String password, Role role, String visitorID) {
+    public String createAccount(String clientID, String username,
+                                String password, Role role, String visitorID) {
         // Check no duplicate username
-
+        if (accounts.containsKey(username)) {
+            return clientID + DELIMITER + CREATE_REQUEST +
+                    DELIMITER + "duplicate-username" + TERMINATOR;
+        }
         // Check no duplicate visitor ID
-
+        if (visitors.containsKey(visitorID)) {
+            return clientID + DELIMITER + CREATE_REQUEST +
+                    DELIMITER + "duplicate-visitor" + TERMINATOR;
+        }
         // Create account
-
+        Account account = new Account(username, password, role, visitorID);
+        accounts.put(username, account);
+        visitors.put(visitorID, account);
         // Return success response
-        return null;
+        return clientID + DELIMITER + CREATE_REQUEST +
+                DELIMITER + SUCCESS + TERMINATOR;
     }
 
     /**
@@ -60,11 +79,20 @@ public class AccountDB implements Serializable {
      */
     public String logIn(String clientID, String username, String password) {
         // Check if username and password valid
-
+        if (!accounts.containsKey(username)) {
+            return clientID + DELIMITER + LOGIN_REQUEST +
+                    DELIMITER + "bad-username-or-password" + TERMINATOR;
+        }
+        Account account = accounts.get(username);
+        if (!account.authenticate(username, password)) {
+            return clientID + DELIMITER + LOGIN_REQUEST +
+                    DELIMITER + "bad-username-or-password" + TERMINATOR;
+        }
         // Update active accounts
-
+        activeAccounts.put(clientID, account);
         // Return success response
-        return null;
+        return clientID + DELIMITER + LOGIN_REQUEST +
+                DELIMITER + SUCCESS + TERMINATOR;
     }
 
     /**
@@ -74,9 +102,10 @@ public class AccountDB implements Serializable {
      */
     public String logOut(String clientID) {
         // Update active accounts;
-
+        activeAccounts.remove(clientID);
         // Return success response
-        return null;
+        return clientID + DELIMITER + LOGOUT_REQUEST +
+                DELIMITER + SUCCESS + TERMINATOR;
     }
 
     /**

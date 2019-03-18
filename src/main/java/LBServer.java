@@ -1,3 +1,7 @@
+import Controller.Parser;
+import Controller.ProxyParser;
+import Controller.Request.Request;
+import Model.Account.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;
@@ -37,11 +41,15 @@ public class LBServer {
     /**
      * Parser used to process possible requests
      */
-    private RequestParser parser;
+    private Parser parser;
     /**
      * System that determines when the library is open or closed
      */
     private LibrarySystem library;
+    /**
+     * Database to keep track of accounts
+     */
+    private AccountDB accountDB;
     /**
      * Database to keep track of books
      */
@@ -68,6 +76,7 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
+        accountDB = new AccountDB();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB();
@@ -75,25 +84,29 @@ public class LBServer {
         reportGenerator = new ReportGenerator(bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
     }
 
     /**
      * Create the main system from existing databases.
+     * @param accountDB The account database
      * @param bookDB The book database
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
+     * @param timeKeeper The time keeper
+     * @param reportGenerator The report generator
      */
-    public LBServer(BookDB bookDB, VisitorDB visitorDB,
+    public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
                     CheckoutDB checkoutDB, TimeKeeper timeKeeper,
                     ReportGenerator reportGenerator) {
+        this.accountDB = accountDB;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
     }
 
     /**
@@ -101,7 +114,8 @@ public class LBServer {
      * Special commands:
      * 1. /shutdown FILE - Shutdowns the program by first saving
      * 2. /exit - Exit the program without saving
-     * 3. requests in csv format - commands to run through the parser
+     * 3. Client connections: connect and disconnect
+     * 4. requests in csv format - commands to run through the parser
      */
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -118,8 +132,10 @@ public class LBServer {
             if (next.matches("^" + EXIT)) {
                 break;
             }
+            // TODO: add connect, disconnect requests via proxy parser
             // Next line must be a request to be processed
-            System.out.println(parser.processRequest(next));
+            Request request = parser.processRequest(next);
+            System.out.println(request.execute());
         }
         scanner.close();
         System.exit(0);
@@ -134,6 +150,7 @@ public class LBServer {
             FileOutputStream fos = new FileOutputStream(PATH + file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             ArrayList<Object> items = new ArrayList<>();
+            items.add(accountDB);
             items.add(bookDB);
             items.add(visitorDB);
             items.add(checkoutDB);
@@ -151,6 +168,7 @@ public class LBServer {
      */
     @SuppressWarnings("unchecked exception")
     public static LBServer restore(String file) {
+        AccountDB accountDB;
         BookDB bookDB;
         VisitorDB visitorDB;
         CheckoutDB checkoutDB;
@@ -161,12 +179,13 @@ public class LBServer {
             ObjectInputStream ois = new ObjectInputStream(fis);
             // Suppress unchecked casting here
             ArrayList<Object> items = (ArrayList<Object>) ois.readObject();
-            bookDB = (BookDB) items.get(0);
-            visitorDB = (VisitorDB) items.get(1);
-            checkoutDB = (CheckoutDB) items.get(2);
-            timeKeeper = (TimeKeeper) items.get(3);
-            reportGenerator = (ReportGenerator) items.get(4);
-            return new LBServer(bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+            accountDB = (AccountDB) items.get(0);
+            bookDB = (BookDB) items.get(1);
+            visitorDB = (VisitorDB) items.get(2);
+            checkoutDB = (CheckoutDB) items.get(3);
+            timeKeeper = (TimeKeeper) items.get(4);
+            reportGenerator = (ReportGenerator) items.get(5);
+            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
