@@ -66,7 +66,7 @@ public class ReturnBook implements Request {
             bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
             return PROPER_PARAM;
         }
-        return PARAM_COUNT;
+        return PARAM_MESSAGE;
     }
 
     /**

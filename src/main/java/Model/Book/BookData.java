@@ -70,7 +70,7 @@ public abstract class BookData {
                         .collect(Collectors.toList());
                 break;
             default:
-                // TODO: throw an invalid parameter exception
+                return null;
         }
 
         // Map to a unique ID for the hits

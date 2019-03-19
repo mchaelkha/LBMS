@@ -103,6 +103,9 @@ public class LibraryBookSearch implements Request {
      * @return Readable string representation of the map
      */
     private String buildString(Map<String, BookInfo> search) {
+        if (search == null) {
+            return INFO_REQUEST + DELIMITER + "invalid-sort-order";
+        }
         int size = search.size();
         String result = "" + INFO_REQUEST + DELIMITER
                 + size + DELIMITER;
