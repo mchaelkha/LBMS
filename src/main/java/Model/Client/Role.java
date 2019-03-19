@@ -1,4 +1,4 @@
-package Model.Account;
+package Model.Client;
 
 /**
  * Implementation of the state pattern for the purpose of allowing different

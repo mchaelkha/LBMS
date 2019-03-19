@@ -1,4 +1,4 @@
-package Model.Account;
+package Model.Client;
 
 import Controller.Request.Request;
 import Model.Book.BookInfo;

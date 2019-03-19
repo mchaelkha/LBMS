@@ -1,7 +1,7 @@
 import Controller.Parser;
 import Controller.ProxyParser;
 import Controller.Request.Request;
-import Model.Account.AccountDB;
+import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;

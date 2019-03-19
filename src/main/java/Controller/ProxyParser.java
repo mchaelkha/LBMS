@@ -3,6 +3,7 @@ package Controller;
 import Controller.Request.Illegal;
 import Controller.Request.Request;
 import Controller.Request.Simple;
+import Model.Client.Client;
 
 import java.util.HashMap;
 import java.util.Map;

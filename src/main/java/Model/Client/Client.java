@@ -1,6 +1,6 @@
-package Controller;
+package Model.Client;
 
-import Model.Account.Account;
+import Model.Client.Account;
 
 public class Client {
 

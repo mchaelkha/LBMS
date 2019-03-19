@@ -1,4 +1,4 @@
-package Model.Account;
+package Model.Client;
 
 import Controller.Request.RequestUtil;
 
