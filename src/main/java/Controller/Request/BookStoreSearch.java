@@ -106,7 +106,7 @@ public class BookStoreSearch implements Request {
      */
     private String buildString(Map<String, BookInfo> search) {
         if (search == null) {
-            return INFO_REQUEST + DELIMITER + "invalid-sort-order";
+            return INFO_REQUEST + DELIMITER + "invalid-sort-order" + TERMINATOR;
         }
         int size = search.size();
         String result = "" + SEARCH_REQUEST + DELIMITER
