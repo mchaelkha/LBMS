@@ -4,6 +4,7 @@ import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author Hersh Nagpal
  * @author Luis Gutierrez
  */
-public class LibrarySystem implements RequestUtil{
+public class LibrarySystem implements Serializable, RequestUtil{
     /**
      * String to map to the open state
      */
