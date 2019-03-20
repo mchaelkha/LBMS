@@ -97,7 +97,7 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
      */
     public boolean bookIdsMatchSearch(List<String> bookIds){
         for (String id : bookIds) {
-            if (!lastBookSearch.containsKey(id)) {
+            if (!lastSearch.containsKey(id)) {
                 return false;
             }
         }
