@@ -95,20 +95,19 @@ public class LBServer {
      * @param bookDB The book database
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
-     * @param timeKeeper The time keeper
-     * @param reportGenerator The report generator
+
      */
     public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
-                    CheckoutDB checkoutDB, TimeKeeper timeKeeper,
-                    ReportGenerator reportGenerator) {
+                    CheckoutDB checkoutDB) {
         this.accountDB = accountDB;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
-        this.timeKeeper = timeKeeper;
-        this.reportGenerator = reportGenerator;
+        this.timeKeeper = new TimeKeeper();
+        reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
+        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        timeKeeper.setLibrarySystemObserver(library);
     }
 
     /**
@@ -156,8 +155,6 @@ public class LBServer {
             items.add(bookDB);
             items.add(visitorDB);
             items.add(checkoutDB);
-            items.add(timeKeeper);
-            items.add(reportGenerator);
             oos.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,9 +182,7 @@ public class LBServer {
             bookDB = (BookDB) items.get(1);
             visitorDB = (VisitorDB) items.get(2);
             checkoutDB = (CheckoutDB) items.get(3);
-            timeKeeper = (TimeKeeper) items.get(4);
-            reportGenerator = (ReportGenerator) items.get(5);
-            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

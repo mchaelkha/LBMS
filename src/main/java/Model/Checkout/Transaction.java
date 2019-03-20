@@ -2,6 +2,7 @@ package Model.Checkout;
 
 import Model.Book.BookInfo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -10,7 +11,7 @@ import java.time.temporal.ChronoUnit;
  * @author Hersh Nagpal
  * @author Luis Gutierrez
  */
-public class Transaction {
+public class Transaction implements Serializable {
 
     /**
      * The base fine

@@ -34,7 +34,7 @@ public interface RequestUtil {
 
     String PARAM_COUNT = "Too little or too many params";
     // Use String.format to insert request name
-    String MISSING_PARAM = "<%s>" + DELIMITER + "missing-parameters";
+    String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
     String PROPER_PARAM = "";
     String ILLEGAL_COMMAND = "illegal-command";
     String DUPLICATE = "duplicate";

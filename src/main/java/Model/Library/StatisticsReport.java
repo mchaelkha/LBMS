@@ -2,6 +2,7 @@ package Model.Library;
 
 import Controller.Request.RequestUtil;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author Luis Gutierrez
  */
-public class StatisticsReport implements RequestUtil {
+public class StatisticsReport implements Serializable, RequestUtil {
 
     private int numBooksInLibrary;
     private int numRegisteredVisitors;

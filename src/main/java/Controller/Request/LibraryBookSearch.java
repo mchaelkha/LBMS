@@ -67,6 +67,9 @@ public class LibraryBookSearch implements Request {
      */
     @Override
     public String checkParams() {
+        if (!params.contains("}") || !params.contains("{")) {
+            return PARAM_MESSAGE;
+        }
         String[] firstSplit = params.split("[{}]");
         authors = new ArrayList<>(Arrays.asList(firstSplit[1].split(",")));
         if (authors.size() == 1 && authors.get(0).equals(IGNORE)) {

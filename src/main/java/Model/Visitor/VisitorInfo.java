@@ -1,5 +1,6 @@
 package Model.Visitor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author Luis Gutierrez
  */
-public class VisitorInfo {
+public class VisitorInfo implements Serializable {
 
     /**
      * Visitor's first name
