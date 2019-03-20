@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 
 /**
@@ -19,6 +20,10 @@ public class AdvanceTime implements Request {
      */
     private TimeKeeper timeKeeper;
     /**
+     * ReportGenerator used to create empty daily reports if advance time advances days
+     */
+    private ReportGenerator reportGenerator;
+    /**
      * the parameters for the command.
      */
     private String params;
@@ -35,8 +40,9 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(TimeKeeper timeKeeper, String params) {
+    public AdvanceTime(ReportGenerator reportGenerator, TimeKeeper timeKeeper, String params) {
         this.timeKeeper = timeKeeper;
+        this.reportGenerator = reportGenerator;
         this.params = params;
     }
 
@@ -70,6 +76,10 @@ public class AdvanceTime implements Request {
         //Move simulation time forward by "days" and "hours"
         timeKeeper.addDays(days);
         timeKeeper.addHours(hours);
+        //For each day moved forward generate a new daily report
+        for(int i = 1; i<=days; i++){
+            reportGenerator.generateDailyReport();
+        }
         //Update libraryState
         timeKeeper.setLibraryStateAdvance();
         return ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
