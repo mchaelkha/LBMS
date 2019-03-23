@@ -5,7 +5,6 @@ import Controller.Request.Request;
 import Controller.Request.Simple;
 import Model.Client.Client;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,8 +30,8 @@ public class ProxyParser implements Parser {
      * Create a proxy parser with another parser.
      * @param parser Another parser to delegate further processing to
      */
-    public ProxyParser(Parser parser) {
-        clients = new HashMap<>();
+    public ProxyParser(Parser parser, Map<String, Client> clients) {
+        this.clients = clients;
         this.parser = parser;
     }
 
@@ -44,33 +43,40 @@ public class ProxyParser implements Parser {
      */
     @Override
     public Request processRequest(String request) {
-        // No partial requests allowed yet
-        if (!request.endsWith(TERMINATOR)) {
-            return new Illegal();
-        }
         // Check if connect command
-        if (request.matches("^connect")) {
+        if (request.equals(CONNECT_REQUEST + TERMINATOR)) {
             String id = connect();
             return new Simple(CONNECT_REQUEST + DELIMITER + id + TERMINATOR);
         }
-        String[] parts = request.split(",", 2);
+        String[] parts = request.split(DELIMITER, 2);
         String id = parts[0];
         // Check for client ID
         if (!clients.containsKey(id)) {
             return new Simple("invalid-client-id" + TERMINATOR);
         }
         // Check if disconnect command
-
+        if (parts[1].equals(DISCONNECT_REQUEST + TERMINATOR)) {
+            disconnect(id);
+            return new Simple(id + DELIMITER + DISCONNECT_REQUEST + TERMINATOR);
+        }
         // Continue processing request in next parser
         return parser.processRequest(request);
     }
 
+    /**
+     * Connect to the server by registering a new client ID.
+     * @return The newly created client ID
+     */
     private String connect() {
         String id = String.valueOf(CLIENT_ID++);
         clients.put(id, new Client(id));
         return id;
     }
 
+    /**
+     * Disconnect the given client from the server.
+     * @param clientID The client to remove
+     */
     private void disconnect(String clientID) {
         clients.remove(clientID);
     }

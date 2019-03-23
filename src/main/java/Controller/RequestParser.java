@@ -8,6 +8,9 @@ import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Parse strings into requests to be executed. Parsing checks for errors
  * in invalid format.
@@ -15,6 +18,13 @@ import Model.Visitor.VisitorDB;
  * @author Michael Kha
  */
 public class RequestParser implements Parser {
+
+    /**
+     * Clients to their possible partial requests. Clients do not have a
+     * partial request if the string is empty.
+     */
+    private Map<String, String> partialRequests;
+
     /**
      * Library system to keep track of library state and system databases
      */
@@ -31,23 +41,18 @@ public class RequestParser implements Parser {
     private ReportGenerator reportGenerator;
 
     /**
-     * A partial request
-     */
-    private String partial;
-
-    /**
      * Creates a new RequestParser
      * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
     public RequestParser(LibrarySystem librarySystem, BookDB bookDB, VisitorDB visitorDB,
                          CheckoutDB checkoutDB, TimeKeeper timeKeeper, ReportGenerator reportGenerator) {
+        partialRequests = new HashMap<>();
         this.librarySystem = librarySystem;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
-        partial = "";
     }
 
     /**
@@ -61,24 +66,45 @@ public class RequestParser implements Parser {
     }
 
     /**
+     * Checks if the client ID has a partial request stored in the parser.
+     * @param clientID The client to check for
+     * @return If a partial request exists.
+     */
+    private boolean hasPartial(String clientID) {
+        if (partialRequests.containsKey(clientID)) {
+            String partial = partialRequests.get(clientID);
+            return !partial.isEmpty();
+        }
+        return false;
+    }
+
+    /**
      * Determines if a request is unfinished or not.
      * @param request The request to be parsed.
      * @return a partial request, or a call to create the request depending on whether the request was complete.
      */
     private Request determineRequest(String request) {
+        String[] parts = request.split(DELIMITER, 2);
+        String clientID = parts[0];
+        String req = parts[1];
         // Check if partial request first
-        if (!request.endsWith(TERMINATOR) || !partial.isEmpty()) {
-            partial += request;
-            if (request.endsWith(TERMINATOR)) {
-                request = partial;
+        if (!req.endsWith(TERMINATOR) || hasPartial(clientID)) {
+            String partial = partialRequests.get(clientID);
+            // Make null value of map always empty string
+            if (partial == null) {
                 partial = "";
-                return helpCreateRequest(request);
             }
+            partial += req;
+            if (req.endsWith(TERMINATOR)) {
+                partialRequests.put(clientID, "");
+                return helpCreateRequest(partial);
+            }
+            partialRequests.put(clientID, partial);
             // return partial request
             return new Partial();
         }
         else {
-            return helpCreateRequest(request);
+            return helpCreateRequest(req);
         }
     }
 

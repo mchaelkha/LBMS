@@ -5,15 +5,14 @@ import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;
+import Model.Client.Client;
 import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Main class to start the library book management system.
@@ -37,6 +36,11 @@ public class LBServer {
      * Command to stop the program immediately
      */
     private static final String EXIT = "/exit";
+
+    /**
+     * The maintained, connected clients
+     */
+    private Map<String, Client> clients;
 
     /**
      * Parser used to process possible requests
@@ -85,8 +89,9 @@ public class LBServer {
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
         //TODO change back to ProxyParser after testing reportGenerator
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
-        //parser = new ProxyParser(new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator));
+        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        clients = new HashMap<>();
+        parser = new ProxyParser(requestParser, clients);
     }
 
     /**
@@ -98,7 +103,7 @@ public class LBServer {
 
      */
     public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
-                    CheckoutDB checkoutDB) {
+                    CheckoutDB checkoutDB, Map<String, Client> clients) {
         this.accountDB = accountDB;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
@@ -106,7 +111,8 @@ public class LBServer {
         this.timeKeeper = new TimeKeeper();
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        parser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
+        parser = new ProxyParser(requestParser, clients);
         timeKeeper.setLibrarySystemObserver(library);
     }
 
@@ -155,6 +161,7 @@ public class LBServer {
             items.add(bookDB);
             items.add(visitorDB);
             items.add(checkoutDB);
+            items.add(clients);
             oos.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,8 +178,7 @@ public class LBServer {
         BookDB bookDB;
         VisitorDB visitorDB;
         CheckoutDB checkoutDB;
-        TimeKeeper timeKeeper;
-        ReportGenerator reportGenerator;
+        Map<String, Client> clients;
         try {
             FileInputStream fis = new FileInputStream(PATH + file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -182,7 +188,8 @@ public class LBServer {
             bookDB = (BookDB) items.get(1);
             visitorDB = (VisitorDB) items.get(2);
             checkoutDB = (CheckoutDB) items.get(3);
-            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB);
+            clients = (Map<String, Client>) items.get(4);
+            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, clients);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
