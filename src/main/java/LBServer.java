@@ -1,5 +1,5 @@
+import Controller.ClientParser;
 import Controller.Parser;
-import Controller.ProxyParser;
 import Controller.Request.Request;
 import Model.Client.AccountDB;
 import Model.Book.BookDB;
@@ -88,10 +88,10 @@ public class LBServer {
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        //TODO change back to ProxyParser after testing reportGenerator
+        //TODO change back to ClientParser after testing reportGenerator
         Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
         clients = new HashMap<>();
-        parser = new ProxyParser(requestParser, clients);
+        parser = new ClientParser(requestParser, clients);
     }
 
     /**
@@ -112,7 +112,7 @@ public class LBServer {
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, timeKeeper, reportGenerator);
-        parser = new ProxyParser(requestParser, clients);
+        parser = new ClientParser(requestParser, clients);
         timeKeeper.setLibrarySystemObserver(library);
     }
 
@@ -139,9 +139,9 @@ public class LBServer {
             if (next.matches("^" + EXIT)) {
                 break;
             }
-            // TODO: add connect, disconnect requests via proxy parser
             // Next line must be a request to be processed
             Request request = parser.processRequest(next);
+            // TODO: make accounts execute
             System.out.println(request.execute());
         }
         scanner.close();

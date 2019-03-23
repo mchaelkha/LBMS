@@ -1,6 +1,5 @@
 package Controller;
 
-import Controller.Request.Illegal;
 import Controller.Request.Request;
 import Controller.Request.Simple;
 import Model.Client.Client;
@@ -8,11 +7,11 @@ import Model.Client.Client;
 import java.util.Map;
 
 /**
- * A proxy parser for handling client data and verification before creating
+ * Client parser for handling client data and verification before creating
  * an actual request in the request parser.
  * @author Michael Kha
  */
-public class ProxyParser implements Parser {
+public class ClientParser implements Parser {
 
     private static int CLIENT_ID = 0;
 
@@ -30,7 +29,7 @@ public class ProxyParser implements Parser {
      * Create a proxy parser with another parser.
      * @param parser Another parser to delegate further processing to
      */
-    public ProxyParser(Parser parser, Map<String, Client> clients) {
+    public ClientParser(Parser parser, Map<String, Client> clients) {
         this.clients = clients;
         this.parser = parser;
     }
