@@ -1,5 +1,6 @@
 package Model.Visitor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  *
  * @author Michael Kha
  */
-public class Visit {
+public class Visit implements Serializable {
 
     /**
      * Time that the visit started

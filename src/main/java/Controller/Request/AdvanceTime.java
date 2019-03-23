@@ -1,7 +1,11 @@
 package Controller.Request;
 
 import Model.Library.LibrarySystem;
+import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
+import Model.Visitor.VisitorDB;
+
+import java.time.LocalDateTime;
 
 /**
  * WIP
@@ -19,6 +23,14 @@ public class AdvanceTime implements Request {
      */
     private TimeKeeper timeKeeper;
     /**
+     * ReportGenerator used to create empty daily reports if advance time advances days
+     */
+    private ReportGenerator reportGenerator;
+    /**
+     * VisitorDB used to kick out visitors if advance time advances days
+     */
+    private VisitorDB visitorDB;
+    /**
      * the parameters for the command.
      */
     private String params;
@@ -35,8 +47,10 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(TimeKeeper timeKeeper, String params) {
+    public AdvanceTime(VisitorDB visitorDB, ReportGenerator reportGenerator, TimeKeeper timeKeeper, String params) {
         this.timeKeeper = timeKeeper;
+        this.reportGenerator = reportGenerator;
+        this.visitorDB = visitorDB;
         this.params = params;
     }
 
@@ -70,6 +84,18 @@ public class AdvanceTime implements Request {
         //Move simulation time forward by "days" and "hours"
         timeKeeper.addDays(days);
         timeKeeper.addHours(hours);
+
+        if(days>0){
+            //End visit of visitors currently in library. End time is same day, closing hour
+            LocalDateTime startTimeCopy = LocalDateTime.now();
+            LocalDateTime endVisitTime = startTimeCopy.withHour(19);
+            visitorDB.clearCurrentVisitors(endVisitTime);
+            //For each day moved forward generate a new daily report
+            for(int i = 1; i<=days; i++){
+                reportGenerator.generateDailyReport();
+            }
+        }
+
         //Update libraryState
         timeKeeper.setLibraryStateAdvance();
         return ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;

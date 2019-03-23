@@ -64,7 +64,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
     public String generateInfoReport(int days){
         if (days == 0) {
             StatisticsReport generalStatisticsReport = new StatisticsReport(statisticsReportList);
-            return REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+generalStatisticsReport.toString();
+            return REPORT_REQUEST+DELIMITER+timeKeeper.readDate()+DELIMITER+NEW_LINE+generalStatisticsReport.toString();
         }
         else {
             //Create new report using daily reports to be included
@@ -73,7 +73,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
             int count = days;
             //Check that days param is lower than daily reports generated
             if (days > statisticsReportList.size()) {
-                return REPORT_REQUEST+DELIMITER+"invalid-number-of-days";
+                return REPORT_REQUEST+DELIMITER+"invalid-number-of-days"+TERMINATOR;
             }
             while(count > 0){
                 reportsIncluded.add(statisticsReportList.get(reportIndex));
@@ -82,7 +82,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
             }
 
             StatisticsReport statisticsReport = new StatisticsReport(reportsIncluded);
-            return REPORT_REQUEST+DELIMITER+ timeKeeper.readDate()+NEW_LINE+statisticsReport.toString();
+            return REPORT_REQUEST+DELIMITER+ timeKeeper.readDate()+DELIMITER+NEW_LINE+statisticsReport.toString();
         }
     }
 
@@ -96,6 +96,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated
 
+        //System.out.println("Report Generated");
         int numRegisteredVisitors = visitorDB.getNumRegisteredVisitors();
         long avgLengthVisitLong = visitorDB.getAverageLengthVisit();
         String avgLengthVisit = TimeKeeper.calculateDurationString(avgLengthVisitLong);

@@ -141,7 +141,7 @@ public class RequestParser implements Parser {
                 request = new BookPurchase(bookDB, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(timeKeeper, params);
+                request = new AdvanceTime(visitorDB, reportGenerator, timeKeeper, params);
                 break;
             case DATE_TIME_REQUEST:
                 request = new CurrentDateTime(timeKeeper);

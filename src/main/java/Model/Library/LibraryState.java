@@ -4,6 +4,7 @@ import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * 
  * @author Hersh Nagpal
  */
-public interface LibraryState {
+public interface LibraryState extends Serializable {
     /**
      * Returns the given book for the given visitor.
      * @param visitorID the ID of the visitor checking out the books
