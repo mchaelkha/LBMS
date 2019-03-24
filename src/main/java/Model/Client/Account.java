@@ -75,5 +75,42 @@ public class Account {
         return this.username.equals(username) && this.password.equals(password);
     }
 
+    /**
+     * Add request executed or redone by this Account to its commandHistory
+     * @param request request being added to commandHistory
+     */
+    public void addPerformedRequest(Request request) {
+        commandHistory.push(request);
+
+        //Clear undoneCommands to prevent undo of further commands
+        if (!undoHistory.empty()) {
+            undoHistory.clear();
+        }
+    }
+
+    /**
+     * Add request undone by this Account to its undoHistory
+     * @param request request being added to its undoHistory
+     */
+    public void addUndoneCommand(Request request) {
+        undoHistory.push(request);
+    }
+
+    /**
+     * Get the last executed command by this account
+     * @return Last command executed
+     */
+    public Request getRequestToUndo() {
+        return commandHistory.pop();
+    }
+
+    /**
+     * Get the last undone command by this account
+     * @return Last command undone
+     */
+    public Request getRequestToRedo() {
+        return undoHistory.pop();
+    }
+
     // TODO: add helper methods to call requests in the role field
 }
