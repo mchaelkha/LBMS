@@ -56,6 +56,28 @@ public abstract class BookData {
                         isbn, publisher))
                 .collect(Collectors.toList());
         // Sort the books by the specified parameter
+        hits = sortBooks(hits, sort);
+        if (hits == null) {
+            return null;
+        }
+        // Map to a unique ID for the hits
+        int id = 0;
+        for (BookInfo info : hits) {
+            searchedBooks.put(String.valueOf(id), info);
+            id++;
+        }
+        // Set last search to this recent search
+        lastSearch = searchedBooks;
+        return searchedBooks;
+    }
+
+    /**
+     * Sort the books by the given sorting strategy.
+     * @param hits The list of books to sort
+     * @param sort The sorting strategy
+     * @return If the strategy is invalid return null otherwise return the reordered list
+     */
+    public List<BookInfo> sortBooks(List<BookInfo> hits, String sort) {
         switch (sort) {
             case "*":
                 break;
@@ -72,16 +94,7 @@ public abstract class BookData {
             default:
                 return null;
         }
-
-        // Map to a unique ID for the hits
-        int id = 0;
-        for (BookInfo info : hits) {
-            searchedBooks.put(String.valueOf(id), info);
-            id++;
-        }
-        // Set last search to this recent search
-        lastSearch = searchedBooks;
-        return searchedBooks;
+        return hits;
     }
 
     /**
