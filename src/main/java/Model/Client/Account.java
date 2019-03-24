@@ -2,6 +2,7 @@ package Model.Client;
 
 import Controller.Request.Request;
 import Model.Book.BookInfo;
+import Model.Book.Service;
 
 import java.util.Map;
 import java.util.Stack;
@@ -34,6 +35,11 @@ public class Account {
     private String password;
 
     /**
+     * The book information service to use
+     */
+    private Service service;
+
+    /**
      * List of commands that have been done and can potentially be undone
      */
     private Stack<Request> commandHistory;
@@ -62,6 +68,14 @@ public class Account {
         this.visitorID = visitorID;
         commandHistory = new Stack<>();
         undoHistory = new Stack<>();
+    }
+
+    /**
+     * Set the book information service to the given service
+     * @param service The service to set to
+     */
+    public void setService(Service service) {
+        this.service = service;
     }
 
     /**
@@ -132,4 +146,5 @@ public class Account {
     }
 
     // TODO: add helper methods to call requests in the role field
+
 }

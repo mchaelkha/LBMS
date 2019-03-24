@@ -1,6 +1,7 @@
 package Model.Client;
 
 import Controller.Request.RequestUtil;
+import Model.Book.Service;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -157,13 +158,16 @@ public class AccountDB implements Serializable, RequestUtil {
      * @param clientID The client ID to get the account to set the service for
      * @return A response indicating if the service was set
      */
-    public String setBookInfoService(String clientID) {
+    public String setBookInfoService(String clientID, Service service) {
         // TODO: check what the response should do (request page does not specify)
         // Check account is active
-
+        if (!activeAccounts.containsKey(clientID)) {
+            return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "cannot-set" + TERMINATOR;
+        }
         // Perform setting on account
-
+        Account account = activeAccounts.get(clientID);
+        account.setService(service);
         // Return success response
-        return null;
+        return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "success" + TERMINATOR;
     }
 }
