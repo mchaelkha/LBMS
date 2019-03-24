@@ -1,6 +1,5 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
@@ -8,7 +7,6 @@ import Model.Visitor.VisitorDB;
 import java.time.LocalDateTime;
 
 /**
- * WIP
  * Advances the time by a number of days and hours as requested by the client.
  * @author Jack Li
  */
@@ -59,16 +57,16 @@ public class AdvanceTime implements Request {
      * @return Whether or not the parameters are valid.
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length > 0) {
             days = Integer.parseInt(parts[0]);
             if (parts.length > 1) {
                 hours = Integer.parseInt(parts[1]);
             }
-            return PROPER_PARAM;
+            return true;
         }
-        return PARAM_MESSAGE;
+        return false;
     }
 
     /**
@@ -77,9 +75,8 @@ public class AdvanceTime implements Request {
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_MESSAGE;
         }
         //Move simulation time forward by "days" and "hours"
         timeKeeper.addDays(days);

@@ -48,13 +48,13 @@ public class BeginVisit implements Request {
      * @return If the parameters are correct
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
             visitorID = parts[0];
-            return PROPER_PARAM;
+            return true;
         }
-        return PARAM_MESSAGE;
+        return false;
     }
 
     /**
@@ -63,9 +63,8 @@ public class BeginVisit implements Request {
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_MESSAGE;
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
         return librarySystem.beginVisit(visitorID, visitorDB);

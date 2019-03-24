@@ -8,15 +8,6 @@ package Controller.Request;
 public class Illegal implements Request {
 
     /**
-     * @deprecated  Not used for illegal requests
-     */
-    @Deprecated
-    @Override
-    public String checkParams() {
-        return "";
-    }
-
-    /**
      * Execute the illegal request by displaying a message.
      * @return An illegal request message
      */

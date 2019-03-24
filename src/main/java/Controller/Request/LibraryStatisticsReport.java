@@ -1,6 +1,5 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 
 /**
@@ -40,7 +39,7 @@ public class LibraryStatisticsReport implements Request{
      * @return If the parameters are correct
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         String[] parts = params.split(",");
         if (parts.length == 1) {
             if(parts[0].equals("")){
@@ -51,9 +50,9 @@ public class LibraryStatisticsReport implements Request{
             }
         }
         else{
-            return PARAM_COUNT;
+            return false;
         }
-        return PROPER_PARAM;
+        return true;
     }
 
     /**
@@ -62,9 +61,8 @@ public class LibraryStatisticsReport implements Request{
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_COUNT;
         }
         return reportGenerator.generateInfoReport(days);
     }

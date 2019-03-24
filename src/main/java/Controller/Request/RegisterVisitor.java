@@ -1,6 +1,5 @@
 package Controller.Request;
 
-import Model.Library.LibrarySystem;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
 
@@ -47,7 +46,8 @@ public class RegisterVisitor implements Request{
     /**
      * Create a new register visitor request given the visitor database
      * and the parameters for the request.
-     * TODO finish commenting request classes
+     * @param visitorDB The visitor database
+     * @param timeKeeper The time keeper
      * @param params The parameters that follow a request command
      */
     public RegisterVisitor(VisitorDB visitorDB, TimeKeeper timeKeeper, String params) {
@@ -61,16 +61,16 @@ public class RegisterVisitor implements Request{
      * @return If the parameters are correct
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 4) {
             firstName = parts[0];
             lastName = parts[1];
             address = parts[2];
             phoneNumber = parts[3];
-            return PROPER_PARAM;
+            return true;
         }
-        return PARAM_MESSAGE;
+        return false;
     }
 
     /**
@@ -79,9 +79,8 @@ public class RegisterVisitor implements Request{
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_MESSAGE;
         }
         return visitorDB.registerVisitor(firstName,lastName,address,phoneNumber, timeKeeper.readDate());
     }

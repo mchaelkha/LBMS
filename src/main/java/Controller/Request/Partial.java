@@ -8,21 +8,12 @@ package Controller.Request;
 public class Partial implements Request {
 
     /**
-     * @deprecated  Not used for partial requests
-     */
-    @Deprecated
-    @Override
-    public String checkParams() {
-        return "";
-    }
-
-    /**
      * Execute the partial request by displaying a message.
      * @return A partial request message
      */
     @Override
     public String execute() {
-        return PARTIAL_REQUEST;
+        return PARTIAL_REQUEST + TERMINATOR;
     }
 
 }

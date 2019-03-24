@@ -21,11 +21,6 @@ public class Simple implements Request {
         this.response = response;
     }
 
-    @Override
-    public String checkParams() {
-        return null;
-    }
-
     /**
      * Execute the simple request by sending the response string.
      * @return The predetermined response

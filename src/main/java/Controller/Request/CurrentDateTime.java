@@ -21,15 +21,6 @@ public class CurrentDateTime implements Request {
     }
 
     /**
-     * Checks whether the parameters are valid for this command.
-     * @return Nothing, since this command does not require parameters.
-     */
-    @Override
-    public String checkParams() {
-        return "";
-    }
-
-    /**
      * Executes the CurrentDateTime command to return the current date and time.
      * @return The current date and time within the system.
      */

@@ -15,8 +15,14 @@ public class PayFine implements Request {
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             PAY_REQUEST) + DELIMITER + "visitor ID,amount";
-    //TODO comment
+    /**
+     * The checkout database
+     */
     private CheckoutDB checkoutDB;
+
+    /**
+     * The visitor database
+     */
     private VisitorDB visitorDB;
     /**
      * Params in the command
@@ -34,7 +40,8 @@ public class PayFine implements Request {
     /**
      * Create a new pay request given the library
      * and the parameters for the request.
-     * TODO finish comment
+     * @param checkoutDB The checkout database
+     * @param visitorDB The visitor database
      * @param params The parameters that follow a request command
      */
     public PayFine(CheckoutDB checkoutDB, VisitorDB visitorDB, String params) {
@@ -48,14 +55,14 @@ public class PayFine implements Request {
      * @return If the parameters are correct
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         String[] parts = params.split(",");
         if (parts.length == 2) {
             visitorID = parts[0];
             amount = Integer.parseInt(parts[1]);
-            return PROPER_PARAM;
+            return true;
         }
-        return PARAM_MESSAGE;
+        return false;
     }
 
     /**
@@ -64,9 +71,8 @@ public class PayFine implements Request {
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_MESSAGE;
         }
 
         //Check visitor ID corresponds to a registered visitor

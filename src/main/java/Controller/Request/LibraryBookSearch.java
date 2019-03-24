@@ -2,7 +2,6 @@ package Controller.Request;
 
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
-import Model.Library.LibrarySystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,9 +65,9 @@ public class LibraryBookSearch implements Request {
      * @return If the parameters are correct
      */
     @Override
-    public String checkParams() {
+    public boolean checkParams() {
         if (!params.contains("}") || !params.contains("{")) {
-            return PARAM_MESSAGE;
+            return false;
         }
         String[] firstSplit = params.split("[{}]");
         authors = new ArrayList<>(Arrays.asList(firstSplit[1].split(",")));
@@ -79,12 +78,12 @@ public class LibraryBookSearch implements Request {
         title = titleArr[0];
         String[] isbnPublisherSort = firstSplit[2].split(",(?!\\s)");
         if (isbnPublisherSort.length != 4) {
-            return PARAM_MESSAGE;
+            return false;
         }
         isbn = isbnPublisherSort[1];
         publisher = isbnPublisherSort[2];
         sort = isbnPublisherSort[3];
-        return PROPER_PARAM;
+        return true;
     }
 
     /**
@@ -93,9 +92,8 @@ public class LibraryBookSearch implements Request {
      */
     @Override
     public String execute() {
-        String check = checkParams();
-        if (!check.equals(PROPER_PARAM)) {
-            return check;
+        if (!checkParams()) {
+            return PARAM_MESSAGE;
         }
         return buildString(bookDB.searchBooks(title,authors,isbn,publisher,sort));
     }
