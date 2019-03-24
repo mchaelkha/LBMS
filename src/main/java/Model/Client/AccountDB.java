@@ -127,7 +127,7 @@ public class AccountDB implements Serializable, RequestUtil {
         //Return response based on undo success
         boolean requestSuccess = account.undoRequest();
         if (requestSuccess) {
-            return clientID+DELIMITER+UNDO_REQUEST+SUCCESS+TERMINATOR;
+            return clientID+DELIMITER+UNDO_REQUEST+DELIMITER+SUCCESS+TERMINATOR;
         }
         else{
             return clientID+DELIMITER+UNDO_REQUEST+DELIMITER+CANNOT_UNDO+TERMINATOR;
@@ -141,8 +141,15 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public String redo(String clientID) {
         // Grab account and call undo method
-        // String response = ...
-        return null;
+        Account account = activeAccounts.get(clientID);
+        //Return response based on redo success
+        boolean requestSuccess = account.redoRequest();
+        if (requestSuccess) {
+            return clientID+DELIMITER+REDO_REQUEST+DELIMITER+SUCCESS+TERMINATOR;
+        }
+        else{
+            return clientID+DELIMITER+REDO_REQUEST+DELIMITER+CANNOT_REDO+TERMINATOR;
+        }
     }
 
     /**

@@ -80,6 +80,7 @@ public class Account {
      * @param request request being added to commandHistory
      */
     public void addPerformedRequest(Request request) {
+        //TODO go through each undoable request and add them once executed to commandHistory
         commandHistory.push(request);
 
         //Clear undoneCommands to prevent undo of further commands
@@ -118,7 +119,16 @@ public class Account {
      * @return Success of redo request
      */
     public boolean redoRequest() {
-        return false;
+        //Check if undoHistory is empty
+        if (undoHistory.isEmpty()) {
+            return false;
+        }
+        else{
+            Request request = undoHistory.pop();
+            request.redo();
+            commandHistory.push(request);
+            return true;
+        }
     }
 
     // TODO: add helper methods to call requests in the role field

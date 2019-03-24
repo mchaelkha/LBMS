@@ -197,7 +197,7 @@ public class RequestParser implements Parser {
                 request = new Undo(accountDB, clientID);
                 break;
             case REDO_REQUEST:
-                request = null;
+                request = new Redo(accountDB, clientID);
                 break;
             default:
                 request = new Illegal();

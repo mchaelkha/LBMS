@@ -33,6 +33,7 @@ public interface RequestUtil {
     String NOT_AUTHORIZED = "not-authorized";
 
     String CANNOT_UNDO = "cannot-undo";
+    String CANNOT_REDO = "cannot-redo";
 
     // Use String.format to insert request name
     String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
