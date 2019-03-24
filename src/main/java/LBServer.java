@@ -80,7 +80,7 @@ public class LBServer {
      * Create the main system by creating new databases.
      */
     public LBServer() {
-        accountDB = new AccountDB();
+        accountDB = AccountDB.getInstance();
         bookDB = new BookDB();
         visitorDB = new VisitorDB();
         checkoutDB = new CheckoutDB();

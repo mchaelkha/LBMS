@@ -14,6 +14,8 @@ import java.util.Map;
  */
 public class AccountDB implements Serializable, RequestUtil {
 
+    private static AccountDB instance = null;
+
     /**
      * All the accounts that have been created with usernames as keys
      */
@@ -33,10 +35,21 @@ public class AccountDB implements Serializable, RequestUtil {
     /**
      * Create the account database which holds all accounts and active accounts.
      */
-    public AccountDB() {
+    private AccountDB() {
         accounts = new HashMap<>();
         visitors = new HashMap<>();
         activeAccounts = new HashMap<>();
+    }
+
+    /**
+     * Get the single instance of AccountDB
+     * @return The one and only AccountDB
+     */
+    public static AccountDB getInstance() {
+        if (instance == null) {
+            instance = new AccountDB();
+        }
+        return instance;
     }
 
     /**
