@@ -3,6 +3,7 @@ package Controller;
 import Controller.Request.*;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
@@ -36,6 +37,8 @@ public class RequestParser implements Parser {
 
     private CheckoutDB checkoutDB;
 
+    private AccountDB accountDB;
+
     private TimeKeeper timeKeeper;
 
     private ReportGenerator reportGenerator;
@@ -44,13 +47,14 @@ public class RequestParser implements Parser {
      * Creates a new RequestParser
      * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
-    public RequestParser(LibrarySystem librarySystem, BookDB bookDB, VisitorDB visitorDB,
-                         CheckoutDB checkoutDB, TimeKeeper timeKeeper, ReportGenerator reportGenerator) {
+    public RequestParser(LibrarySystem librarySystem, BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB,
+                         AccountDB accountDB, TimeKeeper timeKeeper, ReportGenerator reportGenerator) {
         partialRequests = new HashMap<>();
         this.librarySystem = librarySystem;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
         this.checkoutDB = checkoutDB;
+        this.accountDB = accountDB;
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
     }
@@ -190,7 +194,7 @@ public class RequestParser implements Parser {
                 request = null;
                 break;
             case UNDO_REQUEST:
-                request = null;
+                request = new Undo(accountDB, clientID);
                 break;
             case REDO_REQUEST:
                 request = null;

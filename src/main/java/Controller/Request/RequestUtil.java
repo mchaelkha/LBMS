@@ -32,6 +32,8 @@ public interface RequestUtil {
     String SERVICE_REQUEST = "service";
     String NOT_AUTHORIZED = "not-authorized";
 
+    String CANNOT_UNDO = "cannot-undo";
+
     // Use String.format to insert request name
     String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
     String PROPER_PARAM = "";

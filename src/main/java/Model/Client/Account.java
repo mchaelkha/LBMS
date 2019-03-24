@@ -98,18 +98,27 @@ public class Account {
 
     /**
      * Get the last executed command by this account
-     * @return Last command executed
+     * @return Success of undo request
      */
-    public Request getRequestToUndo() {
-        return commandHistory.pop();
+    public boolean undoRequest() {
+        //Check if commandHistory is empty
+        if (commandHistory.isEmpty()) {
+            return false;
+        }
+        else{
+            Request request = commandHistory.pop();
+            request.undo();
+            undoHistory.push(request);
+            return true;
+        }
     }
 
     /**
      * Get the last undone command by this account
-     * @return Last command undone
+     * @return Success of redo request
      */
-    public Request getRequestToRedo() {
-        return undoHistory.pop();
+    public boolean redoRequest() {
+        return false;
     }
 
     // TODO: add helper methods to call requests in the role field
