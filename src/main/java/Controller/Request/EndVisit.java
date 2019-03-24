@@ -24,6 +24,10 @@ public class EndVisit implements Request {
      */
     private TimeKeeper timeKeeper;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * Params in the command
      */
     private String params;
@@ -40,9 +44,10 @@ public class EndVisit implements Request {
      * @param visitorDB The visitor database
      * @param params The parameters that follow a request command
      */
-    public EndVisit(VisitorDB visitorDB, TimeKeeper timeKeeper, String params) {
+    public EndVisit(VisitorDB visitorDB, TimeKeeper timeKeeper, String clientID, String params) {
         this.visitorDB = visitorDB;
         this.timeKeeper = timeKeeper;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -68,8 +73,9 @@ public class EndVisit implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return visitorDB.endVisit(visitorID, timeKeeper.getClock(), timeKeeper.readTime());
+        return clientID + DELIMITER + visitorDB.endVisit(visitorID,
+                timeKeeper.getClock(), timeKeeper.readTime());
     }
 }

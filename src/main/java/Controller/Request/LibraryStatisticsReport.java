@@ -9,11 +9,19 @@ import Model.Library.ReportGenerator;
  * @author Michael Kha
  */
 public class LibraryStatisticsReport implements Request{
-
+    /**
+     * Message for missing parameters
+     */
+    private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
+            REPORT_REQUEST) + DELIMITER + "[,days]";
     /**
      * Responsible for the creation of statistical reports
      */
     private ReportGenerator reportGenerator;
+    /**
+     * The client that made this request
+     */
+    private String clientID;
     /**
      * Params in the command
      */
@@ -29,8 +37,9 @@ public class LibraryStatisticsReport implements Request{
      * @param reportGenerator ReportGenerator
      * @param params The parameters that follow a request command
      */
-    public LibraryStatisticsReport(ReportGenerator reportGenerator, String params) {
+    public LibraryStatisticsReport(ReportGenerator reportGenerator, String clientID, String params) {
         this.reportGenerator = reportGenerator;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -62,8 +71,8 @@ public class LibraryStatisticsReport implements Request{
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_COUNT;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return reportGenerator.generateInfoReport(days);
+        return clientID + DELIMITER + reportGenerator.generateInfoReport(days);
     }
 }

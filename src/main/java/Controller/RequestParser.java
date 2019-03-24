@@ -97,34 +97,36 @@ public class RequestParser implements Parser {
             partial += req;
             if (req.endsWith(TERMINATOR)) {
                 partialRequests.put(clientID, "");
-                return helpCreateRequest(partial);
+                return helpCreateRequest(clientID, partial);
             }
             partialRequests.put(clientID, partial);
             // return partial request
             return new Partial();
         }
         else {
-            return helpCreateRequest(req);
+            return helpCreateRequest(clientID, req);
         }
     }
 
     /**
      * Splits the request into the command and its parameters, and calls createRequest with the parts.
+     * @param clientID The client ID to be used by requests
      * @param request the request to be split.
      * @return a new request based on the command and parameters given.
      */
-    private Request helpCreateRequest(String request) {
+    private Request helpCreateRequest(String clientID, String request) {
         // Break request into a command and its parameters
         String[] parts = request.split(DELIMITER, 2);
-        return createRequest(parts);
+        return createRequest(clientID, parts);
     }
 
     /**
      * Creates, executes, and returns the request, given a command, and parameters.
+     * @param clientID The client ID to be used by requests
      * @param parts The parts of the request, a command and possibly its parameters
      * @return The request that was executed.
      */
-    private Request createRequest(String[] parts) {
+    private Request createRequest(String clientID, String[] parts) {
         Request request;
         String command = parts[0];
         String params = "";
@@ -137,43 +139,61 @@ public class RequestParser implements Parser {
         }
         switch (command) {
             case REGISTER_REQUEST:
-                request = new RegisterVisitor(visitorDB, timeKeeper, params);
+                request = new RegisterVisitor(visitorDB, timeKeeper, clientID, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(librarySystem, visitorDB, params);
+                request = new BeginVisit(librarySystem, visitorDB, clientID, params);
                 break;
             case DEPART_REQUEST:
-                request = new EndVisit(visitorDB, timeKeeper, params);
+                request = new EndVisit(visitorDB, timeKeeper, clientID, params);
                 break;
             case INFO_REQUEST:
-                request = new LibraryBookSearch(bookDB, params);
+                request = new LibraryBookSearch(bookDB, clientID, params);
                 break;
             case BORROW_REQUEST:
-                request = new BorrowBook(librarySystem, checkoutDB, visitorDB, bookDB, params);
+                request = new BorrowBook(librarySystem, checkoutDB, visitorDB, bookDB, clientID, params);
                 break;
             case BORROWED_REQUEST:
-                request = new FindBorrowedBooks(checkoutDB, params);
+                request = new FindBorrowedBooks(checkoutDB, clientID, params);
                 break;
             case RETURN_REQUEST:
-                request = new ReturnBook(checkoutDB,bookDB, timeKeeper, params);
+                request = new ReturnBook(checkoutDB,bookDB, timeKeeper, clientID, params);
                 break;
             case PAY_REQUEST:
-                request = new PayFine(checkoutDB, visitorDB, params);
+                request = new PayFine(checkoutDB, visitorDB, clientID, params);
                 break;
             case SEARCH_REQUEST:
-                request = new BookStoreSearch(bookDB, params);
+                request = new BookStoreSearch(bookDB, clientID, params);
                 break;
             case BUY_REQUEST:
-                request = new BookPurchase(bookDB, params);
+                request = new BookPurchase(bookDB, clientID, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(visitorDB, reportGenerator, timeKeeper, params);
+                request = new AdvanceTime(visitorDB, reportGenerator, timeKeeper, clientID, params);
                 break;
             case DATE_TIME_REQUEST:
-                request = new CurrentDateTime(timeKeeper);
+                request = new CurrentDateTime(timeKeeper, clientID);
                 break;
             case REPORT_REQUEST:
-                request = new LibraryStatisticsReport(reportGenerator, params);
+                request = new LibraryStatisticsReport(reportGenerator, clientID, params);
+                break;
+            case CREATE_REQUEST:
+                request = new CreateAccount(visitorDB, clientID, params);
+                break;
+            case LOGIN_REQUEST:
+                request = null;
+                break;
+            case LOGOUT_REQUEST:
+                request = null;
+                break;
+            case SERVICE_REQUEST:
+                request = null;
+                break;
+            case UNDO_REQUEST:
+                request = null;
+                break;
+            case REDO_REQUEST:
+                request = null;
                 break;
             default:
                 request = new Illegal();

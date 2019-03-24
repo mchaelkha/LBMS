@@ -12,12 +12,17 @@ public class CurrentDateTime implements Request {
      * Used to build a response returned to the user including the simulation's date and time.
      */
     private TimeKeeper timeKeeper;
+    /**
+     * The client that made this request
+     */
+    private String clientID;
 
     /**
      * Creates a new CurrentDateTime command.
      */
-    public CurrentDateTime(TimeKeeper timeKeeper) {
+    public CurrentDateTime(TimeKeeper timeKeeper, String clientID) {
         this.timeKeeper = timeKeeper;
+        this.clientID = clientID;
     }
 
     /**
@@ -26,6 +31,7 @@ public class CurrentDateTime implements Request {
      */
     @Override
     public String execute() {
-        return timeKeeper.readTime() + "," + timeKeeper.readDate() + TERMINATOR;
+        return clientID + DELIMITER + timeKeeper.readTime() +
+                DELIMITER + timeKeeper.readDate() + TERMINATOR;
     }
 }

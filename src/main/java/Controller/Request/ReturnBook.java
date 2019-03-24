@@ -26,6 +26,10 @@ public class ReturnBook implements Request {
     private BookDB bookDB;
     private TimeKeeper timeKeeper;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * Params in the command
      */
     private String params;
@@ -46,10 +50,12 @@ public class ReturnBook implements Request {
      * @param bookDB The book database
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(CheckoutDB checkoutDB, BookDB bookDB, TimeKeeper timeKeeper, String params) {
+    public ReturnBook(CheckoutDB checkoutDB, BookDB bookDB,
+                      TimeKeeper timeKeeper, String clientID, String params) {
         this.checkoutDB = checkoutDB;
         this.bookDB = bookDB;
         this.timeKeeper = timeKeeper;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -77,8 +83,9 @@ public class ReturnBook implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return checkoutDB.returnBooks(visitorID, bookIDs, bookDB, timeKeeper);
+        return clientID + DELIMITER + checkoutDB.returnBooks(visitorID,
+                bookIDs, bookDB, timeKeeper);
     }
 }

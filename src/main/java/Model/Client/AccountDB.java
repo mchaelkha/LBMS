@@ -53,34 +53,29 @@ public class AccountDB implements Serializable, RequestUtil {
     }
 
     /**
-     * TODO: check visitor ID exists before calling...to reduce coupling
      * Create an account using the necessary credentials.
-     * @param clientID The client ID creating the account
      * @param username Username to use
      * @param password Password to use
      * @param role The account role, either visitor or employee
      * @param visitorID The associated visitor ID
      * @return An error or success response about the creation of the account
      */
-    public String createAccount(String clientID, String username,
+    public String createAccount(String username,
                                 String password, Role role, String visitorID) {
         // Check no duplicate username
         if (accounts.containsKey(username)) {
-            return clientID + DELIMITER + CREATE_REQUEST +
-                    DELIMITER + "duplicate-username" + TERMINATOR;
+            return CREATE_REQUEST + DELIMITER + "duplicate-username" + TERMINATOR;
         }
         // Check no duplicate visitor ID
         if (visitors.containsKey(visitorID)) {
-            return clientID + DELIMITER + CREATE_REQUEST +
-                    DELIMITER + "duplicate-visitor" + TERMINATOR;
+            return CREATE_REQUEST + DELIMITER + "duplicate-visitor" + TERMINATOR;
         }
         // Create account
         Account account = new Account(username, password, role, visitorID);
         accounts.put(username, account);
         visitors.put(visitorID, account);
         // Return success response
-        return clientID + DELIMITER + CREATE_REQUEST +
-                DELIMITER + SUCCESS + TERMINATOR;
+        return CREATE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
     }
 
     /**

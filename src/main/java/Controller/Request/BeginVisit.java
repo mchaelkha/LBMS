@@ -23,6 +23,10 @@ public class BeginVisit implements Request {
      */
     private VisitorDB visitorDB;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * Params in the command
      */
     private String params;
@@ -37,9 +41,11 @@ public class BeginVisit implements Request {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB, String params) {
+    public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB,
+                      String clientID, String params) {
         this.librarySystem = librarySystem;
         this.visitorDB = visitorDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -64,9 +70,9 @@ public class BeginVisit implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return librarySystem.beginVisit(visitorID, visitorDB);
+        return clientID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
     }
 }

@@ -19,11 +19,14 @@ public class PayFine implements Request {
      * The checkout database
      */
     private CheckoutDB checkoutDB;
-
     /**
      * The visitor database
      */
     private VisitorDB visitorDB;
+    /**
+     * The client that made this request
+     */
+    private String clientID;
     /**
      * Params in the command
      */
@@ -44,9 +47,11 @@ public class PayFine implements Request {
      * @param visitorDB The visitor database
      * @param params The parameters that follow a request command
      */
-    public PayFine(CheckoutDB checkoutDB, VisitorDB visitorDB, String params) {
+    public PayFine(CheckoutDB checkoutDB, VisitorDB visitorDB,
+                   String clientID, String params) {
         this.checkoutDB = checkoutDB;
         this.visitorDB = visitorDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -72,23 +77,23 @@ public class PayFine implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
-
+        String response = clientID + DELIMITER + PAY_REQUEST + DELIMITER;
         //Check visitor ID corresponds to a registered visitor
         if(!visitorDB.validRegisteredVisitor(visitorID)){
-            return PAY_REQUEST+DELIMITER+INVALID_VISITOR_ID+TERMINATOR;
+            return response+INVALID_VISITOR_ID+TERMINATOR;
         }
         else{
             //Get visitor's balance
             int balance = checkoutDB.calculateFine(visitorID);
             //Check for invalid amount
             if (amount < 0 || amount > balance) {
-                return PAY_REQUEST+DELIMITER+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
+                return response+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
             }
             else{
                 double remainingBalance = checkoutDB.payFine(visitorID, amount);
-                return PAY_REQUEST+DELIMITER+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
+                return response+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
             }
         }
     }

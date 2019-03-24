@@ -25,6 +25,10 @@ public class BookStoreSearch implements Request {
      */
     private BookDB bookDB;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * Params in the command
      */
     private String params;
@@ -55,8 +59,9 @@ public class BookStoreSearch implements Request {
      * TODO finish commenting
      * @param params The parameters that follow a request command
      */
-    public BookStoreSearch(BookDB bookDB, String params) {
+    public BookStoreSearch(BookDB bookDB, String clientID, String params) {
         this.bookDB = bookDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -93,11 +98,11 @@ public class BookStoreSearch implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
         Map<String, BookInfo> search = bookDB.searchStore(title, authors,
                 isbn, publisher, sort);
-        return buildString(search);
+        return clientID + DELIMITER + buildString(search);
     }
 
     /**

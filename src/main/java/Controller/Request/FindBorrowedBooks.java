@@ -18,6 +18,10 @@ public class FindBorrowedBooks implements Request {
      */
     private CheckoutDB checkoutDB;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * Params in the command
      */
     private String params;
@@ -32,8 +36,9 @@ public class FindBorrowedBooks implements Request {
      * @param checkoutDB checkout database to find visitors borrowed books
      * @param params The parameters that follow a request command
      */
-    public FindBorrowedBooks(CheckoutDB checkoutDB, String params) {
+    public FindBorrowedBooks(CheckoutDB checkoutDB, String clientID, String params) {
         this.checkoutDB = checkoutDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -58,8 +63,8 @@ public class FindBorrowedBooks implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return checkoutDB.findBorrowedBooks(visitorID);
+        return clientID + DELIMITER + checkoutDB.findBorrowedBooks(visitorID);
     }
 }

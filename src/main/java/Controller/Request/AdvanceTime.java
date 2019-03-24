@@ -29,6 +29,10 @@ public class AdvanceTime implements Request {
      */
     private VisitorDB visitorDB;
     /**
+     * The client that made this request
+     */
+    private String clientID;
+    /**
      * the parameters for the command.
      */
     private String params;
@@ -45,10 +49,12 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(VisitorDB visitorDB, ReportGenerator reportGenerator, TimeKeeper timeKeeper, String params) {
+    public AdvanceTime(VisitorDB visitorDB, ReportGenerator reportGenerator,
+                       TimeKeeper timeKeeper, String clientID, String params) {
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
         this.visitorDB = visitorDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -76,7 +82,7 @@ public class AdvanceTime implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //Move simulation time forward by "days" and "hours"
         timeKeeper.addDays(days);
@@ -95,6 +101,6 @@ public class AdvanceTime implements Request {
 
         //Update libraryState
         timeKeeper.setLibraryStateAdvance();
-        return ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
+        return clientID + DELIMITER + ADVANCE_REQUEST + DELIMITER + SUCCESS + TERMINATOR;
     }
 }

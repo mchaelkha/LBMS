@@ -32,8 +32,14 @@ public class BorrowBook implements Request {
      * Used to check for valid visitor id.
      */
     private VisitorDB visitorDB;
-
+    /**
+     * Update the books upon checkout
+     */
     private BookDB bookDB;
+    /**
+     * The client that made this request
+     */
+    private String clientID;
     /**
      * Params in the command
      */
@@ -54,11 +60,12 @@ public class BorrowBook implements Request {
      * @param params The parameters that follow a request command
      */
     public BorrowBook(LibrarySystem librarySystem, CheckoutDB checkoutDB,
-                      VisitorDB visitorDB, BookDB bookDB, String params) {
+                      VisitorDB visitorDB, BookDB bookDB, String clientID, String params) {
         this.librarySystem = librarySystem;
         this.checkoutDB = checkoutDB;
         this.visitorDB = visitorDB;
         this.bookDB = bookDB;
+        this.clientID = clientID;
         this.params = params;
     }
 
@@ -86,9 +93,9 @@ public class BorrowBook implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //library.checkoutBooks()->currLibraryState.checkoutBooks()->checkoutDB.checkout()
-        return librarySystem.checkoutBooks(visitorID,bookIDs,checkoutDB,visitorDB,bookDB);
+        return clientID + DELIMITER + librarySystem.checkoutBooks(visitorID,bookIDs,checkoutDB,visitorDB,bookDB);
     }
 }

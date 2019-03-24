@@ -32,7 +32,6 @@ public interface RequestUtil {
     String SERVICE_REQUEST = "service";
     String NOT_AUTHORIZED = "not-authorized";
 
-    String PARAM_COUNT = "Too little or too many params";
     // Use String.format to insert request name
     String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
     String PROPER_PARAM = "";

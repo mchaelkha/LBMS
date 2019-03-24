@@ -87,12 +87,12 @@ public class CreateAccount implements Request {
     @Override
     public String execute() {
         if (!checkParams()) {
-            return PARAM_MESSAGE;
+            return clientID + DELIMITER + PARAM_MESSAGE;
         }
         if (!visitorDB.validRegisteredVisitor(visitorID)) {
             return clientID + DELIMITER + CREATE_REQUEST +
                     DELIMITER + "invalid-visitor";
         }
-        return accountDB.createAccount(clientID, username, password, role, visitorID);
+        return clientID + DELIMITER + accountDB.createAccount(username, password, role, visitorID);
     }
 }
