@@ -81,9 +81,9 @@ public class LBServer {
      */
     public LBServer() {
         accountDB = AccountDB.getInstance();
-        bookDB = new BookDB();
-        visitorDB = new VisitorDB();
-        checkoutDB = new CheckoutDB();
+        bookDB = BookDB.getInstance();
+        visitorDB = VisitorDB.getInstance();
+        checkoutDB = CheckoutDB.getInstance();
         timeKeeper = new TimeKeeper();
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
