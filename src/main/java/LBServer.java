@@ -142,6 +142,8 @@ public class LBServer {
             // Next line must be a request to be processed
             Request request = parser.processRequest(next);
             // TODO: make accounts execute
+            // TODO: make requests with optional visitorID param use clientID instead to find account/visitor
+            // TODO: Add performed commands only if valid to stacks in accounts
             System.out.println(request.execute());
         }
         scanner.close();
