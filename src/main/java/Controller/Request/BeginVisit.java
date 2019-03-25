@@ -69,10 +69,27 @@ public class BeginVisit implements Request {
      */
     @Override
     public String execute() {
+        //TODO check if visitorID param is given, if not use clientID to find visitorID before calling beginVisit()
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
         return clientID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+    }
+
+    /**
+     * Undo a begin visit request
+     */
+    @Override
+    public void undo(){
+
+    }
+
+    /**
+     * Redo a begin visit request
+     */
+    @Override
+    public void redo(){
+
     }
 }

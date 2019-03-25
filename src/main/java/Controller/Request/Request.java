@@ -5,10 +5,10 @@ public interface Request extends RequestUtil {
         return true;
     }
     String execute();
-    default String undo() {
-        return UNDO_REQUEST + DELIMITER + "cannot-undo" + TERMINATOR;
+    default void undo() {
+
     }
-    default String redo() {
-        return REDO_REQUEST + DELIMITER + "cannot-redo" + TERMINATOR;
+    default void redo(){
+
     }
 }
