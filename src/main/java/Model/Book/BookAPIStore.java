@@ -1,12 +1,14 @@
 package Model.Book;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +28,6 @@ public class BookAPIStore extends BookData {
     /**
      * Parts of the url you will need to create a connection.
      */
-    private static final String KEY = "&key=AIzaSyDw1I-JjSgEU8TkPkU7g3cjKXk6BAsu-do";
     private static final String URL = "https://www.googleapis.com/books/v1/volumes";
     // See this page for search parameters: https://developers.google.com/books/docs/v1/using
 
@@ -37,13 +38,20 @@ public class BookAPIStore extends BookData {
                                              String publisher, String sort) {
         String query = createQuery(title, authors, isbn, publisher);
         try {
-            URL BookURL = new URL(URL + query + KEY);
+            URL BookURL = new URL(URL + query);
             HttpURLConnection conn = (HttpURLConnection) BookURL.openConnection();
             conn.setRequestMethod("GET");
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            Gson gson = new Gson();
-            // TODO: finish writing
-            gson.fromJson(in, BookInfo.class);
+
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            // Build a single one line string of JSON
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            parseJSONString(response.toString());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,6 +100,34 @@ public class BookAPIStore extends BookData {
      */
     private String replaceSpaces(String element) {
         return element.replace(" ", "%20");
+    }
+
+    /**
+     * Parse the JSON response book by book.
+     * @param response
+     */
+    private Map<String, BookInfo> parseJSONString(String response) {
+        // Tutorial: http://tutorials.jenkov.com/java-json/gson-jsonparser.html
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonTree = jsonParser.parse(response);
+        if (!jsonTree.isJsonObject()) {
+            return null;
+        }
+        Map<String, BookInfo> bookSearch = new HashMap<>();
+        JsonObject jsonObject = jsonTree.getAsJsonObject();
+        JsonArray booksArray = jsonObject.getAsJsonArray("items");
+        // Iterate over each book or item
+        for (int i = 0; i < booksArray.size(); i++) {
+            //
+        }
+
+        return bookSearch;
+    }
+
+    // TODO: remove test method
+    public static void main(String[] args) {
+        BookAPIStore bookAPIStore = new BookAPIStore();
+        bookAPIStore.searchBooks("Harry Potter", new ArrayList<>(), "*", "*", "*");
     }
 
 }
