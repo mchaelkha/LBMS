@@ -1,10 +1,12 @@
 package Model.Client;
 
+import Controller.Request.RequestUtil;
+
 public class VisitorRole implements Role {
 
     @Override
     public String advanceTime() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
@@ -14,12 +16,12 @@ public class VisitorRole implements Role {
 
     @Override
     public String purchaseBook() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
     public String searchStore() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
@@ -29,12 +31,12 @@ public class VisitorRole implements Role {
 
     @Override
     public String createAccount() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
     public String currentDateTime() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String findBorrowedBooks() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String libraryStatisticsReport() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String registerVisitor() {
-        return null;
+        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
     }
 
     @Override
