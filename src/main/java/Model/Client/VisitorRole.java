@@ -1,5 +1,6 @@
 package Model.Client;
 
+import Controller.Request.Request;
 import Controller.Request.RequestUtil;
 
 public class VisitorRole implements Role {
@@ -11,7 +12,8 @@ public class VisitorRole implements Role {
 
     @Override
     public String beginVisit() {
-        return null;
+        Request request = new BeginVisit(null, null, null, null);
+        return request;
     }
 
     @Override
