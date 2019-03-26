@@ -2,6 +2,7 @@ package Model.Client;
 
 import Controller.Request.Request;
 import Controller.Request.RequestUtil;
+import Model.Book.BookInfo;
 import Model.Book.Service;
 
 import java.io.Serializable;
@@ -201,4 +202,35 @@ public class AccountDB implements Serializable, RequestUtil {
         // Return success response
         return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "success" + TERMINATOR;
     }
+
+    /**
+     * Set the account's library search.
+     * @param books The books to set to
+     * @param clientID The client ID to get the account
+     */
+    public void setLibrarySearch(Map<String, BookInfo> books, String clientID) {
+        Account account = activeAccounts.get(clientID);
+        account.setLibrarySearch(books);
+    }
+
+    /**
+     * Set the account's store search.
+     * @param books The books to set to
+     * @param clientID The client ID to get the account
+     */
+    public void setStoreSearch(Map<String, BookInfo> books, String clientID) {
+        Account account = activeAccounts.get(clientID);
+        account.setStoreSearch(books);
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param books The books to set to
+     * @param clientID The client ID to get the account
+     */
+    public void setBorrowedSearch(Map<String, BookInfo> books, String clientID) {
+        Account account = activeAccounts.get(clientID);
+        account.setBorrowedSearch(books);
+    }
+
 }

@@ -50,9 +50,19 @@ public class Account {
     private Stack<Request> undoHistory;
 
     /**
-     * The last search performed by the account
+     * The last store search performed by the account
      */
-    private Map<String, BookInfo> lastSearch;
+    private Map<String, BookInfo> storeSearch;
+
+    /**
+     * The last library search performed by the account
+     */
+    private Map<String, BookInfo> librarySearch;
+
+    /**
+     * The last borrowed search performed by the account
+     */
+    private Map<String, BookInfo> borrowedSearch;
 
     /**
      * Create an account given the following credentials.
@@ -87,6 +97,30 @@ public class Account {
      */
     public boolean authenticate(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
+    }
+
+    /**
+     * Set the account's store search.
+     * @param books The books to set to
+     */
+    public void setStoreSearch(Map<String, BookInfo> books) {
+        storeSearch = books;
+    }
+
+    /**
+     * Set the account's library search.
+     * @param books The books to set to
+     */
+    public void setLibrarySearch(Map<String, BookInfo> books) {
+        librarySearch = books;
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param books The books to set to
+     */
+    public void setBorrowedSearch(Map<String, BookInfo> books) {
+        borrowedSearch = books;
     }
 
     /**

@@ -2,6 +2,7 @@ package Controller.Request;
 
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Client.AccountDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,6 +103,8 @@ public class BookStoreSearch implements Request {
         }
         Map<String, BookInfo> search = bookDB.searchStore(title, authors,
                 isbn, publisher, sort);
+        AccountDB accountDB = AccountDB.getInstance();
+        accountDB.setStoreSearch(search, clientID);
         return clientID + DELIMITER + buildString(search);
     }
 
