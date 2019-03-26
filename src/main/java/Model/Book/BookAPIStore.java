@@ -1,5 +1,6 @@
 package Model.Book;
 
+import Controller.Request.RequestUtil;
 import com.google.gson.*;
 
 import java.io.BufferedReader;
@@ -8,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +17,15 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BookAPIStore extends BookData {
+public class BookAPIStore extends BookData implements RequestUtil {
 
+    /**
+     * Query search parameters
+     */
     private static final String Q_TITLE = "intitle=";
     private static final String Q_AUTHOR = "inauthor=";
     private static final String Q_ISBN = "isbn=";
     private static final String Q_PUBLISHER = "inpublisher=";
-
 
     /**
      * Parts of the url you will need to create a connection.
@@ -31,11 +33,23 @@ public class BookAPIStore extends BookData {
     private static final String URL = "https://www.googleapis.com/books/v1/volumes";
     // See this page for search parameters: https://developers.google.com/books/docs/v1/using
 
+    /**
+     * Search the books through the Google Books API web service. The JSON
+     * response must be interpreted into book information.
+     * @param title Title search parameter
+     * @param authors Authors search parameter
+     * @param isbn ISBN search parameter
+     * @param publisher Publisher search parameter
+     * @param sort Sort the search by either title or publish-date
+     * @return Mapping of the books
+     */
     @Override
     public Map<String, BookInfo> searchBooks(String title,
                                              List<String> authors,
                                              String isbn,
                                              String publisher, String sort) {
+        Map<String, BookInfo> searchedBooks;
+        List<BookInfo> hits = null;
         String query = createQuery(title, authors, isbn, publisher);
         try {
             URL BookURL = new URL(URL + query);
@@ -50,12 +64,16 @@ public class BookAPIStore extends BookData {
                 response.append(inputLine);
             }
             in.close();
-            parseJSONString(response.toString());
-
+            hits = parseJSONString(response.toString());
+            hits = sortBooks(hits, sort);
+            if (hits == null) {
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        searchedBooks = createMap(hits);
+        return searchedBooks;
     }
 
     /**
@@ -104,30 +122,56 @@ public class BookAPIStore extends BookData {
 
     /**
      * Parse the JSON response book by book.
-     * @param response
+     * @param response The JSON response produced by a web request
      */
-    private Map<String, BookInfo> parseJSONString(String response) {
+    private List<BookInfo> parseJSONString(String response) {
         // Tutorial: http://tutorials.jenkov.com/java-json/gson-jsonparser.html
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonTree = jsonParser.parse(response);
         if (!jsonTree.isJsonObject()) {
             return null;
         }
-        Map<String, BookInfo> bookSearch = new HashMap<>();
+        List<BookInfo> hits = new ArrayList<>();
         JsonObject jsonObject = jsonTree.getAsJsonObject();
         JsonArray booksArray = jsonObject.getAsJsonArray("items");
         // Iterate over each book or item
         for (int i = 0; i < booksArray.size(); i++) {
-            //
+            // Check title exists
+
+            // Check authors exist
+
+            // Check isbn exists
+
+            // Check publisher exists
+
+            // Check saleability is "FOR_SALE"
+
+            // Check country is "US"
+
+            // Add to hits by creating a BookInfo object
+
         }
 
-        return bookSearch;
+        return hits;
     }
 
     // TODO: remove test method
     public static void main(String[] args) {
         BookAPIStore bookAPIStore = new BookAPIStore();
-        bookAPIStore.searchBooks("Harry Potter", new ArrayList<>(), "*", "*", "*");
+        Map<String, BookInfo> search = bookAPIStore.searchBooks("Harry Potter", new ArrayList<>(), "*", "*", "*");
+        int size = search.size();
+        String result = "" + INFO_REQUEST + DELIMITER
+                + size + DELIMITER;
+        for (String id : search.keySet()) {
+            BookInfo book = search.get(id);
+            result += NEW_LINE;
+            result += book.getTotalCopiesAvailable() + DELIMITER;
+            result += id + DELIMITER;
+            result += book + DELIMITER + book.getPageCount();
+        }
+        result += String.format("{%d}", size);
+        result += TERMINATOR;
+        System.out.println(result);
     }
 
 }
