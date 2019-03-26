@@ -159,7 +159,7 @@ public class BookAPIStore extends BookData implements RequestUtil {
             JsonObject saleInfo = book.getAsJsonObject("saleInfo");
             // Check saleability is "FOR_SALE"
             JsonElement saleField = saleInfo.get("saleability");
-            if (!saleField.toString().equals("\"NOT_FOR_SALE\"")) {
+            if (!saleField.toString().equals("\"FOR_SALE\"")) {
                 continue;
             }
             // Check country is "US"
