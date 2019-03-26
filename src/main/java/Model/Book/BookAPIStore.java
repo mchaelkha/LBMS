@@ -6,8 +6,11 @@ import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,24 +91,32 @@ public class BookAPIStore extends BookData implements RequestUtil {
                                String isbn, String publisher) {
         String ignore = "*";
         String query = "?q=";
-        if (!title.equals(ignore)) {
-            query += Q_TITLE + replaceSpaces(title) + "&";
-        }
-        if (!authors.isEmpty()) {
-            query += Q_AUTHOR;
-            for (int i = 0; i < authors.size(); i++) {
-                String author = authors.get(i);
-                query += replaceSpaces(author);
-                if (i == authors.size() - 1) {
-                    query += "+";
-                }
+        try {
+            if (!title.equals(ignore)) {
+                title = encode(title);
+                query += Q_TITLE + title + "&";
             }
-        }
-        if (!isbn.equals(ignore)) {
-            query += Q_ISBN + isbn + "&";
-        }
-        if (!publisher.equals(ignore)) {
-            query += Q_PUBLISHER + replaceSpaces(publisher) + "&";
+            if (!authors.isEmpty()) {
+                query += Q_AUTHOR;
+                for (int i = 0; i < authors.size(); i++) {
+                    String author = encode(authors.get(i));
+                    authors.set(i, author);
+                    query += author;
+                    if (i == authors.size() - 1) {
+                        query += "+";
+                    }
+                }
+                query += "&";
+            }
+            if (!isbn.equals(ignore)) {
+                query += Q_ISBN + isbn + "&";
+            }
+            if (!publisher.equals(ignore)) {
+                publisher = encode(publisher);
+                query += Q_PUBLISHER + publisher + "&";
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         // Always remove last "&" symbol
         return query.substring(0, query.length() - 1);
@@ -116,8 +127,8 @@ public class BookAPIStore extends BookData implements RequestUtil {
      * @param element Element to replace for
      * @return Element with %20 as a space
      */
-    private String replaceSpaces(String element) {
-        return element.replace(" ", "%20");
+    private String encode(String element) throws UnsupportedEncodingException {
+        return URLEncoder.encode(element, StandardCharsets.UTF_8.toString());
     }
 
     /**
