@@ -94,7 +94,7 @@ public class Account {
      * @param request request being added to commandHistory
      */
     public void addPerformedRequest(Request request) {
-        //TODO go through each undoable request and add them once executed to commandHistory
+        //TODO go through each request and add them once executed to commandHistory
         commandHistory.push(request);
 
         //Clear undoneCommands to prevent undo of further commands

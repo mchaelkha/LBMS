@@ -49,12 +49,12 @@ public class BeginVisit implements Request {
      * @param params The parameters that follow a request command
      */
     public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB,
-                      AccountDB accountDB, String clientID, String params) {
+                      String clientID, String params) {
         this.librarySystem = librarySystem;
         this.visitorDB = visitorDB;
-        this.accountDB = accountDB;
         this.clientID = clientID;
         this.params = params;
+        this.accountDB = AccountDB.getInstance();
     }
 
     /**
