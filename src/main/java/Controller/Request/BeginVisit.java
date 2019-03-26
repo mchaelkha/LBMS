@@ -1,7 +1,10 @@
 package Controller.Request;
 
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Visitor.VisitorDB;
+
+import java.util.ArrayList;
 
 /**
  * Begin visit request to start a visit for a visitor.
@@ -23,6 +26,10 @@ public class BeginVisit implements Request {
      */
     private VisitorDB visitorDB;
     /**
+     * Account database. Used to add the beginVisit request to account who requested it.
+     */
+    private AccountDB accountDB;
+    /**
      * The client that made this request
      */
     private String clientID;
@@ -42,9 +49,10 @@ public class BeginVisit implements Request {
      * @param params The parameters that follow a request command
      */
     public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB,
-                      String clientID, String params) {
+                      AccountDB accountDB, String clientID, String params) {
         this.librarySystem = librarySystem;
         this.visitorDB = visitorDB;
+        this.accountDB = accountDB;
         this.clientID = clientID;
         this.params = params;
     }
@@ -56,8 +64,14 @@ public class BeginVisit implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
+        //visitorID given
         if (parts.length == 1) {
             visitorID = parts[0];
+            return true;
+        }
+        //visitorID not given
+        else if (parts.length == 0) {
+            visitorID = accountDB.getVisitorIDFromClientID(clientID);
             return true;
         }
         return false;
@@ -73,8 +87,14 @@ public class BeginVisit implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
+        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        String[] parts = response.split(",");
+        //Only add successful beginVisit requests to account commandHistory
+        if(parts.length == 4){
+            accountDB.addRequestToCommandHistory(this, clientID);
+        }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return clientID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
     }
 
     /**

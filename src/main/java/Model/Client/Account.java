@@ -145,6 +145,10 @@ public class Account {
         }
     }
 
+    public String getVisitorID() {
+        return visitorID;
+    }
+
     // TODO: add helper methods to call requests in the role field
 
 }
