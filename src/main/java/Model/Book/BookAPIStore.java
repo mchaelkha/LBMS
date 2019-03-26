@@ -156,9 +156,13 @@ public class BookAPIStore extends BookData implements RequestUtil {
             JsonObject volumeInfo = book.getAsJsonObject("volumeInfo");
             JsonObject saleInfo = book.getAsJsonObject("saleInfo");
             // TODO: Check saleability is "FOR_SALE"
-
+            JsonElement saleability = saleInfo.get("saleability");
+            if (saleability.toString().equals("FOR_SALE"))
+                continue;
             // TODO: Check country is "US"
-
+            JsonElement country = saleInfo.get("country");
+            if (country.toString().equals("US"))
+                continue;
             // Check title exists
             JsonElement titleField = volumeInfo.get("title");
             if (titleField == null) {
@@ -200,6 +204,9 @@ public class BookAPIStore extends BookData implements RequestUtil {
             publisher = publisherField.toString();
             publisher = publisher.substring(1, publisher.length() - 1);
             // TODO: grab page count and publish date for book info object
+            String publishDate = volumeInfo.get("publishedDate").toString();
+            int pages = Integer.parseInt(volumeInfo.get("pageCount").toString());
+            hits.add(new BookInfo(isbn, title, authors, publisher, publishDate, pages));
 
             // Add to hits by creating a BookInfo object
             //hits.add(new BookInfo(title, authors, isbn, publisher));
