@@ -1,5 +1,6 @@
 package Model.Client;
 
+import Controller.Request.Request;
 import Controller.Request.RequestUtil;
 import Model.Book.Service;
 
@@ -15,6 +16,9 @@ import java.util.Map;
  */
 public class AccountDB implements Serializable, RequestUtil {
 
+    /**
+     * Singleton instance
+     */
     private static AccountDB instance = null;
 
     /**
@@ -51,6 +55,20 @@ public class AccountDB implements Serializable, RequestUtil {
             instance = new AccountDB();
         }
         return instance;
+    }
+
+    public boolean isActiveAccount(String clientID) {
+        return activeAccounts.containsKey(clientID);
+    }
+
+    public void addToCommandHistory(Request request, String clientID) {
+        Account account = activeAccounts.get(clientID);
+        account.addPerformedRequest(request);
+    }
+
+    public void addToUndoHistory(Request request, String clientID) {
+        Account account = activeAccounts.get(clientID);
+        account.addUndoneCommand(request);
     }
 
     /**

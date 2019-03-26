@@ -16,6 +16,11 @@ import java.util.*;
 public class VisitorDB implements RequestUtil, Serializable{
 
     /**
+     * Singleton instance
+     */
+    private static VisitorDB instance = null;
+
+    /**
      * All visitors that are registered in the library. (VisitorID, VisitorInfo)
      */
     private Map<String, VisitorInfo> registeredVisitors;
@@ -43,11 +48,18 @@ public class VisitorDB implements RequestUtil, Serializable{
     /**
      * Create a new visitor database that is empty.
      */
-    public VisitorDB() {
+    private VisitorDB() {
         registeredVisitors = new HashMap<>();
         currentVisitors = new HashMap<>();
         visitLengths = new ArrayList<>();
         nextVisitorID = INITIAL_VISITOR_ID;
+    }
+
+    public static VisitorDB getInstance() {
+        if (instance == null) {
+            instance = new VisitorDB();
+        }
+        return instance;
     }
 
     /**

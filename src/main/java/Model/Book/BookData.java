@@ -17,7 +17,8 @@ public abstract class BookData {
      * Available books mapped to their IBSNs
      */
     Map<String, BookInfo> books;
-     /**
+    /**
+     * TODO: refactor into accounts
      * Books produced by the last search and mapped to an ID
      */
     Map<String, BookInfo> lastSearch;
@@ -49,7 +50,6 @@ public abstract class BookData {
                                               List<String> authors,
                                               String isbn,
                                               String publisher, String sort) {
-        Map<String, BookInfo> searchedBooks = new HashMap<>();
         // Filter out results into a list of search hits
         List<BookInfo> hits = books.values().stream()
                 .filter(b -> matchingFilter(b, title, authors,
@@ -60,14 +60,25 @@ public abstract class BookData {
         if (hits == null) {
             return null;
         }
+        Map<String, BookInfo> searchedBooks = createMap(hits);
+        // Set last search to this recent search
+        lastSearch = searchedBooks;
+        return searchedBooks;
+    }
+
+    /**
+     * Create a mapping of books from the list of books.
+     * @param hits The list of books
+     * @return The mapping of books from 0 to N books
+     */
+    public Map<String, BookInfo> createMap(List<BookInfo> hits) {
+        Map<String, BookInfo> searchedBooks = new HashMap<>();
         // Map to a unique ID for the hits
         int id = 0;
         for (BookInfo info : hits) {
             searchedBooks.put(String.valueOf(id), info);
             id++;
         }
-        // Set last search to this recent search
-        lastSearch = searchedBooks;
         return searchedBooks;
     }
 

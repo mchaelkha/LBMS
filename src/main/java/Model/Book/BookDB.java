@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class BookDB extends BookData implements Serializable, RequestUtil {
 
+    private static BookDB instance;
+
     /**
      * Bookstore to purchase books from
      */
@@ -34,9 +36,16 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     /**
      * Create a new book database that is empty.
      */
-    public BookDB() {
+    private BookDB() {
         super();
         bookstore = new Bookstore();
+    }
+
+    public static BookDB getInstance() {
+        if (instance == null) {
+            instance = new BookDB();
+        }
+        return instance;
     }
 
     /**
