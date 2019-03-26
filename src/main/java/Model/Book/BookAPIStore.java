@@ -147,22 +147,63 @@ public class BookAPIStore extends BookData implements RequestUtil {
         JsonArray booksArray = jsonObject.getAsJsonArray("items");
         // Iterate over each book or item
         for (int i = 0; i < booksArray.size(); i++) {
+            String title;
+            List<String> authors = new ArrayList<>();
+            String isbn = null;
+            String publisher;
+            // Retrieve book and needed info
+            JsonObject book = booksArray.get(i).getAsJsonObject();
+            JsonObject volumeInfo = book.getAsJsonObject("volumeInfo");
+            JsonObject saleInfo = book.getAsJsonObject("saleInfo");
+            // TODO: Check saleability is "FOR_SALE"
+
+            // TODO: Check country is "US"
+
             // Check title exists
-
+            JsonElement titleField = volumeInfo.get("title");
+            if (titleField == null) {
+                continue;
+            }
+            title = titleField.toString();
+            title = title.substring(1, title.length() - 1);
             // Check authors exist
-
+            JsonArray authorsArray = volumeInfo.getAsJsonArray("authors");
+            if (authorsArray == null) {
+                continue;
+            }
+            for (int a = 0; a < authorsArray.size(); a++) {
+                JsonElement authorElement = authorsArray.get(a);
+                String authorField = authorElement.toString();
+                authorField = authorField.substring(1, authorField.length() - 1);
+                authors.add(authorField);
+            }
             // Check isbn exists
-
+            JsonArray identifiers = volumeInfo.getAsJsonArray("industryIdentifiers");
+            if (identifiers == null) {
+                continue;
+            }
+            for (int z = 0; z < identifiers.size(); z++) {
+                JsonElement isbnElement = identifiers.get(z).getAsJsonObject().get("identifier");
+                String isbnField = isbnElement.toString();
+                // We want ISBN_13
+                if (isbnField.length() == 13 + 2) {
+                    // Remove quotes
+                    isbn = isbnField.substring(1, 14);
+                    break;
+                }
+            }
             // Check publisher exists
-
-            // Check saleability is "FOR_SALE"
-
-            // Check country is "US"
+            JsonElement publisherField = volumeInfo.get("publisher");
+            if (publisherField == null) {
+                continue;
+            }
+            publisher = publisherField.toString();
+            publisher = publisher.substring(1, publisher.length() - 1);
+            // TODO: grab page count and publish date for book info object
 
             // Add to hits by creating a BookInfo object
-
+            //hits.add(new BookInfo(title, authors, isbn, publisher));
         }
-
         return hits;
     }
 
