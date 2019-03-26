@@ -16,6 +16,7 @@ connect;
 0,datetime;
 0,arrive,1000000000;
 0,depart,1000000000;
+0,disconnect;
 
 //Show library closing kicks out current visitors but they remain registered
 0,arrive,1000000000;

@@ -20,6 +20,8 @@ import java.util.Map;
  */
 public class CheckoutDB implements Serializable,RequestUtil {
 
+    private static CheckoutDB instance = null;
+
     /**
      * The open transaction loans of each visitor
      */
@@ -55,10 +57,17 @@ public class CheckoutDB implements Serializable,RequestUtil {
     /**
      * Create a new checkout database that is empty
      */
-    public CheckoutDB() {
+    private CheckoutDB() {
         openLoans = new HashMap<>();
         closedLoans = new HashMap<>();
         transactionsInProgress = new ArrayList<>();
+    }
+
+    public static CheckoutDB getInstance() {
+        if (instance == null) {
+            instance = new CheckoutDB();
+        }
+        return instance;
     }
 
     /**
