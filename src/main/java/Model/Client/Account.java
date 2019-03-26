@@ -40,7 +40,7 @@ public class Account {
     private Service service;
 
     /**
-     * List of commands that have been done and can potentially be undone
+     * List of undoable commands that have been performed by this account
      */
     private Stack<Request> commandHistory;
 

@@ -4,8 +4,6 @@ import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Visitor.VisitorDB;
 
-import java.util.ArrayList;
-
 /**
  * Begin visit request to start a visit for a visitor.
  *
@@ -102,7 +100,10 @@ public class BeginVisit implements Request {
      */
     @Override
     public void undo(){
-
+        //undo current (new visit with start time) field in VisitorID to null
+        //remove visitor from currentVisitors in visitorDB
+        String visitorID = accountDB.getVisitorIDFromClientID(clientID);
+        visitorDB.removeVisit(visitorID);
     }
 
     /**

@@ -205,4 +205,14 @@ public class VisitorDB implements RequestUtil, Serializable{
         return averageLengthVisit;
         //return TimeKeeper.calculateDurationString(averageLengthVisit);
     }
+
+    /**
+     * Removes visitor with visitorID from currentVisitors
+     * Called by beginVisit request undo() method
+     * @param visitorID Visitor being removed
+     */
+    public void removeVisit(String visitorID) {
+        currentVisitors.get(visitorID).clearCurrentVisit();
+        currentVisitors.remove(visitorID);
+    }
 }
