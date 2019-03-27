@@ -173,10 +173,10 @@ public class RequestParser implements Parser {
                 request = new CreateAccount(clientID, params);
                 break;
             case LOGIN_REQUEST:
-                request = null;
+                request = new Login(clientID, params);
                 break;
             case LOGOUT_REQUEST:
-                request = null;
+                request = new Logout(clientID);
                 break;
             case SERVICE_REQUEST:
                 request = new SetBookInfoService(clientID, params);
