@@ -102,7 +102,7 @@ public class BorrowBook implements Request {
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getLibrarySearch(clientID);
         if (search == null) {
-            return clientID + DELIMITER + LOGIN_MESSAGE;
+            return clientID + DELIMITER + NOT_AUTHORIZED;
         }
         return clientID + DELIMITER + librarySystem.checkoutBooks(search, visitorID,bookIDs);
     }

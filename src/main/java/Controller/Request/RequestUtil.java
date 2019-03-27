@@ -30,13 +30,12 @@ public interface RequestUtil {
     String UNDO_REQUEST = "undo";
     String REDO_REQUEST = "redo";
     String SERVICE_REQUEST = "service";
-    String NOT_AUTHORIZED = "not-authorized";
+    String NOT_AUTHORIZED = "not-authorized" + TERMINATOR;
 
     String CANNOT_UNDO = "cannot-undo";
     String CANNOT_REDO = "cannot-redo";
 
     // Use String.format to insert request name
-    String LOGIN_MESSAGE = "inactive-account" + TERMINATOR;
     String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
     String PROPER_PARAM = "";
     String ILLEGAL_COMMAND = "illegal-command";

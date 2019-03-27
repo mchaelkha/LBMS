@@ -89,7 +89,7 @@ public class ReturnBook implements Request {
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getBorrowedSearch(clientID);
         if (search == null) {
-            return clientID + DELIMITER + LOGIN_MESSAGE;
+            return clientID + DELIMITER + NOT_AUTHORIZED;
         }
         return clientID + DELIMITER + checkoutDB.returnBooks(search, visitorID,
                 bookIDs, bookDB, timeKeeper);

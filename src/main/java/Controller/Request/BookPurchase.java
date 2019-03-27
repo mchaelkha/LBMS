@@ -19,7 +19,7 @@ public class BookPurchase implements Request {
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
-            ARRIVE_REQUEST) + DELIMITER + "quantity,id[,ids]";
+            BUY_REQUEST) + DELIMITER + "quantity,id[,ids]";
     /**
      * The book database of the library
      */
@@ -81,7 +81,7 @@ public class BookPurchase implements Request {
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getStoreSearch(clientID);
         if (search == null) {
-            return clientID + DELIMITER + LOGIN_MESSAGE;
+            return clientID + DELIMITER + NOT_AUTHORIZED;
         }
         return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
     }

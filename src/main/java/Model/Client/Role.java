@@ -1,6 +1,6 @@
 package Model.Client;
 
-import Controller.Request.RegisterVisitor;
+import Controller.Request.RequestUtil;
 
 /**
  * Implementation of the state pattern for the purpose of allowing different
@@ -8,7 +8,7 @@ import Controller.Request.RegisterVisitor;
  *
  * @author Michael Kha
  */
-public interface Role {
+public interface Role extends RequestUtil {
     public String advanceTime();
     public String beginVisit();
     public String purchaseBook();

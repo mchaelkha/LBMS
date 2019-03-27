@@ -1,12 +1,10 @@
 package Model.Client;
 
-import Controller.Request.RequestUtil;
-
 public class VisitorRole implements Role {
 
     @Override
     public String advanceTime() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
@@ -16,12 +14,12 @@ public class VisitorRole implements Role {
 
     @Override
     public String purchaseBook() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
     public String searchStore() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
@@ -31,12 +29,12 @@ public class VisitorRole implements Role {
 
     @Override
     public String createAccount() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
     public String currentDateTime() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String findBorrowedBooks() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String libraryStatisticsReport() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override
@@ -76,7 +74,7 @@ public class VisitorRole implements Role {
 
     @Override
     public String registerVisitor() {
-        return RequestUtil.NOT_AUTHORIZED + RequestUtil.DELIMITER;
+        return NOT_AUTHORIZED;
     }
 
     @Override

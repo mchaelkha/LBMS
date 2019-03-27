@@ -20,7 +20,7 @@ public class BookStoreSearch implements Request {
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
-            ARRIVE_REQUEST) + DELIMITER + "title,[{authors},isbn" +
+            SEARCH_REQUEST) + DELIMITER + "title,[{authors},isbn" +
             "[,publisher[,sort order]]]";
     /**
      * Book database used to buy and store new library books
@@ -105,7 +105,7 @@ public class BookStoreSearch implements Request {
         AccountDB accountDB = AccountDB.getInstance();
         Service service = accountDB.getService(clientID);
         if (service == null) {
-            return clientID + DELIMITER + LOGIN_MESSAGE;
+            return clientID + DELIMITER + NOT_AUTHORIZED;
         }
         Map<String, BookInfo> search = bookDB.searchStore(service, title, authors,
                 isbn, publisher, sort);
