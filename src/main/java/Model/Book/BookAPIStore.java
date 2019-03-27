@@ -102,7 +102,7 @@ public class BookAPIStore extends BookData implements RequestUtil {
                     String author = encode(authors.get(i));
                     authors.set(i, author);
                     query += author;
-                    if (i == authors.size() - 1) {
+                    if (i == authors.size() - 1 && i != 0) {
                         query += "+";
                     }
                 }
@@ -151,21 +151,29 @@ public class BookAPIStore extends BookData implements RequestUtil {
             List<String> authors = new ArrayList<>();
             String isbn = null;
             String publisher;
+            String publishDate;
+            int pageCount;
             // Retrieve book and needed info
             JsonObject book = booksArray.get(i).getAsJsonObject();
             JsonObject volumeInfo = book.getAsJsonObject("volumeInfo");
             JsonObject saleInfo = book.getAsJsonObject("saleInfo");
-            // TODO: Check saleability is "FOR_SALE"
-
-            // TODO: Check country is "US"
-
+            // Check saleability is "FOR_SALE"
+            JsonElement saleField = saleInfo.get("saleability");
+            if (!saleField.toString().equals("\"FOR_SALE\"")) {
+                continue;
+            }
+            // Check country is "US"
+            JsonElement countryField = saleInfo.get("country");
+            if (!countryField.toString().equals("\"US\"")) {
+                continue;
+            }
             // Check title exists
             JsonElement titleField = volumeInfo.get("title");
             if (titleField == null) {
                 continue;
             }
             title = titleField.toString();
-            title = title.substring(1, title.length() - 1);
+            title = trimQuotes(title);
             // Check authors exist
             JsonArray authorsArray = volumeInfo.getAsJsonArray("authors");
             if (authorsArray == null) {
@@ -174,7 +182,7 @@ public class BookAPIStore extends BookData implements RequestUtil {
             for (int a = 0; a < authorsArray.size(); a++) {
                 JsonElement authorElement = authorsArray.get(a);
                 String authorField = authorElement.toString();
-                authorField = authorField.substring(1, authorField.length() - 1);
+                authorField = trimQuotes(authorField);
                 authors.add(authorField);
             }
             // Check isbn exists
@@ -188,7 +196,7 @@ public class BookAPIStore extends BookData implements RequestUtil {
                 // We want ISBN_13
                 if (isbnField.length() == 13 + 2) {
                     // Remove quotes
-                    isbn = isbnField.substring(1, 14);
+                    isbn = trimQuotes(isbnField);
                     break;
                 }
             }
@@ -198,13 +206,33 @@ public class BookAPIStore extends BookData implements RequestUtil {
                 continue;
             }
             publisher = publisherField.toString();
-            publisher = publisher.substring(1, publisher.length() - 1);
-            // TODO: grab page count and publish date for book info object
-
+            publisher = trimQuotes(publisher);
+            // Grab page count and publish date for book info object
+            JsonElement pageCountField = volumeInfo.get("pageCount");
+            if (pageCountField == null) {
+                continue;
+            }
+            pageCount = Integer.parseInt(pageCountField.toString());
+            JsonElement publishedDateField = volumeInfo.get("publishedDate");
+            if (publishedDateField == null) {
+                continue;
+            }
+            publishDate = publishedDateField.toString();
+            publishDate = trimQuotes(publishDate);
             // Add to hits by creating a BookInfo object
-            //hits.add(new BookInfo(title, authors, isbn, publisher));
+            hits.add(new BookInfo(isbn, title, authors, publisher, publishDate, pageCount));
         }
         return hits;
+    }
+
+    /**
+     * Trim the quotes of the element using substring.
+     * The element should have quotes.
+     * @param element The element to remove the quotes of
+     * @return The element without quotes
+     */
+    private String trimQuotes(String element) {
+        return element.substring(1, element.length() - 1);
     }
 
     // TODO: remove test method

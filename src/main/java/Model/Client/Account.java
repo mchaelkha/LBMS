@@ -40,7 +40,7 @@ public class Account {
     private Service service;
 
     /**
-     * List of commands that have been done and can potentially be undone
+     * List of undoable commands that have been performed by this account
      */
     private Stack<Request> commandHistory;
 
@@ -50,9 +50,19 @@ public class Account {
     private Stack<Request> undoHistory;
 
     /**
-     * The last search performed by the account
+     * The last store search performed by the account
      */
-    private Map<String, BookInfo> lastSearch;
+    private Map<String, BookInfo> storeSearch;
+
+    /**
+     * The last library search performed by the account
+     */
+    private Map<String, BookInfo> librarySearch;
+
+    /**
+     * The last borrowed search performed by the account
+     */
+    private Map<String, BookInfo> borrowedSearch;
 
     /**
      * Create an account given the following credentials.
@@ -90,11 +100,35 @@ public class Account {
     }
 
     /**
+     * Set the account's store search.
+     * @param books The books to set to
+     */
+    public void setStoreSearch(Map<String, BookInfo> books) {
+        storeSearch = books;
+    }
+
+    /**
+     * Set the account's library search.
+     * @param books The books to set to
+     */
+    public void setLibrarySearch(Map<String, BookInfo> books) {
+        librarySearch = books;
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param books The books to set to
+     */
+    public void setBorrowedSearch(Map<String, BookInfo> books) {
+        borrowedSearch = books;
+    }
+
+    /**
      * Add request executed or redone by this Account to its commandHistory
      * @param request request being added to commandHistory
      */
     public void addPerformedRequest(Request request) {
-        //TODO go through each undoable request and add them once executed to commandHistory
+        //TODO go through each request and add them once executed to commandHistory
         commandHistory.push(request);
 
         //Clear undoneCommands to prevent undo of further commands
@@ -143,6 +177,10 @@ public class Account {
             commandHistory.push(request);
             return true;
         }
+    }
+
+    public String getVisitorID() {
+        return visitorID;
     }
 
     // TODO: add helper methods to call requests in the role field

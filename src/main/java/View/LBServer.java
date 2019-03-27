@@ -1,6 +1,7 @@
+package View;
+
 import Controller.ClientParser;
 import Controller.Parser;
-import Controller.Request.Request;
 import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
@@ -27,15 +28,7 @@ public class LBServer {
     /**
      * Usage message for invalid arguments
      */
-    private static final String USAGE = "invalid arguments";
-    /**
-     * Command to shutdown the program by first saving
-     */
-    private static final String SHUTDOWN = "/shutdown";
-    /**
-     * Command to stop the program immediately
-     */
-    private static final String EXIT = "/exit";
+    private static final String USAGE = "Usage: LBServer {'CLI'|'GUI'} [FILE]";
 
     /**
      * The maintained, connected clients
@@ -46,6 +39,10 @@ public class LBServer {
      * Parser used to process possible requests
      */
     private Parser parser;
+    /**
+     * Input reader used as a view controller to read input from a view
+     */
+    private InputReader reader;
     /**
      * System that determines when the library is open or closed
      */
@@ -78,8 +75,9 @@ public class LBServer {
 
     /**
      * Create the main system by creating new databases.
+     * @param scanner The scanner
      */
-    public LBServer() {
+    public LBServer(Scanner scanner) {
         accountDB = AccountDB.getInstance();
         bookDB = BookDB.getInstance();
         visitorDB = VisitorDB.getInstance();
@@ -88,21 +86,22 @@ public class LBServer {
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        //TODO change back to ClientParser after testing reportGenerator
         Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
         clients = new HashMap<>();
         parser = new ClientParser(requestParser, clients);
+        reader = new InputReader(this, parser, scanner);
     }
 
     /**
      * Create the main system from existing databases.
+     * @param scanner The scanner
      * @param accountDB The account database
      * @param bookDB The book database
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
-
+     * @param clients The clients of the server
      */
-    public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
+    public LBServer(Scanner scanner, AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
                     CheckoutDB checkoutDB, Map<String, Client> clients) {
         this.accountDB = accountDB;
         this.bookDB = bookDB;
@@ -114,39 +113,15 @@ public class LBServer {
         Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
         parser = new ClientParser(requestParser, clients);
         timeKeeper.setLibrarySystemObserver(library);
+        reader = new InputReader(this, parser, scanner);
+
     }
 
     /**
-     * Start the server by continuing to read input from the command line.
-     * Special commands:
-     * 1. /shutdown FILE - Shutdowns the program by first saving
-     * 2. /exit - Exit the program without saving
-     * 3. Client connections: connect and disconnect
-     * 4. requests in csv format - commands to run through the parser
+     * Start the server by continuing to read input from the reader.
      */
     public void start() {
-        Scanner scanner = new Scanner(System.in);
-        String next;
-        String[] parts;
-        while (scanner.hasNextLine()) {
-            next = scanner.nextLine();
-            // Check for special commands
-            if (next.matches("^" + SHUTDOWN + "\\s[\\w].*")) {
-                parts = next.split(" ");
-                shutdown(parts[1]);
-                break;
-            }
-            if (next.matches("^" + EXIT)) {
-                break;
-            }
-            // Next line must be a request to be processed
-            Request request = parser.processRequest(next);
-            // TODO: make accounts execute
-            // TODO: make requests with optional visitorID param use clientID instead to find account/visitor
-            // TODO: Add performed commands only if valid to stacks in accounts
-            System.out.println(request.execute());
-        }
-        scanner.close();
+        reader.read();
         System.exit(0);
     }
 
@@ -172,10 +147,11 @@ public class LBServer {
 
     /**
      * Restore the main system by reading a properly serialized object file.
+     * @param scanner The scanner to read input from
      * @param file Serialized object file
      */
     @SuppressWarnings("unchecked exception")
-    public static LBServer restore(String file) {
+    public static LBServer restore(Scanner scanner, String file) {
         AccountDB accountDB;
         BookDB bookDB;
         VisitorDB visitorDB;
@@ -191,7 +167,7 @@ public class LBServer {
             visitorDB = (VisitorDB) items.get(2);
             checkoutDB = (CheckoutDB) items.get(3);
             clients = (Map<String, Client>) items.get(4);
-            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, clients);
+            return new LBServer(scanner, accountDB, bookDB, visitorDB, checkoutDB, clients);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -201,30 +177,50 @@ public class LBServer {
     /**
      * Start the library book management system.
      * Arguments determine run mode:
-     * 1. No args: start new management system
-     * 2. Two arguments - "open FILE": restore system from a clean shutdown
+     * 1. One argument: CLI/GUI - start new management system from the specified view
+     * 2. Two arguments: CLI/GUI FILE - restore system from a clean shutdown
      * @param args Command line arguments
      */
     public static void main(String[] args) {
         int argc = args.length;
         LBServer server = null;
+        if (argc == 0 || argc > 2) {
+            System.err.println(USAGE);
+            System.exit(1);
+        }
+        Scanner scanner = retrieveScanner(args[0]);
+        if (scanner == null) {
+            System.err.println(USAGE);
+            System.exit(1);
+        }
         switch (argc) {
-            case 0:
-                server = new LBServer();
+            case 1:
+                server = new LBServer(scanner);
                 break;
             case 2:
-                if (!args[0].equals("open")) {
-                    System.err.println(USAGE);
-                    System.exit(1);
-                }
-                server = restore(args[1]);
-                break;
-            default:
-                System.err.println(USAGE);
-                System.exit(1);
+                server = restore(scanner, args[1]);
                 break;
         }
         Objects.requireNonNull(server).start();
+    }
+
+    /**
+     * Retrieve the scanner from the specified view implementation to use.
+     * @param view The view to use
+     * @return The scanner to read user input from
+     */
+    private static Scanner retrieveScanner(String view) {
+        if (view == null) {
+            return null;
+        }
+        switch (view) {
+            case "CLI":
+                return new Scanner(System.in);
+            case "GUI":
+                // TODO: Initialize GUI and grab StringReader
+                break;
+        }
+        return null;
     }
 
 }

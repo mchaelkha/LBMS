@@ -107,6 +107,13 @@ public class VisitorInfo implements Serializable {
     }
 
     /**
+     * Used by undo to clear visit that was started by this visitor
+     */
+    public void clearCurrentVisit(){
+        current = null;
+    }
+
+    /**
      * Used to check for duplicate visitors in library.
      * @param o Visitor being compared to this
      * @return true if visitor "o" is equal to this

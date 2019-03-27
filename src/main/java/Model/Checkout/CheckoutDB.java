@@ -263,6 +263,14 @@ public class CheckoutDB implements Serializable,RequestUtil {
     }
 
     /**
+     * Get the last borrowed books search;
+     * @return The last borrowed books
+     */
+    public Map<String, BookInfo> getLastBorrowedBooks() {
+        return lastBorrowedBooks;
+    }
+
+    /**
      * Pays all or part of an outstanding fine
      * @param visitorID visitor's id
      * @param amount amount that visitor is paying

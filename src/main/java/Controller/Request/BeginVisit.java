@@ -1,5 +1,6 @@
 package Controller.Request;
 
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Visitor.VisitorDB;
 
@@ -22,6 +23,10 @@ public class BeginVisit implements Request {
      * The Visitor database. Used to add the visitor to the collection of current visitors.
      */
     private VisitorDB visitorDB;
+    /**
+     * Account database. Used to add the beginVisit request to account who requested it.
+     */
+    private AccountDB accountDB;
     /**
      * The client that made this request
      */
@@ -47,6 +52,7 @@ public class BeginVisit implements Request {
         this.visitorDB = visitorDB;
         this.clientID = clientID;
         this.params = params;
+        this.accountDB = AccountDB.getInstance();
     }
 
     /**
@@ -56,8 +62,14 @@ public class BeginVisit implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
+        //visitorID given
         if (parts.length == 1) {
             visitorID = parts[0];
+            return true;
+        }
+        //visitorID not given
+        else if (parts.length == 0) {
+            visitorID = accountDB.getVisitorIDFromClientID(clientID);
             return true;
         }
         return false;
@@ -73,8 +85,14 @@ public class BeginVisit implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
+        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        String[] parts = response.split(",");
+        //Only add successful beginVisit requests to account commandHistory
+        if(parts.length == 4){
+            accountDB.addRequestToCommandHistory(this, clientID);
+        }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return clientID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
     }
 
     /**
@@ -82,7 +100,10 @@ public class BeginVisit implements Request {
      */
     @Override
     public void undo(){
-
+        //undo current (new visit with start time) field in VisitorID to null
+        //remove visitor from currentVisitors in visitorDB
+        String visitorID = accountDB.getVisitorIDFromClientID(clientID);
+        visitorDB.removeVisit(visitorID);
     }
 
     /**
