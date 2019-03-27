@@ -38,7 +38,7 @@ class LibraryOpen implements LibraryState,RequestUtil {
         CheckoutDB checkoutDB = CheckoutDB.getInstance();
         VisitorDB visitorDB = VisitorDB.getInstance();
         //Check that ids in Borrow Book request match the IDs in the most recent library book search
-        if(!bookDB.bookIdsMatchSearch(search, bookIds)){
+        if(!bookDB.checkIDsMatch(search, bookIds)){
             //Response = "borrow,invalid-book-id,{id};"
             String bookIdsString = String.join(",", bookIds);
             return BORROW_REQUEST+DELIMITER+INVALID_BOOK_ID+DELIMITER+bookIdsString+TERMINATOR;

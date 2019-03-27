@@ -105,7 +105,7 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
      * @param bookIds The list of book IDs to check
      * @return If there is no mismatch
      */
-    public boolean bookIdsMatchSearch(Map<String, BookInfo> search, List<String> bookIds){
+    public boolean checkIDsMatch(Map<String, BookInfo> search, List<String> bookIds){
         for (String id : bookIds) {
             if (!search.containsKey(id)) {
                 return false;
@@ -147,7 +147,7 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
      * Helper method for reportGenerator to retrieve number of books in library
      * @return number of books in library
      */
-    public int getNumBooksInLibrary(){
+    public int getLibraryBooksAmount(){
         return books.size();
     }
 
@@ -155,14 +155,14 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
      * Helper method for reportGenerator to retrieve number of books purchased
      * @return number of books purchased
      */
-    public int getNumBooksPurchased(){
+    public int getBooksPurchased(){
         return numBooksPurchased;
     }
 
     /**
      * Clear daily statistic "numBooksPurchased" when daily report is generated
      */
-    public void clearNumBooksPurchased(){
+    public void resetBooksPurchased(){
         numBooksPurchased = 0;
     }
 

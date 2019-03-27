@@ -235,23 +235,4 @@ public class BookAPIStore extends BookStorage implements RequestUtil {
         return element.substring(1, element.length() - 1);
     }
 
-    // TODO: remove test method
-    public static void main(String[] args) {
-        BookAPIStore bookAPIStore = new BookAPIStore();
-        Map<String, BookInfo> search = bookAPIStore.searchBooks("Harry Potter", new ArrayList<>(), "*", "*", "*");
-        int size = search.size();
-        String result = "" + INFO_REQUEST + DELIMITER
-                + size + DELIMITER;
-        for (String id : search.keySet()) {
-            BookInfo book = search.get(id);
-            result += NEW_LINE;
-            result += book.getTotalCopiesAvailable() + DELIMITER;
-            result += id + DELIMITER;
-            result += book + DELIMITER + book.getPageCount();
-        }
-        result += String.format("{%d}", size);
-        result += TERMINATOR;
-        System.out.println(result);
-    }
-
 }

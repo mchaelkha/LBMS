@@ -63,7 +63,7 @@ public abstract class BookStorage {
      * @param hits The list of books
      * @return The mapping of books from 0 to N books
      */
-    public Map<String, BookInfo> createMap(List<BookInfo> hits) {
+    Map<String, BookInfo> createMap(List<BookInfo> hits) {
         Map<String, BookInfo> searchedBooks = new HashMap<>();
         // Map to a unique ID for the hits
         int id = 0;
@@ -80,7 +80,7 @@ public abstract class BookStorage {
      * @param sort The sorting strategy
      * @return If the strategy is invalid return null otherwise return the reordered list
      */
-    public List<BookInfo> sortBooks(List<BookInfo> hits, String sort) {
+    List<BookInfo> sortBooks(List<BookInfo> hits, String sort) {
         switch (sort) {
             case "*":
                 break;
