@@ -2,6 +2,8 @@ package Model.Book;
 
 import Controller.Request.RequestUtil;
 
+import Model.Client.Service;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +20,13 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
     private static BookDB instance;
 
     /**
-     * Bookstore to purchase books from
+     * Local bookstore to purchase books from
      */
     private Bookstore bookstore;
-
     /**
-     * Tracks the last book search made by visitor in order to complete borrow book command
-     * (Key,Value) = (BookId, BookInfo)
+     * Google bookstore to purchase books from
      */
-    private Map<String,BookInfo> lastBookSearch;
+    private BookAPIStore apiStore;
 
     /**
      * Number of books purchased during the current simulation day (Used for ReportGenerator)
@@ -39,6 +39,7 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
     private BookDB() {
         super();
         bookstore = new Bookstore();
+        apiStore = new BookAPIStore();
     }
 
     public static BookDB getInstance() {
@@ -57,12 +58,20 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
      * @param sort The sort order
      * @return The mapping of hits to a unique ID
      */
-    public Map<String, BookInfo> searchStore(String title,
+    public Map<String, BookInfo> searchStore(Service service, String title,
                                              List<String> authors,
                                              String isbn,
                                              String publisher, String sort) {
-        lastBookSearch = bookstore.searchBooks(title, authors, isbn, publisher, sort);
-        return lastBookSearch;
+        Map<String, BookInfo> search = null;
+        switch (service) {
+            case LOCAL:
+                search = bookstore.searchBooks(title, authors, isbn, publisher, sort);
+                break;
+            case GOOGLE:
+                search = apiStore.searchBooks(title, authors, isbn, publisher, sort);
+                break;
+        }
+        return search;
     }
 
     /**

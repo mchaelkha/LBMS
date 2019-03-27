@@ -190,7 +190,6 @@ public class AccountDB implements Serializable, RequestUtil {
      * @return A response indicating if the service was set
      */
     public String setBookInfoService(String clientID, Service service) {
-        // TODO: check what the response should do (request page does not specify)
         // Check account is active
         if (!activeAccounts.containsKey(clientID)) {
             return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "cannot-set" + TERMINATOR;
@@ -200,6 +199,11 @@ public class AccountDB implements Serializable, RequestUtil {
         account.setService(service);
         // Return success response
         return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "success" + TERMINATOR;
+    }
+
+    public Service getService(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        return account.getService();
     }
 
     /**

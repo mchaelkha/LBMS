@@ -3,6 +3,7 @@ package Controller.Request;
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
 import Model.Client.AccountDB;
+import Model.Client.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,9 +102,10 @@ public class BookStoreSearch implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        Map<String, BookInfo> search = bookDB.searchStore(title, authors,
-                isbn, publisher, sort);
         AccountDB accountDB = AccountDB.getInstance();
+        Service service = accountDB.getService(clientID);
+        Map<String, BookInfo> search = bookDB.searchStore(service, title, authors,
+                isbn, publisher, sort);
         accountDB.setStoreSearch(search, clientID);
         return clientID + DELIMITER + buildString(search);
     }

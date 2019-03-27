@@ -77,6 +77,7 @@ public class Account {
         this.visitorID = visitorID;
         commandHistory = new Stack<>();
         undoHistory = new Stack<>();
+        service = Service.LOCAL;
     }
 
     /**
@@ -85,6 +86,14 @@ public class Account {
      */
     public void setService(Service service) {
         this.service = service;
+    }
+
+    /**
+     * Get the book information service of the account
+     * @return The service
+     */
+    public Service getService() {
+        return service;
     }
 
     /**
