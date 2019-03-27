@@ -87,7 +87,7 @@ public class LBServer {
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
+        Parser requestParser = new RequestParser(library, timeKeeper, reportGenerator);
         clients = new HashMap<>();
         parser = new ClientParser(requestParser, clients);
         reader = new InputReader(this, parser, scanner);
@@ -111,7 +111,7 @@ public class LBServer {
         this.timeKeeper = new TimeKeeper();
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
+        Parser requestParser = new RequestParser(library, timeKeeper, reportGenerator);
         parser = new ClientParser(requestParser, clients);
         timeKeeper.setLibrarySystemObserver(library);
         reader = new InputReader(this, parser, scanner);

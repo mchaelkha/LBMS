@@ -58,11 +58,11 @@ public class BookStoreSearch implements Request {
     /**
      * Create a new book store search request given the book database
      * and the parameters for the request.
-     * TODO finish commenting
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public BookStoreSearch(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public BookStoreSearch(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -104,6 +104,9 @@ public class BookStoreSearch implements Request {
         }
         AccountDB accountDB = AccountDB.getInstance();
         Service service = accountDB.getService(clientID);
+        if (service == null) {
+            return clientID + DELIMITER + LOGIN_MESSAGE;
+        }
         Map<String, BookInfo> search = bookDB.searchStore(service, title, authors,
                 isbn, publisher, sort);
         accountDB.setStoreSearch(search, clientID);

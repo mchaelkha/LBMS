@@ -57,11 +57,11 @@ public class LibraryBookSearch implements Request {
     /**
      * Create a new library book search request given the book database
      * and the parameters for the request.
-     * @param bookDB System's book database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public LibraryBookSearch(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public LibraryBookSearch(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }

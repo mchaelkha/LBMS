@@ -203,6 +203,9 @@ public class AccountDB implements Serializable, RequestUtil {
 
     public Service getService(String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
         return account.getService();
     }
 
@@ -213,6 +216,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setLibrarySearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setLibrarySearch(books);
     }
 
@@ -223,6 +229,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setStoreSearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setStoreSearch(books);
     }
 
@@ -233,6 +242,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setBorrowedSearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setBorrowedSearch(books);
     }
 
@@ -243,6 +255,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public Map<String, BookInfo> getLibrarySearch(String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
         return account.getLibrarySearch();
     }
 
@@ -253,6 +268,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public Map<String, BookInfo> getStoreSearch(String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
         return account.getStoreSearch();
     }
 
@@ -263,6 +281,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public Map<String, BookInfo> getBorrowedSearch(String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
         return account.getBorrowedSearch();
     }
 

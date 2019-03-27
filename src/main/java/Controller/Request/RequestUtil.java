@@ -36,6 +36,7 @@ public interface RequestUtil {
     String CANNOT_REDO = "cannot-redo";
 
     // Use String.format to insert request name
+    String LOGIN_MESSAGE = "inactive-account" + TERMINATOR;
     String MISSING_PARAM = "%s" + DELIMITER + "missing-parameters" + TERMINATOR;
     String PROPER_PARAM = "";
     String ILLEGAL_COMMAND = "illegal-command";

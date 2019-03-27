@@ -44,11 +44,11 @@ public class BookPurchase implements Request {
     /**
      * Create a new book purchase request given the book database
      * and the parameters for the request.
-     * TODO finish commenting this class
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public BookPurchase(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public BookPurchase(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -80,6 +80,9 @@ public class BookPurchase implements Request {
         }
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getStoreSearch(clientID);
+        if (search == null) {
+            return clientID + DELIMITER + LOGIN_MESSAGE;
+        }
         return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
     }
 }

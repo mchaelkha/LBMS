@@ -49,14 +49,12 @@ public class ReturnBook implements Request {
     /**
      * Create a new return book request given the checkout database
      * and the parameters for the request.
-     * @param checkoutDB The checkout database
-     * @param bookDB The book database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(CheckoutDB checkoutDB, BookDB bookDB,
-                      TimeKeeper timeKeeper, String clientID, String params) {
-        this.checkoutDB = checkoutDB;
-        this.bookDB = bookDB;
+    public ReturnBook(TimeKeeper timeKeeper, String clientID, String params) {
+        this.checkoutDB = CheckoutDB.getInstance();
+        this.bookDB = BookDB.getInstance();
         this.timeKeeper = timeKeeper;
         this.clientID = clientID;
         this.params = params;
@@ -90,6 +88,9 @@ public class ReturnBook implements Request {
         }
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getBorrowedSearch(clientID);
+        if (search == null) {
+            return clientID + DELIMITER + LOGIN_MESSAGE;
+        }
         return clientID + DELIMITER + checkoutDB.returnBooks(search, visitorID,
                 bookIDs, bookDB, timeKeeper);
     }

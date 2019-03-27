@@ -46,10 +46,10 @@ public class BeginVisit implements Request {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB,
+    public BeginVisit(LibrarySystem librarySystem,
                       String clientID, String params) {
         this.librarySystem = librarySystem;
-        this.visitorDB = visitorDB;
+        this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
         this.params = params;
         this.accountDB = AccountDB.getInstance();
