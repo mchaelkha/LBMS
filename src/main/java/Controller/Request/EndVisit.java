@@ -41,11 +41,11 @@ public class EndVisit implements Request {
      * and the parameters for the request.
      * TODO finish commenting request, LBServer, request parser classes
      * @param timeKeeper TimeKeeper
-     * @param visitorDB The visitor database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public EndVisit(VisitorDB visitorDB, TimeKeeper timeKeeper, String clientID, String params) {
-        this.visitorDB = visitorDB;
+    public EndVisit(TimeKeeper timeKeeper, String clientID, String params) {
+        this.visitorDB = VisitorDB.getInstance();
         this.timeKeeper = timeKeeper;
         this.clientID = clientID;
         this.params = params;

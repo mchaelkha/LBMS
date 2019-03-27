@@ -19,12 +19,11 @@ public class Redo implements Request{
 
     /**
      * Sets the clientID and accountDB for redo functionality
-     * @param accountDB AccountDB used to access specific account that is performing redo operation
      * @param clientID Used to access account performing redo operation in AccountDB
      */
-    public Redo(AccountDB accountDB, String clientID) {
+    public Redo(String clientID) {
         this.clientID = clientID;
-        this.accountDB = accountDB;
+        this.accountDB = AccountDB.getInstance();
     }
 
     /**

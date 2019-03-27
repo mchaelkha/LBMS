@@ -1,6 +1,6 @@
 package Controller.Request;
 
-import Model.Book.Service;
+import Model.Client.Service;
 import Model.Client.AccountDB;
 
 public class SetBookInfoService implements Request {
@@ -26,7 +26,7 @@ public class SetBookInfoService implements Request {
 
     /**
      * Check the parameters for validity.
-     * @return
+     * @return If the params are correct
      */
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);

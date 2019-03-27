@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 
 /**
  * Find borrowed books request to check what books a visitor is borrowing.
@@ -33,11 +34,11 @@ public class FindBorrowedBooks implements Request {
     /**
      * Create a new find borrowed books request given the visitor database
      * and the parameters for the request.
-     * @param checkoutDB checkout database to find visitors borrowed books
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public FindBorrowedBooks(CheckoutDB checkoutDB, String clientID, String params) {
-        this.checkoutDB = checkoutDB;
+    public FindBorrowedBooks(String clientID, String params) {
+        this.checkoutDB = CheckoutDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -65,6 +66,9 @@ public class FindBorrowedBooks implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + checkoutDB.findBorrowedBooks(visitorID);
+        String response = checkoutDB.findBorrowedBooks(visitorID);
+        AccountDB accountDB = AccountDB.getInstance();
+        accountDB.setBorrowedSearch(checkoutDB.getLastBorrowedBooks(), clientID);
+        return clientID + DELIMITER + response;
     }
 }

@@ -2,6 +2,8 @@ package Controller.Request;
 
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Client.AccountDB;
+import Model.Client.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ public class BookStoreSearch implements Request {
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
-            ARRIVE_REQUEST) + DELIMITER + "title,[{authors},isbn" +
+            SEARCH_REQUEST) + DELIMITER + "title,[{authors},isbn" +
             "[,publisher[,sort order]]]";
     /**
      * Book database used to buy and store new library books
@@ -56,11 +58,11 @@ public class BookStoreSearch implements Request {
     /**
      * Create a new book store search request given the book database
      * and the parameters for the request.
-     * TODO finish commenting
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public BookStoreSearch(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public BookStoreSearch(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -100,8 +102,14 @@ public class BookStoreSearch implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        Map<String, BookInfo> search = bookDB.searchStore(title, authors,
+        AccountDB accountDB = AccountDB.getInstance();
+        Service service = accountDB.getService(clientID);
+        if (service == null) {
+            return clientID + DELIMITER + NOT_AUTHORIZED;
+        }
+        Map<String, BookInfo> search = bookDB.searchStore(service, title, authors,
                 isbn, publisher, sort);
+        accountDB.setStoreSearch(search, clientID);
         return clientID + DELIMITER + buildString(search);
     }
 

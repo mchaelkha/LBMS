@@ -49,11 +49,11 @@ public class AdvanceTime implements Request {
      * Creates a new AdvanceTime request with the given parameters.
      * @param params The parameters for the command.
      */
-    public AdvanceTime(VisitorDB visitorDB, ReportGenerator reportGenerator,
+    public AdvanceTime(ReportGenerator reportGenerator,
                        TimeKeeper timeKeeper, String clientID, String params) {
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
-        this.visitorDB = visitorDB;
+        this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }

@@ -2,6 +2,7 @@ package Controller.Request;
 
 import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Client.AccountDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,11 +57,11 @@ public class LibraryBookSearch implements Request {
     /**
      * Create a new library book search request given the book database
      * and the parameters for the request.
-     * @param bookDB System's book database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public LibraryBookSearch(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public LibraryBookSearch(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -100,8 +101,11 @@ public class LibraryBookSearch implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + buildString(bookDB.searchBooks(title,
-                authors,isbn,publisher,sort));
+        Map<String, BookInfo> books = bookDB.searchBooks(title,
+                authors,isbn,publisher,sort);
+        AccountDB accountDB = AccountDB.getInstance();
+        accountDB.setLibrarySearch(books, clientID);
+        return clientID + DELIMITER + buildString(books);
     }
 
     /**

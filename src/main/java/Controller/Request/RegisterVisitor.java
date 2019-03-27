@@ -50,13 +50,13 @@ public class RegisterVisitor implements Request{
     /**
      * Create a new register visitor request given the visitor database
      * and the parameters for the request.
-     * @param visitorDB The visitor database
      * @param timeKeeper The time keeper
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public RegisterVisitor(VisitorDB visitorDB, TimeKeeper timeKeeper,
+    public RegisterVisitor(TimeKeeper timeKeeper,
                            String clientID, String params) {
-        this.visitorDB = visitorDB;
+        this.visitorDB = VisitorDB.getInstance();
         this.timeKeeper = timeKeeper;
         this.clientID = clientID;
         this.params = params;

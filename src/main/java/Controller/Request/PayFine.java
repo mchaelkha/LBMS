@@ -43,14 +43,12 @@ public class PayFine implements Request {
     /**
      * Create a new pay request given the library
      * and the parameters for the request.
-     * @param checkoutDB The checkout database
-     * @param visitorDB The visitor database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public PayFine(CheckoutDB checkoutDB, VisitorDB visitorDB,
-                   String clientID, String params) {
-        this.checkoutDB = checkoutDB;
-        this.visitorDB = visitorDB;
+    public PayFine(String clientID, String params) {
+        this.checkoutDB = CheckoutDB.getInstance();
+        this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }

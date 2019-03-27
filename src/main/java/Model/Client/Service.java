@@ -1,4 +1,4 @@
-package Model.Book;
+package Model.Client;
 
 /**
  * Enumeration of the book information services that exist.

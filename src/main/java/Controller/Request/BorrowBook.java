@@ -1,13 +1,16 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Visitor.VisitorDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Borrow book request to allow visitors to checkout books.
@@ -57,14 +60,14 @@ public class BorrowBook implements Request {
      * Create a new borrow book request given the book database and the
      * parameters for the request.
      * @param librarySystem used to delegate command actions
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public BorrowBook(LibrarySystem librarySystem, CheckoutDB checkoutDB,
-                      VisitorDB visitorDB, BookDB bookDB, String clientID, String params) {
+    public BorrowBook(LibrarySystem librarySystem, String clientID, String params) {
         this.librarySystem = librarySystem;
-        this.checkoutDB = checkoutDB;
-        this.visitorDB = visitorDB;
-        this.bookDB = bookDB;
+        this.checkoutDB = CheckoutDB.getInstance();
+        this.visitorDB = VisitorDB.getInstance();
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -96,6 +99,11 @@ public class BorrowBook implements Request {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //library.checkoutBooks()->currLibraryState.checkoutBooks()->checkoutDB.checkout()
-        return clientID + DELIMITER + librarySystem.checkoutBooks(visitorID,bookIDs,checkoutDB,visitorDB,bookDB);
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getLibrarySearch(clientID);
+        if (search == null) {
+            return clientID + DELIMITER + NOT_AUTHORIZED;
+        }
+        return clientID + DELIMITER + librarySystem.checkoutBooks(search, visitorID,bookIDs);
     }
 }

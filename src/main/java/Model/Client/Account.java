@@ -2,7 +2,6 @@ package Model.Client;
 
 import Controller.Request.Request;
 import Model.Book.BookInfo;
-import Model.Book.Service;
 
 import java.util.Map;
 import java.util.Stack;
@@ -50,9 +49,19 @@ public class Account {
     private Stack<Request> undoHistory;
 
     /**
-     * The last search performed by the account
+     * The last store search performed by the account
      */
-    private Map<String, BookInfo> lastSearch;
+    private Map<String, BookInfo> storeSearch;
+
+    /**
+     * The last library search performed by the account
+     */
+    private Map<String, BookInfo> librarySearch;
+
+    /**
+     * The last borrowed search performed by the account
+     */
+    private Map<String, BookInfo> borrowedSearch;
 
     /**
      * Create an account given the following credentials.
@@ -68,6 +77,7 @@ public class Account {
         this.visitorID = visitorID;
         commandHistory = new Stack<>();
         undoHistory = new Stack<>();
+        service = Service.LOCAL;
     }
 
     /**
@@ -79,6 +89,14 @@ public class Account {
     }
 
     /**
+     * Get the book information service of the account
+     * @return The service
+     */
+    public Service getService() {
+        return service;
+    }
+
+    /**
      * Authenticate an account for login by validating username and password
      * are correct (matching).
      * @param username The username to match
@@ -87,6 +105,54 @@ public class Account {
      */
     public boolean authenticate(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
+    }
+
+    /**
+     * Set the account's store search.
+     * @param books The books to set to
+     */
+    public void setStoreSearch(Map<String, BookInfo> books) {
+        storeSearch = books;
+    }
+
+    /**
+     * Set the account's library search.
+     * @param books The books to set to
+     */
+    public void setLibrarySearch(Map<String, BookInfo> books) {
+        librarySearch = books;
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param books The books to set to
+     */
+    public void setBorrowedSearch(Map<String, BookInfo> books) {
+        borrowedSearch = books;
+    }
+
+    /**
+     * Get the account's store search.
+     * @return The store search
+     */
+    public Map<String, BookInfo> getStoreSearch() {
+        return storeSearch;
+    }
+
+    /**
+     * Get the account's library search.
+     * @return The library search
+     */
+    public Map<String, BookInfo> getLibrarySearch() {
+        return librarySearch;
+    }
+
+    /**
+     * Get the account's borrowed search.
+     * @return The borrowed search
+     */
+    public Map<String, BookInfo> getBorrowedSearch() {
+        return borrowedSearch;
     }
 
     /**
