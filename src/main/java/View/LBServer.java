@@ -11,6 +11,7 @@ import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
+import javafx.application.Application;
 
 import java.io.*;
 import java.util.*;
@@ -217,6 +218,7 @@ public class LBServer {
             case "CLI":
                 return new Scanner(System.in);
             case "GUI":
+                new Thread(() -> Application.launch(LibGUI.class)).start();
                 // TODO: Initialize GUI and grab StringReader
                 break;
         }
