@@ -3,7 +3,6 @@ package Model.Client;
 import Controller.Request.Request;
 import Controller.Request.RequestUtil;
 import Model.Book.BookInfo;
-import Model.Book.Service;
 
 import java.io.Serializable;
 import java.util.HashMap;

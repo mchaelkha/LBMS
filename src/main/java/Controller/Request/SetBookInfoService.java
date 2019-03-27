@@ -1,6 +1,6 @@
 package Controller.Request;
 
-import Model.Book.Service;
+import Model.Client.Service;
 import Model.Client.AccountDB;
 
 public class SetBookInfoService implements Request {
