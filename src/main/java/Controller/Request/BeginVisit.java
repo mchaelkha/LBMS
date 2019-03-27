@@ -85,14 +85,14 @@ public class BeginVisit implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
         String[] parts = response.split(",");
         //Only add successful beginVisit requests to account commandHistory
         if(parts.length == 4){
             accountDB.addRequestToCommandHistory(this, clientID);
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
     }
 
     /**

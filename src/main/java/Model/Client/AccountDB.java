@@ -232,4 +232,34 @@ public class AccountDB implements Serializable, RequestUtil {
         account.setBorrowedSearch(books);
     }
 
+    /**
+     * Get the account's library search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getLibrarySearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        return account.getLibrarySearch();
+    }
+
+    /**
+     * Get the account's store search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getStoreSearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        return account.getStoreSearch();
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getBorrowedSearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        return account.getBorrowedSearch();
+    }
+
 }

@@ -1,12 +1,15 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Library.TimeKeeper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Return book request to return the specified books of a visitor.
@@ -85,7 +88,9 @@ public class ReturnBook implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + checkoutDB.returnBooks(visitorID,
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getBorrowedSearch(clientID);
+        return clientID + DELIMITER + checkoutDB.returnBooks(search, visitorID,
                 bookIDs, bookDB, timeKeeper);
     }
 }

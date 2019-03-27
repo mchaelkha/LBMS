@@ -11,17 +11,12 @@ import java.util.stream.Collectors;
  *
  * @author Michael Kha
  */
-public abstract class BookData {
+public abstract class BookStorage {
 
     /**
      * Available books mapped to their IBSNs
      */
     Map<String, BookInfo> books;
-    /**
-     * TODO: refactor into accounts
-     * Books produced by the last search and mapped to an ID
-     */
-    Map<String, BookInfo> lastSearch;
     /**
      * Comparators for book info
      */
@@ -31,7 +26,7 @@ public abstract class BookData {
     /**
      * Create a new book data structure that can be used to search for books.
      */
-    public BookData() {
+    public BookStorage() {
         books = new HashMap<>();
         byTitle = new TitleComparator();
         byPublishDate = new PublishDateComparator();
@@ -60,10 +55,7 @@ public abstract class BookData {
         if (hits == null) {
             return null;
         }
-        Map<String, BookInfo> searchedBooks = createMap(hits);
-        // Set last search to this recent search
-        lastSearch = searchedBooks;
-        return searchedBooks;
+        return createMap(hits);
     }
 
     /**

@@ -91,7 +91,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
      */
     public StatisticsReport generateDailyReport() {
         //Fields are cleared in databases when new report is generated
-        //bookDB: get numBooksInLibrary (from BookData books.size), get numBooksPurchased
+        //bookDB: get numBooksInLibrary (from BookStorage books.size), get numBooksPurchased
         //checkoutDB: get finesCollected, get finesUncollected
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated

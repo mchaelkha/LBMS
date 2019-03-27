@@ -123,6 +123,30 @@ public class Account {
     }
 
     /**
+     * Get the account's store search.
+     * @return The store search
+     */
+    public Map<String, BookInfo> getStoreSearch() {
+        return storeSearch;
+    }
+
+    /**
+     * Get the account's library search.
+     * @return The library search
+     */
+    public Map<String, BookInfo> getLibrarySearch() {
+        return librarySearch;
+    }
+
+    /**
+     * Get the account's borrowed search.
+     * @return The borrowed search
+     */
+    public Map<String, BookInfo> getBorrowedSearch() {
+        return borrowedSearch;
+    }
+
+    /**
      * Add request executed or redone by this Account to its commandHistory
      * @param request request being added to commandHistory
      */

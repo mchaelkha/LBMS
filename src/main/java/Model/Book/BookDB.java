@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BookDB extends BookData implements Serializable, RequestUtil {
+public class BookDB extends BookStorage implements Serializable, RequestUtil {
 
     private static BookDB instance;
 
@@ -72,9 +72,9 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
      * @param quantity Number of books to purchase for each book ID
      * @param bookIDs List of book IDs from the last search to purchase
      */
-    public String purchase(int quantity, List<String> bookIDs) {
+    public String purchase(Map<String, BookInfo> search, int quantity, List<String> bookIDs) {
         String response = "" + BUY_REQUEST + DELIMITER + SUCCESS + DELIMITER;
-        List<BookInfo> booksPurchased = bookstore.purchaseBooks(
+        List<BookInfo> booksPurchased = bookstore.purchaseBooks(search,
                 quantity, bookIDs);
         response += booksPurchased.size() * quantity + DELIMITER;
         String isbn;
@@ -101,12 +101,13 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     /**
      * Helps checkoutBooks request validate that bookIds being borrowed are contained
      * in the last book search.
+     * @param search The book search
      * @param bookIds The list of book IDs to check
      * @return If there is no mismatch
      */
-    public boolean bookIdsMatchSearch(List<String> bookIds){
+    public boolean bookIdsMatchSearch(Map<String, BookInfo> search, List<String> bookIds){
         for (String id : bookIds) {
-            if (!lastSearch.containsKey(id)) {
+            if (!search.containsKey(id)) {
                 return false;
             }
         }
@@ -116,13 +117,14 @@ public class BookDB extends BookData implements Serializable, RequestUtil {
     /**
      * Borrow books from a list of book IDs referring to books in the last
      * search.
+     * @param search The book search
      * @param bookIDs The book IDs to checkout
      * @return List of books to be borrowed or null if invalid book ID
      */
-    public List<BookInfo> borrowBooks(List<String> bookIDs) {
+    public List<BookInfo> borrowBooks(Map<String, BookInfo> search, List<String> bookIDs) {
         List<BookInfo> books = new ArrayList<>();
         for (String bookID : bookIDs) {
-            BookInfo book = lastSearch.get(bookID);
+            BookInfo book = search.get(bookID);
             books.add(book);
             // Book no longer available. Not enough copies
             if (!book.checkOutCopy()) {

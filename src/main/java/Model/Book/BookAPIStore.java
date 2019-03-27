@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BookAPIStore extends BookData implements RequestUtil {
+public class BookAPIStore extends BookStorage implements RequestUtil {
 
     /**
      * Query search parameters

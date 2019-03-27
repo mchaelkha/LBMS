@@ -1,13 +1,16 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Visitor.VisitorDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Borrow book request to allow visitors to checkout books.
@@ -96,6 +99,8 @@ public class BorrowBook implements Request {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
         //library.checkoutBooks()->currLibraryState.checkoutBooks()->checkoutDB.checkout()
-        return clientID + DELIMITER + librarySystem.checkoutBooks(visitorID,bookIDs,checkoutDB,visitorDB,bookDB);
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getLibrarySearch(clientID);
+        return clientID + DELIMITER + librarySystem.checkoutBooks(search, visitorID,bookIDs);
     }
 }

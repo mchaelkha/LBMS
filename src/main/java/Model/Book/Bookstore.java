@@ -9,7 +9,7 @@ import java.util.*;
  *
  * @author Michael Kha
  */
-public class Bookstore extends BookData implements Serializable {
+public class Bookstore extends BookStorage implements Serializable {
 
     /**
      * The file path of the books file
@@ -72,14 +72,16 @@ public class Bookstore extends BookData implements Serializable {
 
     /**
      * Purchase books of a given quantity.
+     * @param search The book search to purchase from
      * @param quantity Quantity to purchase
      * @param bookIDs List of book IDs
      * @return The list of book info that has been purchased
      */
-    public List<BookInfo> purchaseBooks(int quantity, List<String> bookIDs) {
+    public List<BookInfo> purchaseBooks(Map<String, BookInfo> search,
+                                        int quantity, List<String> bookIDs) {
         List<BookInfo> bookInfoList = new ArrayList<>();
         for (String book : bookIDs) {
-            BookInfo original = lastSearch.get(book);
+            BookInfo original = search.get(book);
             BookInfo copy = new BookInfo(original, quantity);
             bookInfoList.add(copy);
         }

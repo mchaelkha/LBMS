@@ -1,10 +1,13 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
+import Model.Client.AccountDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Book purchase request to add books to the library.
@@ -75,6 +78,8 @@ public class BookPurchase implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + bookDB.purchase(quantity, bookIDs);
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getStoreSearch(clientID);
+        return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
     }
 }
