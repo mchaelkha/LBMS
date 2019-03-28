@@ -134,7 +134,7 @@ public class RequestParser implements Parser {
                 request = new RegisterVisitor(timeKeeper, clientID, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(librarySystem, clientID, params);
+                request = new BeginVisit(timeKeeper, librarySystem, clientID, params);
                 break;
             case DEPART_REQUEST:
                 request = new EndVisit(timeKeeper, clientID, params);

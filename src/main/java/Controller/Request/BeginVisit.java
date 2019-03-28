@@ -2,7 +2,11 @@ package Controller.Request;
 
 import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
+import Model.Visitor.Visit;
 import Model.Visitor.VisitorDB;
+
+import java.time.LocalDateTime;
 
 /**
  * Begin visit request to start a visit for a visitor.
@@ -39,6 +43,14 @@ public class BeginVisit implements Request {
      * The visitor ID to start the visit for
      */
     private String visitorID;
+    /**
+     * Hold the visit started by beginVisit to maintain visit start time when redoing request
+     */
+    private Visit startVisit;
+    /**
+     * Used to for readDate and readTime functionality in timeKeeper for redoing BeginVisit requests
+     */
+    private TimeKeeper timeKeeper;
 
     /**
      * Create a new begin visit request given the visitor database
@@ -46,8 +58,9 @@ public class BeginVisit implements Request {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(LibrarySystem librarySystem,
+    public BeginVisit(TimeKeeper timeKeeper, LibrarySystem librarySystem,
                       String clientID, String params) {
+        this.timeKeeper = timeKeeper;
         this.librarySystem = librarySystem;
         this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
@@ -103,7 +116,8 @@ public class BeginVisit implements Request {
         //undo current (new visit with start time) field in VisitorID to null
         //remove visitor from currentVisitors in visitorDB
         String visitorID = accountDB.getVisitorIDFromClientID(clientID);
-        visitorDB.removeVisit(visitorID);
+        //Get visit object that recorded start time of visit for redo
+        startVisit = visitorDB.removeVisit(visitorID);
     }
 
     /**
@@ -111,6 +125,7 @@ public class BeginVisit implements Request {
      */
     @Override
     public void redo(){
-
+        LocalDateTime startVisitTime = startVisit.getStart();
+        visitorDB.beginVisit(visitorID, startVisitTime, timeKeeper.readDate(startVisitTime), timeKeeper.readTime(startVisitTime));
     }
 }

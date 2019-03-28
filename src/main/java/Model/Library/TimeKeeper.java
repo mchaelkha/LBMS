@@ -145,10 +145,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * @return the current time.
      */
     public String readTime() {
-        int hour = clock.getHour();
-        int minute = clock.getMinute();
-        int second = clock.getSecond();
-        return String.format("%02d:%02d:%02d", hour, minute, second);
+        return readTime(clock);
     }
 
     /**
@@ -156,9 +153,30 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * @return the current date, d/m/y.
      */
     public String readDate() {
-        int day = clock.getDayOfMonth();
-        int month = clock.getMonthValue();
-        int year = clock.getYear();
+        return readDate(clock);
+    }
+
+    /**
+     * Returns the localDateTime time formatted string
+     * @param localDateTime LocalDateTime used to get time string
+     * @return time string of LocalDateTime object
+     */
+    public String readTime(LocalDateTime localDateTime) {
+        int hour = clock.getHour();
+        int minute = clock.getMinute();
+        int second = clock.getSecond();
+        return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
+
+    /**
+     * Returns the localDateTime date formatted string
+     * @param localDateTime LocalDateTime used to get date string
+     * @return date string of LocalDateTime object
+     */
+    public String readDate(LocalDateTime localDateTime) {
+        int day = localDateTime.getDayOfMonth();
+        int month = localDateTime.getMonthValue();
+        int year = localDateTime.getYear();
         return  String.format("%04d/%02d/%02d", year, month, day);
     }
 
