@@ -10,5 +10,5 @@ import Controller.Request.Request;
  * @author Michael Kha
  */
 public interface Role extends RequestUtil {
-    public String executeCommand(Request request);
+    public String executeRequest(Request request);
 }
