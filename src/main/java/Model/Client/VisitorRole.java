@@ -10,7 +10,7 @@ import Controller.Request.Request;
  */
 public class VisitorRole implements Role {
 
-    public String executeRequest(Request request) {
+    public String executeRequest(AccessibleRequest request) {
         if(request.isEmployeeOnly()) {
             return NOT_AUTHORIZED;
         } else {
