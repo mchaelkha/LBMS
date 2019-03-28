@@ -1,6 +1,7 @@
 package Model.Client;
 
 import Controller.Request.RequestUtil;
+import Controller.Request.Request;
 
 /**
  * Implementation of the state pattern for the purpose of allowing different
@@ -9,5 +10,5 @@ import Controller.Request.RequestUtil;
  * @author Michael Kha
  */
 public interface Role extends RequestUtil {
-    public String executeCommand();
+    public String executeCommand(Request request);
 }
