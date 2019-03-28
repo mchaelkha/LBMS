@@ -1,5 +1,6 @@
 package Controller.Request;
 
+import Model.Client.AccountDB;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
 
@@ -18,6 +19,10 @@ public class EndVisit implements Request {
      * Visitor database used to update currentVisitors by removing visitor ending their visit.
      */
     private VisitorDB visitorDB;
+    /**
+     * Account database to retrieve visitor ID from account if not provided
+     */
+    private AccountDB accountDB;
     /**
      * TimeKeeper used to build response to user by including the simulation date and time,
      * which represent the time the visitor left the library.
@@ -46,6 +51,7 @@ public class EndVisit implements Request {
      */
     public EndVisit(TimeKeeper timeKeeper, String clientID, String params) {
         this.visitorDB = VisitorDB.getInstance();
+        accountDB = AccountDB.getInstance();
         this.timeKeeper = timeKeeper;
         this.clientID = clientID;
         this.params = params;
@@ -60,6 +66,10 @@ public class EndVisit implements Request {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
             visitorID = parts[0];
+            return true;
+        }
+        else if (parts.length == 0) {
+            visitorID = accountDB.getVisitorIDFromClientID(clientID);
             return true;
         }
         return false;

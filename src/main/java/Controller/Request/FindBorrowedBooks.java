@@ -51,7 +51,13 @@ public class FindBorrowedBooks implements Request {
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
-            visitorID = parts[0];
+            if (parts[0].length() == 10) {
+                visitorID = parts[0];
+            }
+            else {
+                AccountDB accountDB = AccountDB.getInstance();
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+            }
             return true;
         }
         return false;

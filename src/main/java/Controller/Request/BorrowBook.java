@@ -28,18 +28,6 @@ public class BorrowBook implements Request {
      */
     private LibrarySystem librarySystem;
     /**
-     * Used to verify that visitor can borrow a book and to create a new transaction
-     */
-    private CheckoutDB checkoutDB;
-    /**
-     * Used to check for valid visitor id.
-     */
-    private VisitorDB visitorDB;
-    /**
-     * Update the books upon checkout
-     */
-    private BookDB bookDB;
-    /**
      * The client that made this request
      */
     private String clientID;
@@ -65,9 +53,6 @@ public class BorrowBook implements Request {
      */
     public BorrowBook(LibrarySystem librarySystem, String clientID, String params) {
         this.librarySystem = librarySystem;
-        this.checkoutDB = CheckoutDB.getInstance();
-        this.visitorDB = VisitorDB.getInstance();
-        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -80,9 +65,16 @@ public class BorrowBook implements Request {
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length > 1) {
-            visitorID = parts[0];
             bookIDs = new ArrayList<>();
-            bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
+            if (parts[parts.length - 1].length() == 10) {
+                visitorID = parts[parts.length - 1];
+                bookIDs.addAll(Arrays.asList(parts).subList(0, parts.length - 1));
+            }
+            else {
+                AccountDB accountDB = AccountDB.getInstance();
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+                bookIDs.addAll(Arrays.asList(parts));
+            }
             return true;
         }
         return false;
