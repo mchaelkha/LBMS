@@ -9,6 +9,7 @@ import Model.Visitor.VisitorDB;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The state of the Library when it is open. Checkouts and visits are allowed.
@@ -31,10 +32,13 @@ class LibraryOpen implements LibraryState,RequestUtil {
      * @param checkoutDate the current date of checkout
      */
     @Override
-    public String checkoutBooks(LocalDateTime checkoutDate, String visitorID, List<String> bookIds,
-                                CheckoutDB checkoutDB, VisitorDB visitorDB, BookDB bookDB) {
+    public String checkoutBooks(Map<String, BookInfo> search, LocalDateTime checkoutDate,
+                                String visitorID, List<String> bookIds) {
+        BookDB bookDB = BookDB.getInstance();
+        CheckoutDB checkoutDB = CheckoutDB.getInstance();
+        VisitorDB visitorDB = VisitorDB.getInstance();
         //Check that ids in Borrow Book request match the IDs in the most recent library book search
-        if(!bookDB.bookIdsMatchSearch(bookIds)){
+        if(!bookDB.checkIDsMatch(search, bookIds)){
             //Response = "borrow,invalid-book-id,{id};"
             String bookIdsString = String.join(",", bookIds);
             return BORROW_REQUEST+DELIMITER+INVALID_BOOK_ID+DELIMITER+bookIdsString+TERMINATOR;
@@ -55,7 +59,7 @@ class LibraryOpen implements LibraryState,RequestUtil {
         }
         else{
             //Update book number in BookDB
-            List<BookInfo> bookInfos = bookDB.borrowBooks(bookIds);
+            List<BookInfo> bookInfos = bookDB.borrowBooks(search, bookIds);
             //Not enough copies are available at the library
             if(bookInfos == null){
                 return BORROW_REQUEST+DELIMITER+NOT_ENOUGH_COPIES+TERMINATOR;
@@ -74,7 +78,8 @@ class LibraryOpen implements LibraryState,RequestUtil {
      * @return a formatted string regarding the success of the operation.
      */
     @Override
-    public String beginVisit(String visitorID, VisitorDB visitorDB) {
+    public String beginVisit(String visitorID) {
+        VisitorDB visitorDB = VisitorDB.getInstance();
         return visitorDB.beginVisit(visitorID, timeKeeper.getClock(), timeKeeper.readDate(), timeKeeper.readTime());
     }
 

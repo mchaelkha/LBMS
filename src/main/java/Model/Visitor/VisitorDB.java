@@ -211,8 +211,19 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Called by beginVisit request undo() method
      * @param visitorID Visitor being removed
      */
-    public void removeVisit(String visitorID) {
-        currentVisitors.get(visitorID).clearCurrentVisit();
+    public Visit removeVisit(String visitorID) {
+        //Grab visit object started from beginVisit request
+        Visit startVisit = currentVisitors.get(visitorID).clearCurrentVisit();
         currentVisitors.remove(visitorID);
+        return startVisit;
+    }
+
+    /**
+     * Adds visitor
+     * @param visitorID
+     * @return
+     */
+    public void addVisit(String visitorID) {
+
     }
 }

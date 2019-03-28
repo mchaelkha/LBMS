@@ -11,17 +11,12 @@ import java.util.stream.Collectors;
  *
  * @author Michael Kha
  */
-public abstract class BookData {
+public abstract class BookStorage {
 
     /**
      * Available books mapped to their IBSNs
      */
     Map<String, BookInfo> books;
-    /**
-     * TODO: refactor into accounts
-     * Books produced by the last search and mapped to an ID
-     */
-    Map<String, BookInfo> lastSearch;
     /**
      * Comparators for book info
      */
@@ -31,7 +26,7 @@ public abstract class BookData {
     /**
      * Create a new book data structure that can be used to search for books.
      */
-    public BookData() {
+    public BookStorage() {
         books = new HashMap<>();
         byTitle = new TitleComparator();
         byPublishDate = new PublishDateComparator();
@@ -60,10 +55,7 @@ public abstract class BookData {
         if (hits == null) {
             return null;
         }
-        Map<String, BookInfo> searchedBooks = createMap(hits);
-        // Set last search to this recent search
-        lastSearch = searchedBooks;
-        return searchedBooks;
+        return createMap(hits);
     }
 
     /**
@@ -71,7 +63,7 @@ public abstract class BookData {
      * @param hits The list of books
      * @return The mapping of books from 0 to N books
      */
-    public Map<String, BookInfo> createMap(List<BookInfo> hits) {
+    Map<String, BookInfo> createMap(List<BookInfo> hits) {
         Map<String, BookInfo> searchedBooks = new HashMap<>();
         // Map to a unique ID for the hits
         int id = 0;
@@ -88,7 +80,7 @@ public abstract class BookData {
      * @param sort The sorting strategy
      * @return If the strategy is invalid return null otherwise return the reordered list
      */
-    public List<BookInfo> sortBooks(List<BookInfo> hits, String sort) {
+    List<BookInfo> sortBooks(List<BookInfo> hits, String sort) {
         switch (sort) {
             case "*":
                 break;

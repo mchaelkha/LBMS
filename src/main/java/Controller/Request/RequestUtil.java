@@ -30,7 +30,7 @@ public interface RequestUtil {
     String UNDO_REQUEST = "undo";
     String REDO_REQUEST = "redo";
     String SERVICE_REQUEST = "service";
-    String NOT_AUTHORIZED = "not-authorized";
+    String NOT_AUTHORIZED = "not-authorized" + TERMINATOR;
 
     String CANNOT_UNDO = "cannot-undo";
     String CANNOT_REDO = "cannot-redo";

@@ -41,11 +41,10 @@ public class CreateAccount implements Request {
     /**
      * Create an account given the visitor database and the parameters
      * for the request.
-     * @param visitorDB The visitor database
      * @param params The request parameters
      */
-    public CreateAccount(VisitorDB visitorDB, String clientID, String params) {
-        this.visitorDB = visitorDB;
+    public CreateAccount(String clientID, String params) {
+        this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
         this.params = params;
         accountDB = AccountDB.getInstance();

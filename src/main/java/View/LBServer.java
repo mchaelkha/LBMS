@@ -2,6 +2,7 @@ package View;
 
 import Controller.ClientParser;
 import Controller.Parser;
+import Controller.Request.Request;
 import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
@@ -11,6 +12,7 @@ import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
 import Model.Visitor.VisitorDB;
+import javafx.application.Application;
 
 import java.io.*;
 import java.util.*;
@@ -75,9 +77,8 @@ public class LBServer {
 
     /**
      * Create the main system by creating new databases.
-     * @param scanner The scanner
      */
-    public LBServer(Scanner scanner) {
+    public LBServer() {
         accountDB = AccountDB.getInstance();
         bookDB = BookDB.getInstance();
         visitorDB = VisitorDB.getInstance();
@@ -86,22 +87,21 @@ public class LBServer {
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
-        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
+        Parser requestParser = new RequestParser(library, timeKeeper, reportGenerator);
         clients = new HashMap<>();
         parser = new ClientParser(requestParser, clients);
-        reader = new InputReader(this, parser, scanner);
+        reader = InputReader.init(this, parser);
     }
 
     /**
      * Create the main system from existing databases.
-     * @param scanner The scanner
      * @param accountDB The account database
      * @param bookDB The book database
      * @param visitorDB The visitor database
      * @param checkoutDB The checkout database
      * @param clients The clients of the server
      */
-    public LBServer(Scanner scanner, AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
+    public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
                     CheckoutDB checkoutDB, Map<String, Client> clients) {
         this.accountDB = accountDB;
         this.bookDB = bookDB;
@@ -110,18 +110,27 @@ public class LBServer {
         this.timeKeeper = new TimeKeeper();
         reportGenerator = new ReportGenerator(timeKeeper,bookDB, visitorDB, checkoutDB);
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
-        Parser requestParser = new RequestParser(library, bookDB, visitorDB, checkoutDB, accountDB, timeKeeper, reportGenerator);
+        Parser requestParser = new RequestParser(library, timeKeeper, reportGenerator);
         parser = new ClientParser(requestParser, clients);
         timeKeeper.setLibrarySystemObserver(library);
-        reader = new InputReader(this, parser, scanner);
-
+        reader = InputReader.init(this, parser);
     }
 
     /**
      * Start the server by continuing to read input from the reader.
      */
     public void start() {
-        reader.read();
+        Scanner scanner = new Scanner(System.in);
+        String next;
+        while (scanner.hasNextLine()) {
+            next = scanner.nextLine();
+            Request request = reader.read(next);
+            System.out.println(request.execute());
+        }
+        System.exit(0);
+    }
+
+    public void exit() {
         System.exit(0);
     }
 
@@ -147,11 +156,10 @@ public class LBServer {
 
     /**
      * Restore the main system by reading a properly serialized object file.
-     * @param scanner The scanner to read input from
      * @param file Serialized object file
      */
     @SuppressWarnings("unchecked exception")
-    public static LBServer restore(Scanner scanner, String file) {
+    public static LBServer restore(String file) {
         AccountDB accountDB;
         BookDB bookDB;
         VisitorDB visitorDB;
@@ -167,7 +175,7 @@ public class LBServer {
             visitorDB = (VisitorDB) items.get(2);
             checkoutDB = (CheckoutDB) items.get(3);
             clients = (Map<String, Client>) items.get(4);
-            return new LBServer(scanner, accountDB, bookDB, visitorDB, checkoutDB, clients);
+            return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, clients);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -188,39 +196,23 @@ public class LBServer {
             System.err.println(USAGE);
             System.exit(1);
         }
-        Scanner scanner = retrieveScanner(args[0]);
-        if (scanner == null) {
-            System.err.println(USAGE);
-            System.exit(1);
-        }
         switch (argc) {
             case 1:
-                server = new LBServer(scanner);
+                server = new LBServer();
                 break;
             case 2:
-                server = restore(scanner, args[1]);
+                server = restore(args[1]);
                 break;
         }
-        Objects.requireNonNull(server).start();
-    }
 
-    /**
-     * Retrieve the scanner from the specified view implementation to use.
-     * @param view The view to use
-     * @return The scanner to read user input from
-     */
-    private static Scanner retrieveScanner(String view) {
-        if (view == null) {
-            return null;
-        }
-        switch (view) {
+        switch (args[0]) {
             case "CLI":
-                return new Scanner(System.in);
+                Objects.requireNonNull(server).start();
+                break;
             case "GUI":
-                // TODO: Initialize GUI and grab StringReader
+                new Thread(() -> Application.launch(LibGUI.class)).start();
                 break;
         }
-        return null;
     }
 
 }

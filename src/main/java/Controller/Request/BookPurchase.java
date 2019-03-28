@@ -1,10 +1,13 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
+import Model.Client.AccountDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Book purchase request to add books to the library.
@@ -16,7 +19,7 @@ public class BookPurchase implements Request {
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
-            ARRIVE_REQUEST) + DELIMITER + "quantity,id[,ids]";
+            BUY_REQUEST) + DELIMITER + "quantity,id[,ids]";
     /**
      * The book database of the library
      */
@@ -41,11 +44,11 @@ public class BookPurchase implements Request {
     /**
      * Create a new book purchase request given the book database
      * and the parameters for the request.
-     * TODO finish commenting this class
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public BookPurchase(BookDB bookDB, String clientID, String params) {
-        this.bookDB = bookDB;
+    public BookPurchase(String clientID, String params) {
+        this.bookDB = BookDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -75,6 +78,11 @@ public class BookPurchase implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + bookDB.purchase(quantity, bookIDs);
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getStoreSearch(clientID);
+        if (search == null) {
+            return clientID + DELIMITER + NOT_AUTHORIZED;
+        }
+        return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
     }
 }

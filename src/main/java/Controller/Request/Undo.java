@@ -19,12 +19,11 @@ public class Undo implements Request{
 
     /**
      * Sets the clientID and accountDB for undo functionality
-     * @param accountDB AccountDB used to access specific account that is performing undo operation
      * @param clientID Used to access account performing undo operation in AccountDB
      */
-    public Undo(AccountDB accountDB, String clientID) {
+    public Undo(String clientID) {
         this.clientID = clientID;
-        this.accountDB = accountDB;
+        this.accountDB = AccountDB.getInstance();
     }
 
     /**

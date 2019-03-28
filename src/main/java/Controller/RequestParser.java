@@ -31,14 +31,6 @@ public class RequestParser implements Parser {
      */
     private LibrarySystem librarySystem;
 
-    private BookDB bookDB;
-
-    private VisitorDB visitorDB;
-
-    private CheckoutDB checkoutDB;
-
-    private AccountDB accountDB;
-
     private TimeKeeper timeKeeper;
 
     private ReportGenerator reportGenerator;
@@ -47,14 +39,10 @@ public class RequestParser implements Parser {
      * Creates a new RequestParser
      * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
-    public RequestParser(LibrarySystem librarySystem, BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB,
-                         AccountDB accountDB, TimeKeeper timeKeeper, ReportGenerator reportGenerator) {
+    public RequestParser(LibrarySystem librarySystem, TimeKeeper timeKeeper,
+                         ReportGenerator reportGenerator) {
         partialRequests = new HashMap<>();
         this.librarySystem = librarySystem;
-        this.bookDB = bookDB;
-        this.visitorDB = visitorDB;
-        this.checkoutDB = checkoutDB;
-        this.accountDB = accountDB;
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
     }
@@ -143,37 +131,37 @@ public class RequestParser implements Parser {
         }
         switch (command) {
             case REGISTER_REQUEST:
-                request = new RegisterVisitor(visitorDB, timeKeeper, clientID, params);
+                request = new RegisterVisitor(timeKeeper, clientID, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(librarySystem, visitorDB, clientID, params);
+                request = new BeginVisit(timeKeeper, librarySystem, clientID, params);
                 break;
             case DEPART_REQUEST:
-                request = new EndVisit(visitorDB, timeKeeper, clientID, params);
+                request = new EndVisit(timeKeeper, clientID, params);
                 break;
             case INFO_REQUEST:
-                request = new LibraryBookSearch(bookDB, clientID, params);
+                request = new LibraryBookSearch(clientID, params);
                 break;
             case BORROW_REQUEST:
-                request = new BorrowBook(librarySystem, checkoutDB, visitorDB, bookDB, clientID, params);
+                request = new BorrowBook(librarySystem, clientID, params);
                 break;
             case BORROWED_REQUEST:
-                request = new FindBorrowedBooks(checkoutDB, clientID, params);
+                request = new FindBorrowedBooks(clientID, params);
                 break;
             case RETURN_REQUEST:
-                request = new ReturnBook(checkoutDB,bookDB, timeKeeper, clientID, params);
+                request = new ReturnBook(timeKeeper, clientID, params);
                 break;
             case PAY_REQUEST:
-                request = new PayFine(checkoutDB, visitorDB, clientID, params);
+                request = new PayFine(clientID, params);
                 break;
             case SEARCH_REQUEST:
-                request = new BookStoreSearch(bookDB, clientID, params);
+                request = new BookStoreSearch(clientID, params);
                 break;
             case BUY_REQUEST:
-                request = new BookPurchase(bookDB, clientID, params);
+                request = new BookPurchase(clientID, params);
                 break;
             case ADVANCE_REQUEST:
-                request = new AdvanceTime(visitorDB, reportGenerator, timeKeeper, clientID, params);
+                request = new AdvanceTime(reportGenerator, timeKeeper, clientID, params);
                 break;
             case DATE_TIME_REQUEST:
                 request = new CurrentDateTime(timeKeeper, clientID);
@@ -182,22 +170,22 @@ public class RequestParser implements Parser {
                 request = new LibraryStatisticsReport(reportGenerator, clientID, params);
                 break;
             case CREATE_REQUEST:
-                request = new CreateAccount(visitorDB, clientID, params);
+                request = new CreateAccount(clientID, params);
                 break;
             case LOGIN_REQUEST:
-                request = null;
+                request = new Login(clientID, params);
                 break;
             case LOGOUT_REQUEST:
-                request = null;
+                request = new Logout(clientID);
                 break;
             case SERVICE_REQUEST:
-                request = null;
+                request = new SetBookInfoService(clientID, params);
                 break;
             case UNDO_REQUEST:
-                request = new Undo(accountDB, clientID);
+                request = new Undo(clientID);
                 break;
             case REDO_REQUEST:
-                request = new Redo(accountDB, clientID);
+                request = new Redo(clientID);
                 break;
             default:
                 request = new Illegal();

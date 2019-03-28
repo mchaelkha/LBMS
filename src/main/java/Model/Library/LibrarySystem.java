@@ -1,6 +1,7 @@
 package Model.Library;
 import Controller.Request.RequestUtil;
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
@@ -81,22 +82,21 @@ public class LibrarySystem implements Serializable, RequestUtil{
     /**
      * Delegates beginVisit visitor command to library concrete state
      * @param visitorID the visitor returning the book
-     * @param visitorDB the visitor database to add visitor to current visitors
      * @return formatted string regarding the success of the beginVisit command
      */
-    public String beginVisit(String visitorID, VisitorDB visitorDB){
-        return currentLibraryState.beginVisit(visitorID, visitorDB);
+    public String beginVisit(String visitorID){
+        return currentLibraryState.beginVisit(visitorID);
     }
 
     /**
      * Delegates checkoutBook visitor command to library concrete state.
+     * @param search The book search
      * @param visitorID the visitor borrowing a book
      * @param bookIds the books to be checked out
      * @return formatted string regarding the success of the command
      */
-    public String checkoutBooks(String visitorID, List<String> bookIds, CheckoutDB checkoutDB,
-                                VisitorDB visitorDB, BookDB bookDB) {
-        return currentLibraryState.checkoutBooks(timeKeeper.getClock(),visitorID, bookIds, checkoutDB, visitorDB, bookDB);
+    public String checkoutBooks(Map<String, BookInfo> search, String visitorID, List<String> bookIds) {
+        return currentLibraryState.checkoutBooks(search, timeKeeper.getClock(),visitorID, bookIds);
     }
 
     /**

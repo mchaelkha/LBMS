@@ -2,7 +2,11 @@ package Controller.Request;
 
 import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
+import Model.Visitor.Visit;
 import Model.Visitor.VisitorDB;
+
+import java.time.LocalDateTime;
 
 /**
  * Begin visit request to start a visit for a visitor.
@@ -39,6 +43,14 @@ public class BeginVisit implements Request {
      * The visitor ID to start the visit for
      */
     private String visitorID;
+    /**
+     * Hold the visit started by beginVisit to maintain visit start time when redoing request
+     */
+    private Visit startVisit;
+    /**
+     * Used to for readDate and readTime functionality in timeKeeper for redoing BeginVisit requests
+     */
+    private TimeKeeper timeKeeper;
 
     /**
      * Create a new begin visit request given the visitor database
@@ -46,10 +58,11 @@ public class BeginVisit implements Request {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(LibrarySystem librarySystem, VisitorDB visitorDB,
+    public BeginVisit(TimeKeeper timeKeeper, LibrarySystem librarySystem,
                       String clientID, String params) {
+        this.timeKeeper = timeKeeper;
         this.librarySystem = librarySystem;
-        this.visitorDB = visitorDB;
+        this.visitorDB = VisitorDB.getInstance();
         this.clientID = clientID;
         this.params = params;
         this.accountDB = AccountDB.getInstance();
@@ -85,14 +98,14 @@ public class BeginVisit implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
         String[] parts = response.split(",");
         //Only add successful beginVisit requests to account commandHistory
         if(parts.length == 4){
             accountDB.addRequestToCommandHistory(this, clientID);
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID, visitorDB);
+        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
     }
 
     /**
@@ -102,15 +115,15 @@ public class BeginVisit implements Request {
     public void undo(){
         //undo current (new visit with start time) field in VisitorID to null
         //remove visitor from currentVisitors in visitorDB
-        String visitorID = accountDB.getVisitorIDFromClientID(clientID);
-        visitorDB.removeVisit(visitorID);
+        startVisit = visitorDB.removeVisit(visitorID);
     }
 
     /**
-     * Redo a begin visit request
+     * Redo a begin visit request. Redoing beginVisit request preserves startTime.
      */
     @Override
     public void redo(){
-
+        LocalDateTime startVisitTime = startVisit.getStart();
+        visitorDB.beginVisit(visitorID, startVisitTime, timeKeeper.readDate(startVisitTime), timeKeeper.readTime(startVisitTime));
     }
 }

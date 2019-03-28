@@ -170,18 +170,19 @@ public class CheckoutDB implements Serializable,RequestUtil {
     /**
      * Return the books from the list of book IDs from the most recent
      * borrowed books search.
+     * @param search The book search
      * @param visitorID visitor
      * @param bookIDs list of books to be returned
      * @return String whether returnBook command was successful
      */
-    public String returnBooks(String visitorID, List<String> bookIDs, BookDB bookDB, TimeKeeper timeKeeper) {
+    public String returnBooks(Map<String, BookInfo> search, String visitorID, List<String> bookIDs, BookDB bookDB, TimeKeeper timeKeeper) {
         double totalFine = 0;
         List<String> overdue = new ArrayList<>();
         Transaction t;
 
         for(int i = 0; i < bookIDs.size(); i++){
             String id = bookIDs.get(i);
-            BookInfo book = lastBorrowedBooks.get(id);
+            BookInfo book = search.get(id);
             if (book == null) {
                 return RETURN_REQUEST + DELIMITER + INVALID_BOOK_ID +
                         DELIMITER + String.join(DELIMITER, bookIDs) + TERMINATOR;

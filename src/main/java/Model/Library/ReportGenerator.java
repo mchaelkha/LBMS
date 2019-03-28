@@ -6,7 +6,6 @@ import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +90,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
      */
     public StatisticsReport generateDailyReport() {
         //Fields are cleared in databases when new report is generated
-        //bookDB: get numBooksInLibrary (from BookData books.size), get numBooksPurchased
+        //bookDB: get numBooksInLibrary (from BookStorage books.size), get numBooksPurchased
         //checkoutDB: get finesCollected, get finesUncollected
         //visitorDB: get numRegisteredVisitors, get avgLengthVisit,
         //TimeKeeper: get dateGenerated
@@ -100,8 +99,8 @@ public class ReportGenerator implements RequestUtil, Serializable {
         int numRegisteredVisitors = visitorDB.getNumRegisteredVisitors();
         long avgLengthVisitLong = visitorDB.getAverageLengthVisit();
         String avgLengthVisit = TimeKeeper.calculateDurationString(avgLengthVisitLong);
-        int numBooksInLibrary = bookDB.getNumBooksInLibrary();
-        int numBooksPurchased = bookDB.getNumBooksPurchased();
+        int numBooksInLibrary = bookDB.getLibraryBooksAmount();
+        int numBooksPurchased = bookDB.getBooksPurchased();
         int collectedFines = checkoutDB.getCollectedFines();
         int uncollectedFines = checkoutDB.getUncollectedFines();
 
@@ -113,7 +112,7 @@ public class ReportGenerator implements RequestUtil, Serializable {
         //Clear daily stats in DataBases
         checkoutDB.clearDailyFineFields();
         visitorDB.clearVisitLengths();
-        bookDB.clearNumBooksPurchased();
+        bookDB.resetBooksPurchased();
 
         return statisticsReport;
     }

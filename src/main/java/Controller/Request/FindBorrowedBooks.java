@@ -34,11 +34,11 @@ public class FindBorrowedBooks implements Request {
     /**
      * Create a new find borrowed books request given the visitor database
      * and the parameters for the request.
-     * @param checkoutDB checkout database to find visitors borrowed books
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public FindBorrowedBooks(CheckoutDB checkoutDB, String clientID, String params) {
-        this.checkoutDB = checkoutDB;
+    public FindBorrowedBooks(String clientID, String params) {
+        this.checkoutDB = CheckoutDB.getInstance();
         this.clientID = clientID;
         this.params = params;
     }
@@ -51,7 +51,13 @@ public class FindBorrowedBooks implements Request {
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
         if (parts.length == 1) {
-            visitorID = parts[0];
+            if (parts[0].length() == 10) {
+                visitorID = parts[0];
+            }
+            else {
+                AccountDB accountDB = AccountDB.getInstance();
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+            }
             return true;
         }
         return false;

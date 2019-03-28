@@ -2,7 +2,6 @@ package Model.Client;
 
 import Controller.Request.Request;
 import Model.Book.BookInfo;
-import Model.Book.Service;
 
 import java.util.Map;
 import java.util.Stack;
@@ -78,6 +77,7 @@ public class Account {
         this.visitorID = visitorID;
         commandHistory = new Stack<>();
         undoHistory = new Stack<>();
+        service = Service.LOCAL;
     }
 
     /**
@@ -86,6 +86,14 @@ public class Account {
      */
     public void setService(Service service) {
         this.service = service;
+    }
+
+    /**
+     * Get the book information service of the account
+     * @return The service
+     */
+    public Service getService() {
+        return service;
     }
 
     /**
@@ -121,6 +129,30 @@ public class Account {
      */
     public void setBorrowedSearch(Map<String, BookInfo> books) {
         borrowedSearch = books;
+    }
+
+    /**
+     * Get the account's store search.
+     * @return The store search
+     */
+    public Map<String, BookInfo> getStoreSearch() {
+        return storeSearch;
+    }
+
+    /**
+     * Get the account's library search.
+     * @return The library search
+     */
+    public Map<String, BookInfo> getLibrarySearch() {
+        return librarySearch;
+    }
+
+    /**
+     * Get the account's borrowed search.
+     * @return The borrowed search
+     */
+    public Map<String, BookInfo> getBorrowedSearch() {
+        return borrowedSearch;
     }
 
     /**

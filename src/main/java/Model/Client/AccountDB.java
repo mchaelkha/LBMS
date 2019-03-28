@@ -3,7 +3,6 @@ package Model.Client;
 import Controller.Request.Request;
 import Controller.Request.RequestUtil;
 import Model.Book.BookInfo;
-import Model.Book.Service;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -191,7 +190,6 @@ public class AccountDB implements Serializable, RequestUtil {
      * @return A response indicating if the service was set
      */
     public String setBookInfoService(String clientID, Service service) {
-        // TODO: check what the response should do (request page does not specify)
         // Check account is active
         if (!activeAccounts.containsKey(clientID)) {
             return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "cannot-set" + TERMINATOR;
@@ -203,6 +201,14 @@ public class AccountDB implements Serializable, RequestUtil {
         return clientID + DELIMITER + SERVICE_REQUEST + DELIMITER + "success" + TERMINATOR;
     }
 
+    public Service getService(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
+        return account.getService();
+    }
+
     /**
      * Set the account's library search.
      * @param books The books to set to
@@ -210,6 +216,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setLibrarySearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setLibrarySearch(books);
     }
 
@@ -220,6 +229,9 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setStoreSearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setStoreSearch(books);
     }
 
@@ -230,7 +242,49 @@ public class AccountDB implements Serializable, RequestUtil {
      */
     public void setBorrowedSearch(Map<String, BookInfo> books, String clientID) {
         Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return;
+        }
         account.setBorrowedSearch(books);
+    }
+
+    /**
+     * Get the account's library search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getLibrarySearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
+        return account.getLibrarySearch();
+    }
+
+    /**
+     * Get the account's store search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getStoreSearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
+        return account.getStoreSearch();
+    }
+
+    /**
+     * Set the account's borrowed search.
+     * @param clientID The client ID to get the account
+     * @return The book search
+     */
+    public Map<String, BookInfo> getBorrowedSearch(String clientID) {
+        Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return null;
+        }
+        return account.getBorrowedSearch();
     }
 
 }

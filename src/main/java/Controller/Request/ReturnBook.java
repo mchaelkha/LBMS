@@ -1,12 +1,15 @@
 package Controller.Request;
 
 import Model.Book.BookDB;
+import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Library.TimeKeeper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Return book request to return the specified books of a visitor.
@@ -46,14 +49,12 @@ public class ReturnBook implements Request {
     /**
      * Create a new return book request given the checkout database
      * and the parameters for the request.
-     * @param checkoutDB The checkout database
-     * @param bookDB The book database
+     * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(CheckoutDB checkoutDB, BookDB bookDB,
-                      TimeKeeper timeKeeper, String clientID, String params) {
-        this.checkoutDB = checkoutDB;
-        this.bookDB = bookDB;
+    public ReturnBook(TimeKeeper timeKeeper, String clientID, String params) {
+        this.checkoutDB = CheckoutDB.getInstance();
+        this.bookDB = BookDB.getInstance();
         this.timeKeeper = timeKeeper;
         this.clientID = clientID;
         this.params = params;
@@ -66,10 +67,20 @@ public class ReturnBook implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
-        if (parts.length > 1) {
-            visitorID = parts[0];
+        if (parts.length > 0) {
             bookIDs = new ArrayList<>();
-            bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
+            if (parts[0].length() == 10) {
+                visitorID = parts[0];
+                if (parts.length == 1) {
+                    return false;
+                }
+                bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
+            }
+            else {
+                AccountDB accountDB = AccountDB.getInstance();
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+                bookIDs.addAll(Arrays.asList(parts));
+            }
             return true;
         }
         return false;
@@ -85,7 +96,12 @@ public class ReturnBook implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + checkoutDB.returnBooks(visitorID,
+        AccountDB accountDB = AccountDB.getInstance();
+        Map<String, BookInfo> search = accountDB.getBorrowedSearch(clientID);
+        if (search == null) {
+            return clientID + DELIMITER + NOT_AUTHORIZED;
+        }
+        return clientID + DELIMITER + checkoutDB.returnBooks(search, visitorID,
                 bookIDs, bookDB, timeKeeper);
     }
 }
