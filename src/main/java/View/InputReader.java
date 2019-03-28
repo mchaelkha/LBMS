@@ -4,14 +4,17 @@ import Controller.Parser;
 import Controller.Request.Request;
 import Controller.Request.RequestUtil;
 
-import java.util.Scanner;
-
 /**
  * Read input from a view implementation and pass to an appropriate parser
  * controller for interpretation.
+ *
+ * @author Michael Kha
  */
 public class InputReader implements RequestUtil {
 
+    /**
+     * The single instance of the reader
+     */
     private static InputReader instance;
 
     /**
@@ -43,6 +46,10 @@ public class InputReader implements RequestUtil {
         this.parser = parser;
     }
 
+    /**
+     * Get the instance. If the instance has not been initialized, returns null.
+     * @return An initialized input reader or null if not initialized
+     */
     public static InputReader getInstance() {
         if (instance == null) {
             return null;
@@ -50,6 +57,12 @@ public class InputReader implements RequestUtil {
         return instance;
     }
 
+    /**
+     * Initializes the input reader with the server and parser
+     * @param server The server
+     * @param parser The parser
+     * @return The created instance
+     */
     public static InputReader init(LBServer server, Parser parser) {
         if (instance == null) {
             instance = new InputReader(server, parser);
@@ -84,12 +97,7 @@ public class InputReader implements RequestUtil {
             return null;
         }
         // Next line must be a request to be processed
-        Request request = parser.processRequest(next);
-        // TODO: make accounts execute
-        // TODO: make requests with optional visitorID param use clientID instead to find account/visitor
-        // TODO: Add performed commands only if valid to stacks in accounts
-        System.out.println(request.execute());
-        return request;
+        return parser.processRequest(next);
     }
 
 }
