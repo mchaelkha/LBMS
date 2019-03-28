@@ -1,8 +1,6 @@
 package Model.Client;
 
 import Controller.Request.AccessibleRequest;
-import Controller.Request.Request;
-
 
 /**
  * Visitors must check to ensure that they have the sufficient 

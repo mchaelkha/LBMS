@@ -1,6 +1,7 @@
 package Model.Client;
 
-import Controller.Request.Request;
+import Controller.Request.AccessibleRequest;
+
 /**
  * The implementation of the Employee role has permissions to run every command, 
  * so it simply executes the command it is given.
