@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Request.Request;
 import Controller.Request.Simple;
+import Model.Client.AccountDB;
 import Model.Client.Client;
 
 import java.util.Map;
@@ -77,6 +78,10 @@ public class ClientParser implements Parser {
      * @param clientID The client to remove
      */
     private void disconnect(String clientID) {
+        AccountDB accountDB = AccountDB.getInstance();
+        if (accountDB.isActiveAccount(clientID)) {
+            accountDB.logOut(clientID);
+        }
         clients.remove(clientID);
     }
 }
