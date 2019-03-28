@@ -1,7 +1,6 @@
 package Model.Client;
 
 import Controller.Request.Request;
-import Controller.Request.RequestUtil;
 
 
 /**
