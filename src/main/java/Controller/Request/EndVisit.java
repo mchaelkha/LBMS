@@ -64,10 +64,12 @@ public class EndVisit implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
+        //visitorID given
         if (parts.length == 1) {
             visitorID = parts[0];
             return true;
         }
+        //visitorID not given
         else if (parts.length == 0) {
             visitorID = accountDB.getVisitorIDFromClientID(clientID);
             return true;
@@ -85,7 +87,13 @@ public class EndVisit implements Request {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        return clientID + DELIMITER + visitorDB.endVisit(visitorID,
+        String response = clientID + DELIMITER + visitorDB.endVisit(visitorID,
                 timeKeeper.getClock(), timeKeeper.readTime());
+        String[] parts = response.split(",");
+        //Only add successful endVisit requests to account commandHistory
+        if(parts.length == 4){
+            accountDB.addRequestToCommandHistory(this, clientID);
+        }
+        return response;
     }
 }

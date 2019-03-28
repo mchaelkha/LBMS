@@ -94,7 +94,6 @@ public class BeginVisit implements Request {
      */
     @Override
     public String execute() {
-        //TODO check if visitorID param is given, if not use clientID to find visitorID before calling beginVisit()
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
