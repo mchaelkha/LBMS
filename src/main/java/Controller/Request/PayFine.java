@@ -1,6 +1,7 @@
 package Controller.Request;
 
 import Model.Checkout.CheckoutDB;
+import Model.Client.AccountDB;
 import Model.Visitor.VisitorDB;
 
 /**
@@ -60,10 +61,12 @@ public class PayFine implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(",");
-        if (parts.length == 2) {
-            visitorID = parts[0];
-            amount = Integer.parseInt(parts[1]);
-            return true;
+        amount = Integer.parseInt(parts[0]);
+        if (parts.length == 1) {
+            AccountDB accountDB = AccountDB.getInstance();
+            visitorID = accountDB.getVisitorIDFromClientID(clientID);
+        } else if (parts.length == 2) {
+            visitorID = parts[1];
         }
         return false;
     }

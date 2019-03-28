@@ -115,8 +115,6 @@ public class BeginVisit implements Request {
     public void undo(){
         //undo current (new visit with start time) field in VisitorID to null
         //remove visitor from currentVisitors in visitorDB
-        String visitorID = accountDB.getVisitorIDFromClientID(clientID);
-        //Get visit object that recorded start time of visit for redo
         startVisit = visitorDB.removeVisit(visitorID);
     }
 

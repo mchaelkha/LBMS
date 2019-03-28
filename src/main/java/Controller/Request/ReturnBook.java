@@ -67,10 +67,20 @@ public class ReturnBook implements Request {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
-        if (parts.length > 1) {
-            visitorID = parts[0];
+        if (parts.length > 0) {
             bookIDs = new ArrayList<>();
-            bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
+            if (parts[0].length() == 10) {
+                visitorID = parts[0];
+                if (parts.length == 1) {
+                    return false;
+                }
+                bookIDs.addAll(Arrays.asList(parts).subList(1, parts.length));
+            }
+            else {
+                AccountDB accountDB = AccountDB.getInstance();
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+                bookIDs.addAll(Arrays.asList(parts));
+            }
             return true;
         }
         return false;
