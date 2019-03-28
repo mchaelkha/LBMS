@@ -210,6 +210,7 @@ public class VisitorDB implements RequestUtil, Serializable{
      * Removes visitor with visitorID from currentVisitors
      * Called by beginVisit request undo() method
      * @param visitorID Visitor being removed
+     * @return startVisit object containing start time of visit
      */
     public Visit removeVisit(String visitorID) {
         //Grab visit object started from beginVisit request
@@ -219,11 +220,14 @@ public class VisitorDB implements RequestUtil, Serializable{
     }
 
     /**
-     * Adds visitor
-     * @param visitorID
-     * @return
+     * Adds visitor in registered visitors with visitorID to currentVisitors
+     * @param visitorID visitorID of visitor being added to currentVisitors
+     * @return endVisit object containing end time of visit
      */
-    public void addVisit(String visitorID) {
-
+    public Visit addVisit(String visitorID) {
+        VisitorInfo visitorInfo = registeredVisitors.get(visitorID);
+        Visit endVisit = visitorInfo.clearMostRecentVisit();
+        currentVisitors.put(visitorID, visitorInfo);
+        return endVisit;
     }
 }

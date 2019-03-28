@@ -43,4 +43,20 @@ public class Visit implements Serializable {
     public LocalDateTime getStart() {
         return start;
     }
+
+    /**
+     * Get the end time.
+     * @return The end time
+     */
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    /**
+     * Used by visitorInfo to clear end LocalDateTime when undoing a
+     * end visit request
+     */
+    public void clearEnd() {
+        end = null;
+    }
 }

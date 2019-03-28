@@ -107,7 +107,7 @@ public class VisitorInfo implements Serializable {
     }
 
     /**
-     * Used by undo to clear visit that was started by this visitor
+     * Used by beginVisit undo to clear visit that was started by this visitor
      */
     public Visit clearCurrentVisit(){
         Visit currentCopy = current;
@@ -115,6 +115,21 @@ public class VisitorInfo implements Serializable {
         return currentCopy;
     }
 
+    /**
+     * Used by endVisit undo to clear last visit added to visits and
+     * sets current visit object to last visit without its end time
+     */
+    public Visit clearMostRecentVisit(){
+        //Grab mostRecentVisit
+        Visit mostRecentVisit = visits.get(visits.size()-1);
+        //Clear last visit from visits list
+        visits.remove(mostRecentVisit);
+        //Clear LocalDateTime end in visit object and set it as current
+        mostRecentVisit.clearEnd();
+        current = mostRecentVisit;
+
+        return mostRecentVisit;
+    }
 
     /**
      * Used to check for duplicate visitors in library.

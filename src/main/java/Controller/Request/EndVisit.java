@@ -2,7 +2,10 @@ package Controller.Request;
 
 import Model.Client.AccountDB;
 import Model.Library.TimeKeeper;
+import Model.Visitor.Visit;
 import Model.Visitor.VisitorDB;
+
+import java.time.LocalDateTime;
 
 /**
  * End visit request to start a visit for a visitor.
@@ -40,6 +43,10 @@ public class EndVisit implements Request {
      * The visitor ID to start the visit for
      */
     private String visitorID;
+    /**
+     * The endVisit object to hold the end time for redoing this request
+     */
+    private Visit endVisit;
 
     /**
      * Create a new end visit request given the visitor database
@@ -95,5 +102,27 @@ public class EndVisit implements Request {
             accountDB.addRequestToCommandHistory(this, clientID);
         }
         return response;
+    }
+
+    /**
+     * Undo an end visit request
+     */
+    @Override
+    public void undo(){
+        //get last visit added to visitorInfo visits and clear its
+        //endTime and make it current.
+
+        //add visitor back to currentVisitors in visitorDB
+        //endTime is cleared -> store visit object containing end time in this request for redo
+        endVisit = visitorDB.addVisit(visitorID);
+    }
+
+    /**
+     * Redo an end visit request. Redoing endVisit request preserves startTime.
+     */
+    @Override
+    public void redo(){
+        LocalDateTime endVisitTime = endVisit.getEnd();
+        visitorDB.endVisit(visitorID, endVisitTime, timeKeeper.readDate(endVisitTime));
     }
 }
