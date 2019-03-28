@@ -298,6 +298,14 @@ public class CheckoutDB implements Serializable,RequestUtil {
         return calculateFine(visitorID);
     }
 
+    /**
+     *
+     * @return
+     */
+    public double undoFine(double amount){
+        return 0.0;
+    }
+
     public int getCollectedFines() {
         return dailyCollectedFines;
     }

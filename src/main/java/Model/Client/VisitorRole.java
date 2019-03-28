@@ -1,5 +1,6 @@
 package Model.Client;
 
+import Controller.Request.AccessibleRequest;
 import Controller.Request.Request;
 
 

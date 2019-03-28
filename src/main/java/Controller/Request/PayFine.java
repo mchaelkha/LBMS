@@ -42,6 +42,11 @@ public class PayFine implements Request {
     private int amount;
 
     /**
+     * The amount that was paid.
+     */
+    private double paid;
+
+    /**
      * Create a new pay request given the library
      * and the parameters for the request.
      * @param clientID The client making the request
@@ -72,6 +77,13 @@ public class PayFine implements Request {
     }
 
     /**
+     * Undo a fine payment
+     */
+    @Override
+    public void undo(){
+        checkoutDB.undoFine(paid);
+    }
+    /**
      * Executes the pay fine command to pay a visitor's fines.
      * @return String indicating that the execution has succeeded.
      */
@@ -94,6 +106,7 @@ public class PayFine implements Request {
             }
             else{
                 double remainingBalance = checkoutDB.payFine(visitorID, amount);
+
                 return response+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
             }
         }
