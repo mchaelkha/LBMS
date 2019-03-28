@@ -8,7 +8,7 @@ import Controller.Request.Request;
  */
 public class EmployeeRole implements Role {
     @Override
-    public String executeRequest(Request request) {
+    public String executeRequest(AccessibleRequest request) {
         return request.execute();
     }
 }
