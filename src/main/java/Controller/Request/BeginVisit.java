@@ -119,7 +119,7 @@ public class BeginVisit implements Request {
     }
 
     /**
-     * Redo a begin visit request
+     * Redo a begin visit request. Redoing beginVisit request preserves startTime.
      */
     @Override
     public void redo(){
