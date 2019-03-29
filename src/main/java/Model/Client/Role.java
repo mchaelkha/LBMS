@@ -1,6 +1,5 @@
 package Model.Client;
 
-import Controller.Request.AccessibleRequest;
 import Controller.Request.RequestUtil;
 import Controller.Request.Request;
 
@@ -11,5 +10,5 @@ import Controller.Request.Request;
  * @author Michael Kha
  */
 public interface Role extends RequestUtil {
-    public String executeRequest(AccessibleRequest request);
+    String executeRequest(Request request);
 }

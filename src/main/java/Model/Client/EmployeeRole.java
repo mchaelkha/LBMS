@@ -1,6 +1,6 @@
 package Model.Client;
 
-import Controller.Request.AccessibleRequest;
+import Controller.Request.Request;
 
 /**
  * The implementation of the Employee role has permissions to run every command, 
@@ -9,7 +9,7 @@ import Controller.Request.AccessibleRequest;
  */
 public class EmployeeRole implements Role {
     @Override
-    public String executeRequest(AccessibleRequest request) {
+    public String executeRequest(Request request) {
         return request.execute();
     }
 }

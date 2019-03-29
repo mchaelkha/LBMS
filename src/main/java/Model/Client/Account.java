@@ -156,6 +156,16 @@ public class Account {
     }
 
     /**
+     * Execute the request using the account's role to determine if execution
+     * is allowed.
+     * @param request The request to execute
+     * @return Possibly not authorized message, success, or an error
+     */
+    public String executeRequest(Request request) {
+        return role.executeRequest(request);
+    }
+
+    /**
      * Add request executed or redone by this Account to its commandHistory
      * @param request request being added to commandHistory
      */
@@ -214,7 +224,5 @@ public class Account {
     public String getVisitorID() {
         return visitorID;
     }
-
-    // TODO: add helper methods to call requests in the role field
 
 }

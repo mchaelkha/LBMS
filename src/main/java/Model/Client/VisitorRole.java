@@ -1,6 +1,6 @@
 package Model.Client;
 
-import Controller.Request.AccessibleRequest;
+import Controller.Request.Request;
 
 /**
  * Visitors must check to ensure that they have the sufficient 
@@ -9,9 +9,10 @@ import Controller.Request.AccessibleRequest;
  */
 public class VisitorRole implements Role {
 
-    public String executeRequest(AccessibleRequest request) {
+    public String executeRequest(Request request) {
         if(request.isEmployeeOnly()) {
-            return NOT_AUTHORIZED;
+            return request.getClientID() + DELIMITER + request.getName()
+                    + DELIMITER + NOT_AUTHORIZED;
         } else {
             return request.execute();
         }

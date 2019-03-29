@@ -57,15 +57,46 @@ public class AccountDB implements Serializable, RequestUtil {
         return instance;
     }
 
+    /**
+     * Execute the request. If the request is tied to a client ID,
+     * let the account execute depending on its role.
+     * @param request The request to execute
+     * @return An execution response
+     */
+    public String executeRequest(Request request) {
+        String clientID = request.getClientID();
+        Account account = activeAccounts.get(clientID);
+        if (account == null) {
+            return clientID + DELIMITER + request.getName()
+                    + DELIMITER + NOT_AUTHORIZED;
+        }
+        return account.executeRequest(request);
+    }
+
+    /**
+     * Check if the client ID is tied to an active account.
+     * @param clientID The client ID to check
+     * @return Is the client logged into an account
+     */
     public boolean isActiveAccount(String clientID) {
         return activeAccounts.containsKey(clientID);
     }
 
+    /**
+     * Add the request to the command history.
+     * @param request The request to add
+     * @param clientID The client ID to get the account to add to
+     */
     public void addToCommandHistory(Request request, String clientID) {
         Account account = activeAccounts.get(clientID);
         account.addPerformedRequest(request);
     }
 
+    /**
+     * Add the request to the undo history.
+     * @param request The request to add
+     * @param clientID The client ID to get the account to add to
+     */
     public void addToUndoHistory(Request request, String clientID) {
         Account account = activeAccounts.get(clientID);
         account.addUndoneCommand(request);
