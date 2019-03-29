@@ -1,9 +1,6 @@
 package View;
-import Controller.Request.Request;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,9 +11,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * The graphical user interface to interact with the library book management
+ * system. Input is read from a text field and output is sent to the text area.
+ */
+public class LibGUI extends Application {
 
-public class LibGUI extends Application implements EventHandler<ActionEvent> {
-
+    /**
+     * Start the application by initializing the stage with the nodes.
+     * Input is read to the input reader and a request is output. The
+     * request is then executed by the associated account
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         InputReader reader = InputReader.getInstance();
@@ -44,12 +50,7 @@ public class LibGUI extends Application implements EventHandler<ActionEvent> {
 
         textField.setOnAction(e -> {
             String input = textField.getText();
-            Request request = reader.read(input);
-            if (request == null) {
-                Platform.exit();
-                System.exit(0);
-            }
-            String response = request.execute();
+            String response = reader.read(input);
             textArea.setText(textArea.getText() + System.lineSeparator() + response);
             textField.setText("");
         });
@@ -71,8 +72,4 @@ public class LibGUI extends Application implements EventHandler<ActionEvent> {
         primaryStage.show();
     }
 
-    @Override
-    public void handle(ActionEvent event) {
-
-    }
 }

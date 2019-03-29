@@ -2,7 +2,6 @@ package View;
 
 import Controller.ClientParser;
 import Controller.Parser;
-import Controller.Request.Request;
 import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
@@ -124,8 +123,8 @@ public class LBServer {
         String next;
         while (scanner.hasNextLine()) {
             next = scanner.nextLine();
-            Request request = reader.read(next);
-            System.out.println(request.execute());
+            String response = reader.read(next);
+            System.out.println(response);
         }
         System.exit(0);
     }

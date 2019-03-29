@@ -3,6 +3,7 @@ package View;
 import Controller.Parser;
 import Controller.Request.Request;
 import Controller.Request.RequestUtil;
+import Model.Client.AccountDB;
 
 /**
  * Read input from a view implementation and pass to an appropriate parser
@@ -34,6 +35,10 @@ public class InputReader implements RequestUtil {
      * The parser to send requests to
      */
     private Parser parser;
+    /**
+     * The account database to execute requests from
+     */
+    private AccountDB accountDB;
 
     /**
      * Create an input reader that works with the server and parser to
@@ -44,6 +49,7 @@ public class InputReader implements RequestUtil {
     private InputReader(LBServer server, Parser parser) {
         this.server = server;
         this.parser = parser;
+        accountDB = AccountDB.getInstance();
     }
 
     /**
@@ -80,7 +86,7 @@ public class InputReader implements RequestUtil {
      * @param next The next line of input
      * @return If the program should continue running
      */
-    public Request read(String next) {
+    public String read(String next) {
         String[] parts;
         // Check for special commands
         if (next.matches("^" + SHUTDOWN + "\\s[\\w].*")) {
@@ -97,7 +103,12 @@ public class InputReader implements RequestUtil {
             return null;
         }
         // Next line must be a request to be processed
-        return parser.processRequest(next);
+        Request request = parser.processRequest(next);
+        if (request.hasClientID()) {
+            return accountDB.executeRequest(request);
+        }
+        // Let the account determine if the request is executable
+        return request.execute();
     }
 
 }
