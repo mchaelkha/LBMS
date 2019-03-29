@@ -2,10 +2,10 @@ package View;
 
 import Controller.ClientParser;
 import Controller.Parser;
-import Model.Client.AccountDB;
+import Controller.RequestParser;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
-import Controller.RequestParser;
+import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
@@ -128,6 +128,9 @@ public class LBServer {
         System.exit(0);
     }
 
+    /**
+     * Ends the server.
+     */
     public void exit() {
         System.exit(0);
     }
@@ -202,7 +205,6 @@ public class LBServer {
                 server = restore(args[1]);
                 break;
         }
-
         switch (args[0]) {
             case "CLI":
                 Objects.requireNonNull(server).start();
