@@ -6,7 +6,6 @@ import Model.Client.AccountDB;
 import Model.Book.BookDB;
 import Model.Checkout.CheckoutDB;
 import Controller.RequestParser;
-import Model.Client.Client;
 import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
@@ -34,7 +33,7 @@ public class LBServer {
     /**
      * The maintained, connected clients
      */
-    private Map<String, Client> clients;
+    private Set<String> clients;
 
     /**
      * Parser used to process possible requests
@@ -87,7 +86,7 @@ public class LBServer {
         library = new LibrarySystem(visitorDB, timeKeeper, reportGenerator);
         timeKeeper.setLibrarySystemObserver(library);
         Parser requestParser = new RequestParser(library, timeKeeper, reportGenerator);
-        clients = new HashMap<>();
+        clients = new HashSet<>();
         parser = new ClientParser(requestParser, clients);
         reader = InputReader.init(this, parser);
     }
@@ -101,7 +100,7 @@ public class LBServer {
      * @param clients The clients of the server
      */
     public LBServer(AccountDB accountDB, BookDB bookDB, VisitorDB visitorDB,
-                    CheckoutDB checkoutDB, Map<String, Client> clients) {
+                    CheckoutDB checkoutDB, Set<String> clients) {
         this.accountDB = accountDB;
         this.bookDB = bookDB;
         this.visitorDB = visitorDB;
@@ -163,7 +162,7 @@ public class LBServer {
         BookDB bookDB;
         VisitorDB visitorDB;
         CheckoutDB checkoutDB;
-        Map<String, Client> clients;
+        Set<String> clients;
         try {
             FileInputStream fis = new FileInputStream(PATH + file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -173,7 +172,7 @@ public class LBServer {
             bookDB = (BookDB) items.get(1);
             visitorDB = (VisitorDB) items.get(2);
             checkoutDB = (CheckoutDB) items.get(3);
-            clients = (Map<String, Client>) items.get(4);
+            clients = (Set<String>) items.get(4);
             return new LBServer(accountDB, bookDB, visitorDB, checkoutDB, clients);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

@@ -3,9 +3,8 @@ package Controller;
 import Controller.Request.Request;
 import Controller.Request.Simple;
 import Model.Client.AccountDB;
-import Model.Client.Client;
 
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Client parser for handling client data and verification before creating
@@ -19,7 +18,7 @@ public class ClientParser implements Parser {
     /**
      * List of clients that are connected
      */
-    private Map<String, Client> clients;
+    private Set<String> clients;
 
     /**
      * Parser to send a follow up process request to
@@ -30,7 +29,7 @@ public class ClientParser implements Parser {
      * Create a proxy parser with another parser.
      * @param parser Another parser to delegate further processing to
      */
-    public ClientParser(Parser parser, Map<String, Client> clients) {
+    public ClientParser(Parser parser, Set<String> clients) {
         this.clients = clients;
         this.parser = parser;
     }
@@ -51,7 +50,7 @@ public class ClientParser implements Parser {
         String[] parts = request.split(DELIMITER, 2);
         String id = parts[0];
         // Check for client ID
-        if (!clients.containsKey(id)) {
+        if (!clients.contains(id)) {
             return new Simple("invalid-client-id" + TERMINATOR);
         }
         // Check if disconnect command
@@ -69,7 +68,7 @@ public class ClientParser implements Parser {
      */
     private String connect() {
         String id = String.valueOf(CLIENT_ID++);
-        clients.put(id, new Client(id));
+        clients.add(id);
         return id;
     }
 
