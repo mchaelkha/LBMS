@@ -3,10 +3,28 @@ package Controller.Request;
 import Model.Client.AccountDB;
 
 public interface Request extends RequestUtil {
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    String getName();
+    /**
+     * Execute the request
+     * @return The response of the request
+     */
+    String execute();
+    default String getClientID() {
+        return null;
+    }
+    default boolean isEmployeeOnly() {
+        return false;
+    }
+    default boolean hasClientID() {
+        return true;
+    }
     default boolean checkParams() {
         return true;
     }
-    String execute();
     default void undo() {
 
     }

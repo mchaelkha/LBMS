@@ -10,7 +10,7 @@ import Model.Visitor.VisitorDB;
  *
  * @author Michael Kha
  */
-public class PayFine implements Request {
+public class PayFine extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -24,10 +24,6 @@ public class PayFine implements Request {
      * The visitor database
      */
     private VisitorDB visitorDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -53,9 +49,9 @@ public class PayFine implements Request {
      * @param params The parameters that follow a request command
      */
     public PayFine(String clientID, String params) {
+        super(clientID, false);
         this.checkoutDB = CheckoutDB.getInstance();
         this.visitorDB = VisitorDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -83,6 +79,16 @@ public class PayFine implements Request {
     public void undo(){
         checkoutDB.undoFine(paid);
     }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return PAY_REQUEST;
+    }
+
     /**
      * Executes the pay fine command to pay a visitor's fines.
      * @return String indicating that the execution has succeeded.

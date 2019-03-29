@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * Advances the time by a number of days and hours as requested by the client.
  * @author Jack Li
  */
-public class AdvanceTime implements Request {
+public class AdvanceTime extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -28,10 +28,6 @@ public class AdvanceTime implements Request {
      * VisitorDB used to kick out visitors if advance time advances days
      */
     private VisitorDB visitorDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * the parameters for the command.
      */
@@ -51,10 +47,10 @@ public class AdvanceTime implements Request {
      */
     public AdvanceTime(ReportGenerator reportGenerator,
                        TimeKeeper timeKeeper, String clientID, String params) {
+        super(clientID, true);
         this.timeKeeper = timeKeeper;
         this.reportGenerator = reportGenerator;
         this.visitorDB = VisitorDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -73,6 +69,15 @@ public class AdvanceTime implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return ADVANCE_REQUEST;
     }
 
     /**

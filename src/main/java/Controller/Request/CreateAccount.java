@@ -10,7 +10,7 @@ import Model.Visitor.VisitorDB;
  * Create account request to create new employee or visitor accounts.
  * @author Michael Kha
  */
-public class CreateAccount implements Request {
+public class CreateAccount extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -44,8 +44,8 @@ public class CreateAccount implements Request {
      * @param params The request parameters
      */
     public CreateAccount(String clientID, String params) {
+        super(clientID, true);
         this.visitorDB = VisitorDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
         accountDB = AccountDB.getInstance();
     }
@@ -75,6 +75,15 @@ public class CreateAccount implements Request {
         }
         visitorID = parts[3];
         return true;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return CREATE_REQUEST;
     }
 
     /**

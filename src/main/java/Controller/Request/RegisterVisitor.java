@@ -8,7 +8,7 @@ import Model.Visitor.VisitorDB;
  *
  * @author Michael Kha
  */
-public class RegisterVisitor implements Request{
+public class RegisterVisitor extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -22,10 +22,7 @@ public class RegisterVisitor implements Request{
      * Allows register action to record the register date
      */
     private TimeKeeper timeKeeper;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
+
     /**
      * Params in the command
      */
@@ -56,9 +53,9 @@ public class RegisterVisitor implements Request{
      */
     public RegisterVisitor(TimeKeeper timeKeeper,
                            String clientID, String params) {
+        super(clientID, true);
         this.visitorDB = VisitorDB.getInstance();
         this.timeKeeper = timeKeeper;
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -77,6 +74,15 @@ public class RegisterVisitor implements Request{
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return REGISTER_REQUEST;
     }
 
     /**

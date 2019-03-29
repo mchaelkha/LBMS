@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  *
  * @author Michael Kha
  */
-public class BeginVisit implements Request {
+public class BeginVisit extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -31,10 +31,6 @@ public class BeginVisit implements Request {
      * Account database. Used to add the beginVisit request to account who requested it.
      */
     private AccountDB accountDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -60,10 +56,10 @@ public class BeginVisit implements Request {
      */
     public BeginVisit(TimeKeeper timeKeeper, LibrarySystem librarySystem,
                       String clientID, String params) {
+        super(clientID, false);
         this.timeKeeper = timeKeeper;
         this.librarySystem = librarySystem;
         this.visitorDB = VisitorDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
         this.accountDB = AccountDB.getInstance();
     }
@@ -86,6 +82,15 @@ public class BeginVisit implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return ARRIVE_REQUEST;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  *
  * @author Michael Kha
  */
-public class EndVisit implements Request {
+public class EndVisit extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -31,10 +31,6 @@ public class EndVisit implements Request {
      * which represent the time the visitor left the library.
      */
     private TimeKeeper timeKeeper;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -57,10 +53,10 @@ public class EndVisit implements Request {
      * @param params The parameters that follow a request command
      */
     public EndVisit(TimeKeeper timeKeeper, String clientID, String params) {
+        super(clientID, false);
         this.visitorDB = VisitorDB.getInstance();
         accountDB = AccountDB.getInstance();
         this.timeKeeper = timeKeeper;
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -82,6 +78,15 @@ public class EndVisit implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return DEPART_REQUEST;
     }
 
     /**

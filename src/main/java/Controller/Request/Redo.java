@@ -5,7 +5,7 @@ import Model.Client.AccountDB;
 /**
  * Redo command used to redo a request that has been undone by a specific active account
  */
-public class Redo implements Request{
+public class Redo extends AccessibleRequest {
 
     /**
      * AccountDB used to access account performing the redo request
@@ -13,17 +13,21 @@ public class Redo implements Request{
     private AccountDB accountDB;
 
     /**
-     * clientID to help access account performing the redo request
-     */
-    private String clientID;
-
-    /**
      * Sets the clientID and accountDB for redo functionality
      * @param clientID Used to access account performing redo operation in AccountDB
      */
     public Redo(String clientID) {
-        this.clientID = clientID;
+        super(clientID, false);
         this.accountDB = AccountDB.getInstance();
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return REDO_REQUEST;
     }
 
     /**

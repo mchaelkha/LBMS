@@ -6,16 +6,12 @@ import Model.Client.AccountDB;
  * Login request made by clients in order to log an active account.
  * @author Michael Kha
  */
-public class Login implements Request {
+public class Login extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             LOGIN_REQUEST) + DELIMITER + "username,password";
-    /**
-     * Client making the request
-     */
-    private String clientID;
     /**
      * The parameters of the login request
      */
@@ -35,7 +31,7 @@ public class Login implements Request {
      * @param params The parameters to log in with
      */
     public Login(String clientID, String params) {
-        this.clientID = clientID;
+        super(clientID, false);
         this.params = params;
     }
 
@@ -52,6 +48,15 @@ public class Login implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return LOGIN_REQUEST;
     }
 
     /**

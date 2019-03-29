@@ -5,7 +5,16 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Partial implements Request {
+public class Partial extends InaccessibleRequest {
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return PARTIAL_REQUEST;
+    }
 
     /**
      * Execute the partial request by displaying a message.

@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BookPurchase implements Request {
+public class BookPurchase extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -24,10 +24,6 @@ public class BookPurchase implements Request {
      * The book database of the library
      */
     private BookDB bookDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -48,8 +44,8 @@ public class BookPurchase implements Request {
      * @param params The parameters that follow a request command
      */
     public BookPurchase(String clientID, String params) {
+        super(clientID, true);
         this.bookDB = BookDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -67,6 +63,15 @@ public class BookPurchase implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return BUY_REQUEST;
     }
 
     /**

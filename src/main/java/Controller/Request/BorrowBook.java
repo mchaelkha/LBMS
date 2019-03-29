@@ -1,11 +1,8 @@
 package Controller.Request;
 
-import Model.Book.BookDB;
 import Model.Book.BookInfo;
-import Model.Checkout.CheckoutDB;
 import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
-import Model.Visitor.VisitorDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +14,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BorrowBook implements Request {
+public class BorrowBook extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -27,10 +24,6 @@ public class BorrowBook implements Request {
      * The librarySystem. Used to check library closed or open state.
      */
     private LibrarySystem librarySystem;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -52,8 +45,8 @@ public class BorrowBook implements Request {
      * @param params The parameters that follow a request command
      */
     public BorrowBook(LibrarySystem librarySystem, String clientID, String params) {
+        super(clientID, false);
         this.librarySystem = librarySystem;
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -78,6 +71,15 @@ public class BorrowBook implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return BORROW_REQUEST;
     }
 
     /**

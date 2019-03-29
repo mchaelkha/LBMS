@@ -6,19 +6,23 @@ import Model.Client.AccountDB;
  * Logout request to deactivate an account in the system.
  * @author Michael Kha
  */
-public class Logout implements Request {
-
-    /**
-     * Client making the request
-     */
-    private String clientID;
+public class Logout extends AccessibleRequest {
 
     /**
      * Create a logout request with the given client ID
      * @param clientID The client making the request
      */
     public Logout(String clientID) {
-        this.clientID = clientID;
+        super(clientID, false);
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return LOGOUT_REQUEST;
     }
 
     /**

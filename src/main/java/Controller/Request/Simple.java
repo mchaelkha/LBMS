@@ -6,8 +6,7 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Simple implements Request {
-
+public class Simple extends InaccessibleRequest {
     /**
      * The response to send when executed
      */
@@ -19,6 +18,15 @@ public class Simple implements Request {
      */
     public Simple(String response) {
         this.response = response;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return "simple";
     }
 
     /**

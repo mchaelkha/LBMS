@@ -6,23 +6,28 @@ import Model.Library.TimeKeeper;
  * Gives the system's current date and time.
  * @author Jack Li
  */
-public class CurrentDateTime implements Request {
+public class CurrentDateTime extends AccessibleRequest {
 
     /**
      * Used to build a response returned to the user including the simulation's date and time.
      */
     private TimeKeeper timeKeeper;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
 
     /**
      * Creates a new CurrentDateTime command.
      */
     public CurrentDateTime(TimeKeeper timeKeeper, String clientID) {
+        super(clientID, false);
         this.timeKeeper = timeKeeper;
-        this.clientID = clientID;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return DATE_TIME_REQUEST;
     }
 
     /**

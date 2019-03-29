@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class BookStoreSearch implements Request {
+public class BookStoreSearch extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -26,10 +26,6 @@ public class BookStoreSearch implements Request {
      * Book database used to buy and store new library books
      */
     private BookDB bookDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -62,8 +58,8 @@ public class BookStoreSearch implements Request {
      * @param params The parameters that follow a request command
      */
     public BookStoreSearch(String clientID, String params) {
+        super(clientID, true);
         this.bookDB = BookDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -91,6 +87,15 @@ public class BookStoreSearch implements Request {
         publisher = isbnPublisherSort[2];
         sort = isbnPublisherSort[3];
         return true;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return SEARCH_REQUEST;
     }
 
     /**

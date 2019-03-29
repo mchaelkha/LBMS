@@ -5,7 +5,7 @@ import Model.Client.AccountDB;
 /**
  * Undo command used to undo a request that has been performed by a specific active account
  */
-public class Undo implements Request{
+public class Undo extends AccessibleRequest {
 
     /**
      * AccountDB used to access account performing the redo request
@@ -13,17 +13,21 @@ public class Undo implements Request{
     private AccountDB accountDB;
 
     /**
-     * clientID to help access account performing the redo request
-     */
-    private String clientID;
-
-    /**
      * Sets the clientID and accountDB for undo functionality
      * @param clientID Used to access account performing undo operation in AccountDB
      */
     public Undo(String clientID) {
-        this.clientID = clientID;
+        super(clientID, false);
         this.accountDB = AccountDB.getInstance();
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return UNDO_REQUEST;
     }
 
     /**

@@ -3,14 +3,13 @@ package Controller.Request;
 import Model.Client.Service;
 import Model.Client.AccountDB;
 
-public class SetBookInfoService implements Request {
+public class SetBookInfoService extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
     private static final String PARAM_MESSAGE = String.format(MISSING_PARAM,
             SERVICE_REQUEST) + DELIMITER + "visitor ID,id[,ids]";
     private AccountDB accountDB;
-    private String clientID;
     private String params;
 
     /**
@@ -19,8 +18,8 @@ public class SetBookInfoService implements Request {
      * @param params The service to set to
      */
     public SetBookInfoService(String clientID, String params) {
+        super(clientID, false);
         this.accountDB = AccountDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -34,6 +33,15 @@ public class SetBookInfoService implements Request {
             return false;
         }
         return Service.isService(params);
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return SERVICE_REQUEST;
     }
 
     /**

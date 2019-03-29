@@ -5,7 +5,16 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Illegal implements Request {
+public class Illegal extends InaccessibleRequest {
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return ILLEGAL_COMMAND;
+    }
 
     /**
      * Execute the illegal request by displaying a message.

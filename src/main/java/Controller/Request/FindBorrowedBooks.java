@@ -8,7 +8,7 @@ import Model.Client.AccountDB;
  *
  * @author Michael Kha
  */
-public class FindBorrowedBooks implements Request {
+public class FindBorrowedBooks extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -18,10 +18,6 @@ public class FindBorrowedBooks implements Request {
      * Checkout database used to find the borrowed books under a visitor
      */
     private CheckoutDB checkoutDB;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -38,8 +34,8 @@ public class FindBorrowedBooks implements Request {
      * @param params The parameters that follow a request command
      */
     public FindBorrowedBooks(String clientID, String params) {
+        super(clientID, false);
         this.checkoutDB = CheckoutDB.getInstance();
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -61,6 +57,15 @@ public class FindBorrowedBooks implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return BORROWED_REQUEST;
     }
 
     /**

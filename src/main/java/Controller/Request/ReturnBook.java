@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author Michael Kha
  */
-public class ReturnBook implements Request {
+public class ReturnBook extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -28,10 +28,6 @@ public class ReturnBook implements Request {
     private CheckoutDB checkoutDB;
     private BookDB bookDB;
     private TimeKeeper timeKeeper;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -53,10 +49,10 @@ public class ReturnBook implements Request {
      * @param params The parameters that follow a request command
      */
     public ReturnBook(TimeKeeper timeKeeper, String clientID, String params) {
+        super(clientID, false);
         this.checkoutDB = CheckoutDB.getInstance();
         this.bookDB = BookDB.getInstance();
         this.timeKeeper = timeKeeper;
-        this.clientID = clientID;
         this.params = params;
     }
 
@@ -84,6 +80,15 @@ public class ReturnBook implements Request {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the name of the request
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return RETURN_REQUEST;
     }
 
     /**

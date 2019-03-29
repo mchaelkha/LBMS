@@ -8,7 +8,7 @@ import Model.Library.ReportGenerator;
  *
  * @author Michael Kha
  */
-public class LibraryStatisticsReport implements Request{
+public class LibraryStatisticsReport extends AccessibleRequest {
     /**
      * Message for missing parameters
      */
@@ -18,10 +18,6 @@ public class LibraryStatisticsReport implements Request{
      * Responsible for the creation of statistical reports
      */
     private ReportGenerator reportGenerator;
-    /**
-     * The client that made this request
-     */
-    private String clientID;
     /**
      * Params in the command
      */
@@ -34,38 +30,49 @@ public class LibraryStatisticsReport implements Request{
     /**
      * Create a new find borrowed books request given the library
      * and the parameters for the request.
+     *
      * @param reportGenerator ReportGenerator
-     * @param params The parameters that follow a request command
+     * @param params          The parameters that follow a request command
      */
     public LibraryStatisticsReport(ReportGenerator reportGenerator, String clientID, String params) {
+        super(clientID, true);
         this.reportGenerator = reportGenerator;
-        this.clientID = clientID;
         this.params = params;
     }
 
     /**
      * Check the parameters to validate what the request is.
+     *
      * @return If the parameters are correct
      */
     @Override
     public boolean checkParams() {
         String[] parts = params.split(",");
         if (parts.length == 1) {
-            if(parts[0].equals("")){
+            if (parts[0].equals("")) {
                 days = 0;
-            }
-            else{
+            } else {
                 days = Integer.parseInt(parts[0]);
             }
-        }
-        else{
+        } else {
             return false;
         }
         return true;
     }
 
     /**
+     * Get the name of the request
+     *
+     * @return The name
+     */
+    @Override
+    public String getName() {
+        return REPORT_REQUEST;
+    }
+
+    /**
      * Execute the library statistics command which returns a string.
+     *
      * @return String displaying the library statistics
      */
     @Override
