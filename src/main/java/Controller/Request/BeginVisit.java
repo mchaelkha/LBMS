@@ -106,7 +106,7 @@ public class BeginVisit extends AccessibleRequest {
         String[] parts = response.split(",");
         //Only add successful beginVisit requests to account commandHistory
         if(parts.length == 4){
-            accountDB.addRequestToCommandHistory(this, clientID);
+            addToCommandHistory(this, clientID);
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
         return visitorID + DELIMITER + librarySystem.beginVisit(visitorID);

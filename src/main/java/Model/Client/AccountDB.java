@@ -202,15 +202,6 @@ public class AccountDB implements Serializable, RequestUtil {
         }
     }
 
-    /**
-     * Used by commands to store themselves in commandHistory stack of
-     * specified account when those commands are performed by a client.
-     * @param request request being stored in commandHistory stack
-     */
-    public void addRequestToCommandHistory(Request request, String clientID) {
-        activeAccounts.get(clientID).addPerformedRequest(request);
-    }
-
     public String getVisitorIDFromClientID(String clientID) {
         return activeAccounts.get(clientID).getVisitorID();
     }

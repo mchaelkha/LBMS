@@ -104,7 +104,7 @@ public class EndVisit extends AccessibleRequest {
         String[] parts = response.split(",");
         //Only add successful endVisit requests to account commandHistory
         if(parts.length == 4){
-            accountDB.addRequestToCommandHistory(this, clientID);
+            addToCommandHistory(this, clientID);
         }
         return response;
     }
