@@ -188,6 +188,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
                         DELIMITER + String.join(DELIMITER, bookIDs) + TERMINATOR;
             }
             String isbn = book.getIsbn();
+            //Return each single book -> calculate fines for each transaction
             t = returnBook(timeKeeper.getClock(), visitorID, isbn);
             bookDB.returnCopy(isbn);
             if(t.getFineAmount() > 0){
@@ -216,7 +217,8 @@ public class CheckoutDB implements Serializable,RequestUtil {
      */
     public Transaction returnBook(LocalDateTime returnDate, String visitorID, String isbn) {
         if(this.openLoans.containsKey(visitorID)) {
-            for (Transaction t: this.openLoans.get(visitorID)) {
+            List<Transaction> visitorOpenLoans = openLoans.get(visitorID);
+            for (Transaction t: visitorOpenLoans) {
                 if(t.getIsbn().equals(isbn)) {
                     //Calculates transaction fine and sets returnDate
                     t.returnBook(returnDate);
@@ -224,7 +226,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
                     if(t.getFineAmount() == 0) {
                         this.openLoans.get(visitorID).remove(t);
                         if (!this.closedLoans.containsKey(visitorID)) {
-                            this.closedLoans.put(visitorID, new ArrayList<Transaction>());
+                            this.closedLoans.put(visitorID, new ArrayList<>());
                         }
                         this.closedLoans.get(visitorID).add(t);
                     }
@@ -286,6 +288,12 @@ public class CheckoutDB implements Serializable,RequestUtil {
                 if(amount > fineAmount){
                     amount -= fineAmount;
                     transaction.clearFine();
+                    //remove transaction from open Loans
+                    this.openLoans.get(visitorID).remove(transaction);
+                    if (!this.closedLoans.containsKey(visitorID)) {
+                        this.closedLoans.put(visitorID, new ArrayList<>());
+                    }
+                    this.closedLoans.get(visitorID).add(transaction);
                 }
                 //Amount less than fine (or equal)-> clear amount and decrease fine
                 else {
