@@ -20,7 +20,7 @@ public interface Request extends RequestUtil {
         return false;
     }
     default boolean hasClientID() {
-        return true;
+        return false;
     }
     default boolean checkParams() {
         return true;

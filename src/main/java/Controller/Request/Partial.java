@@ -5,7 +5,7 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Partial extends InaccessibleRequest {
+public class Partial implements Request {
 
     /**
      * Get the name of the request

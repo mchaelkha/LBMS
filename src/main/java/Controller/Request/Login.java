@@ -36,6 +36,15 @@ public class Login extends AccessibleRequest {
     }
 
     /**
+     * Special case where we act like a client ID is not needed.
+     * @return Does not have a client ID
+     */
+    @Override
+    public boolean hasClientID() {
+        return false;
+    }
+
+    /**
      * Check the parameters and initialize the username and password
      * @return If the parameters are provided
      */

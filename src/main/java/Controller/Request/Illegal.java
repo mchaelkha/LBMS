@@ -5,7 +5,7 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Illegal extends InaccessibleRequest {
+public class Illegal implements Request {
 
     /**
      * Get the name of the request

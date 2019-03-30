@@ -26,6 +26,15 @@ public abstract class AccessibleRequest implements Request {
     }
 
     /**
+     * If a client ID exists
+     * @return Has a client ID or not
+     */
+    @Override
+    public boolean hasClientID() {
+        return true;
+    }
+
+    /**
      * Get the client ID that made the request
      * @return The client ID
      */

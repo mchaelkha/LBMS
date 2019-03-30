@@ -6,7 +6,7 @@ package Controller.Request;
  *
  * @author Michael Kha
  */
-public class Simple extends InaccessibleRequest {
+public class Simple implements Request {
     /**
      * The response to send when executed
      */
