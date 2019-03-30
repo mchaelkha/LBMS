@@ -43,15 +43,12 @@ public class ReportGenerator implements RequestUtil, Serializable {
 
     /**
      * Create the report generator that knows about the other databases.
-     * @param bookDB The book database
-     * @param visitorDB The visitor database
-     * @param checkoutDB The checkout database
      */
-    public ReportGenerator(TimeKeeper timeKeeper,BookDB bookDB, VisitorDB visitorDB, CheckoutDB checkoutDB) {
-        this.timeKeeper = timeKeeper;
-        this.bookDB = bookDB;
-        this.visitorDB = visitorDB;
-        this.checkoutDB = checkoutDB;
+    public ReportGenerator() {
+        this.timeKeeper = TimeKeeper.getInstance();
+        this.bookDB = BookDB.getInstance();
+        this.visitorDB = VisitorDB.getInstance();
+        this.checkoutDB = CheckoutDB.getInstance();
         this.statisticsReportList = new ArrayList<>();
     }
 

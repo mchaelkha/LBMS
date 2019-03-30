@@ -48,7 +48,7 @@ public class AdvanceTime extends AccessibleRequest {
     public AdvanceTime(ReportGenerator reportGenerator,
                        TimeKeeper timeKeeper, String clientID, String params) {
         super(clientID, true);
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.reportGenerator = reportGenerator;
         this.visitorDB = VisitorDB.getInstance();
         this.params = params;

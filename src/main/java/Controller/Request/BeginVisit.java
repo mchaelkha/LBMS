@@ -54,10 +54,10 @@ public class BeginVisit extends AccessibleRequest {
      * @param librarySystem The library system containing system databases
      * @param params The parameters that follow a request command
      */
-    public BeginVisit(TimeKeeper timeKeeper, LibrarySystem librarySystem,
+    public BeginVisit(LibrarySystem librarySystem,
                       String clientID, String params) {
         super(clientID, false);
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.librarySystem = librarySystem;
         this.visitorDB = VisitorDB.getInstance();
         this.params = params;

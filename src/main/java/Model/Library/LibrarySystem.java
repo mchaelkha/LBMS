@@ -54,18 +54,16 @@ public class LibrarySystem implements Serializable, RequestUtil{
 
     /**
      * Create the library system that is responsible for knowing about the system's model.
-     * @param visitorDB The visitor database
-     * @param timeKeeper The time keeper
      * @param reporter The reporter to create reports
      */
-    public LibrarySystem(VisitorDB visitorDB, TimeKeeper timeKeeper, ReportGenerator reporter) {
-        this.visitorDB = visitorDB;
-        this.timeKeeper = timeKeeper;
+    public LibrarySystem(ReportGenerator reporter) {
+        this.visitorDB = VisitorDB.getInstance();
+        this.timeKeeper = TimeKeeper.getInstance();
         this.reporter = reporter;
         //Add Library States
         libraryStates = new HashMap<>();
         libraryStates.put(CLOSED_STATE, new LibraryClosed());
-        libraryStates.put(OPEN_STATE, new LibraryOpen(timeKeeper));
+        libraryStates.put(OPEN_STATE, new LibraryOpen());
 
         //Set initial state based on current time
         currentLibraryState = libraryStates.get(CLOSED_STATE);

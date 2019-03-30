@@ -35,11 +35,10 @@ public class RequestParser implements Parser {
      * Creates a new RequestParser
      * @param librarySystem The LibrarySystem containing the visitor, checkout, and book databases.
      */
-    public RequestParser(LibrarySystem librarySystem, TimeKeeper timeKeeper,
-                         ReportGenerator reportGenerator) {
+    public RequestParser(LibrarySystem librarySystem, ReportGenerator reportGenerator) {
         partialRequests = new HashMap<>();
         this.librarySystem = librarySystem;
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.reportGenerator = reportGenerator;
     }
 
@@ -130,7 +129,7 @@ public class RequestParser implements Parser {
                 request = new RegisterVisitor(timeKeeper, clientID, params);
                 break;
             case ARRIVE_REQUEST:
-                request = new BeginVisit(timeKeeper, librarySystem, clientID, params);
+                request = new BeginVisit(librarySystem, clientID, params);
                 break;
             case DEPART_REQUEST:
                 request = new EndVisit(timeKeeper, clientID, params);

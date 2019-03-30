@@ -52,7 +52,7 @@ public class ReturnBook extends AccessibleRequest {
         super(clientID, false);
         this.checkoutDB = CheckoutDB.getInstance();
         this.bookDB = BookDB.getInstance();
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.params = params;
     }
 

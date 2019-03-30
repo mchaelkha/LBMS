@@ -18,7 +18,7 @@ public class CurrentDateTime extends AccessibleRequest {
      */
     public CurrentDateTime(TimeKeeper timeKeeper, String clientID) {
         super(clientID, false);
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
     }
 
     /**

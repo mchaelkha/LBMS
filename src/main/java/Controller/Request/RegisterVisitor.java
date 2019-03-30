@@ -55,7 +55,7 @@ public class RegisterVisitor extends AccessibleRequest {
                            String clientID, String params) {
         super(clientID, true);
         this.visitorDB = VisitorDB.getInstance();
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.params = params;
     }
 

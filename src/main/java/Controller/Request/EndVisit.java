@@ -56,7 +56,7 @@ public class EndVisit extends AccessibleRequest {
         super(clientID, false);
         this.visitorDB = VisitorDB.getInstance();
         accountDB = AccountDB.getInstance();
-        this.timeKeeper = timeKeeper;
+        this.timeKeeper = TimeKeeper.getInstance();
         this.params = params;
     }
 

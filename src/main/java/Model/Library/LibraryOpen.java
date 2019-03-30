@@ -21,8 +21,8 @@ class LibraryOpen implements LibraryState,RequestUtil {
 
     private TimeKeeper timeKeeper;
 
-    public LibraryOpen(TimeKeeper timeKeeper) {
-        this.timeKeeper = timeKeeper;
+    public LibraryOpen() {
+        this.timeKeeper = TimeKeeper.getInstance();
     }
 
     /**

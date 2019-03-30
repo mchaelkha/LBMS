@@ -13,9 +13,15 @@ import java.util.concurrent.TimeUnit;
  * A helper class for Library that tracks the current date. This information is used by the library to track
  * overdue books. The date can be pushed forward a number of days to simulate usage over a period of time for 
  * testing.
+ * Made Singleton so it can be accessed by requests without needing to inject
  * @author Hersh Nagpal
+ * @author Luis Gutierrez
  */
 public class TimeKeeper implements RequestUtil, Serializable {
+    /**
+     * Single instance of TimeKeeper
+     */
+    private static TimeKeeper instance = null;
     /**
      * Library's open hour
      */
@@ -59,7 +65,7 @@ public class TimeKeeper implements RequestUtil, Serializable {
      * A TimerTask is used in conjunction with a timer
      * to ensure the time is updated every minute.
      */
-    public TimeKeeper() {
+    private TimeKeeper() {
         timer = new Timer();
         clock = LocalDateTime.now();
         timerTask = new TimerTask() {
@@ -69,6 +75,17 @@ public class TimeKeeper implements RequestUtil, Serializable {
             }
         };
         timer.scheduleAtFixedRate(timerTask, TIMER_DELAY,TIMER_INTERVAL);
+    }
+
+    /**
+     * Get the single instance of
+     * @return The one and only AccountDB
+     */
+    public static TimeKeeper getInstance() {
+        if (instance == null) {
+            instance = new TimeKeeper();
+        }
+        return instance;
     }
 
     /**
