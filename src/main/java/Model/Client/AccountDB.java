@@ -38,12 +38,19 @@ public class AccountDB implements Serializable, RequestUtil {
     private Map<String, Account> activeAccounts;
 
     /**
+     * Admin employee that makes initial simulation requests
+     */
+    private Account employee01;
+
+    /**
      * Create the account database which holds all accounts and active accounts.
      */
     private AccountDB() {
         accounts = new HashMap<>();
         visitors = new HashMap<>();
         activeAccounts = new HashMap<>();
+        employee01 = new Account("Admin", "123", new EmployeeRole(), "1000000000");
+        activeAccounts.put("1000", employee01);
     }
 
     /**

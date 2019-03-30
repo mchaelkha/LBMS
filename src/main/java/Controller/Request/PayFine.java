@@ -107,7 +107,7 @@ public class PayFine extends AccessibleRequest {
             //Get visitor's balance
             int balance = checkoutDB.calculateFine(visitorID);
             //Check for invalid amount
-            if (amount < 0 || amount > balance) {
+            if (amount <= 0 || amount > balance) {
                 return response+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
             }
             else{

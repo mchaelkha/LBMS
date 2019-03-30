@@ -1,3 +1,6 @@
+//System logs in "admin" automatically on startup (employee01) created in AccountDB:
+Employee01 clientID for requests: 1000
+
 connect;
 0,register,Leroy,Jenkins,2 Lomb Memorial Dr.,585-475-2411;
 0,arrive,1000000000;
