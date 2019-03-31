@@ -50,6 +50,7 @@ public class AccountDB implements Serializable, RequestUtil {
         visitors = new HashMap<>();
         activeAccounts = new HashMap<>();
         employee01 = new Account("Admin", "123", new EmployeeRole(), "1000000000");
+        accounts.put("Admin", employee01);
         activeAccounts.put("1000", employee01);
     }
 

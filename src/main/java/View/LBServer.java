@@ -87,6 +87,8 @@ public class LBServer {
         timeKeeper.setLibrarySystemObserver(library);
         Parser requestParser = new RequestParser(library, reportGenerator);
         clients = new HashSet<>();
+        //Add employee01 (Admin) to clients on startup
+        clients.add("1000");
         parser = new ClientParser(requestParser, clients);
         reader = InputReader.init(this, parser);
     }

@@ -1,6 +1,17 @@
 //System logs in "admin" automatically on startup (employee01) created in AccountDB:
 Employee01 clientID for requests: 1000
 
+//Testing with employee01 - PayFine
+//register employee01 as visitor
+1000,register,Bob,Williams,2 Lomb Memorial Dr.,585-650-2400;
+//LogIn employee01
+1000,login,Admin,123;
+//employee01 - beginVisit;
+1000,arrive;
+
+//First employee01 registers visitors, then accounts can be created for these visitors
+1000,create,Leroy,
+
 connect;
 0,register,Leroy,Jenkins,2 Lomb Memorial Dr.,585-475-2411;
 0,arrive,1000000000;
