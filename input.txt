@@ -7,8 +7,18 @@ Employee01 clientID for requests: 1000
 //LogIn employee01
 1000,login,Admin,123;
 //employee01 - beginVisit;
-1000,arrive,1000000000;
-//
+1000,arrive; OR 1000,arrive,1000000000;
+//Buy Library Books
+1000,search,Harry,{},*,*,*;
+1000,buy,4,1,2,5,7;
+//Borrow books
+1000,info,Harry,{},*,*,*;
+1000,borrow,0,1,2; OR 1000,borrow,0,1,2,1000000000;
+//Fine
+1000,advance,8;
+1000,borrowed; OR 1000,borrowed,1000000000;
+1000,return,0; OR 1000,return,1000000000,0;
+1000,pay,8; OR 1000,pay,1000000000,8;
 
 //First employee01 registers visitors, then accounts can be created for these visitors
 1000,create,Leroy,

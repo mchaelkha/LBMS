@@ -66,8 +66,10 @@ public class PayFine extends AccessibleRequest {
         if (parts.length == 1) {
             AccountDB accountDB = AccountDB.getInstance();
             visitorID = accountDB.getVisitorIDFromClientID(clientID);
+            return true;
         } else if (parts.length == 2) {
             visitorID = parts[1];
+            return true;
         }
         return false;
     }
