@@ -102,9 +102,13 @@ public class EndVisit extends AccessibleRequest {
         }
         String response = clientID + DELIMITER + visitorDB.endVisit(visitorID,
                 timeKeeper.getClock(), timeKeeper.readTime());
+
+        //Store endVisit object containing endTime of visit
+        endVisit = new Visit(visitorDB.getLastVisit(visitorID));
+
         String[] parts = response.split(",");
         //Only add successful endVisit requests to account commandHistory
-        if(parts.length == 4){
+        if(parts.length == 5){
             addToCommandHistory(this, clientID);
         }
         return response;
@@ -120,7 +124,7 @@ public class EndVisit extends AccessibleRequest {
 
         //add visitor back to currentVisitors in visitorDB
         //endTime is cleared -> store visit object containing end time in this request for redo
-        endVisit = visitorDB.addVisit(visitorID);
+        visitorDB.addVisit(visitorID);
     }
 
     /**

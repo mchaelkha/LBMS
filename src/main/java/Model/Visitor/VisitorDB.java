@@ -131,10 +131,13 @@ public class VisitorDB implements RequestUtil, Serializable{
 
         //Remove visitor from currentVisitors
         VisitorInfo visitor = currentVisitors.remove(visitorID);
-        LocalDateTime start = visitor.getVisitStart();
 
         //Record visit duration for ReportGenerator
+        LocalDateTime start = visitor.getVisitStart();
         visitLengths.add(TimeKeeper.calculateDurationMillis(start, endVisitDateTime));
+
+        //Record ended visit on visitor object
+        visitor.endVisit(endVisitDateTime);
 
         //Response = "depart,visitorID,visitEndTime,visitDuration"
         String visitDuration = TimeKeeper.calculateDuration(start, endVisitDateTime);
@@ -224,10 +227,14 @@ public class VisitorDB implements RequestUtil, Serializable{
      * @param visitorID visitorID of visitor being added to currentVisitors
      * @return endVisit object containing end time of visit
      */
-    public Visit addVisit(String visitorID) {
+    public void addVisit(String visitorID) {
         VisitorInfo visitorInfo = registeredVisitors.get(visitorID);
-        Visit endVisit = visitorInfo.clearMostRecentVisit();
+        visitorInfo.clearMostRecentVisit();
         currentVisitors.put(visitorID, visitorInfo);
-        return endVisit;
+    }
+
+    public Visit getLastVisit(String visitorID) {
+        VisitorInfo visitorInfo = registeredVisitors.get(visitorID);
+        return visitorInfo.getLastVisit();
     }
 }
