@@ -108,6 +108,21 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
     }
 
     /**
+     * Helper method for undoing and redoing BookPurchase requests
+     * @return current state of available books in the library
+     */
+    public Map<String,BookInfo> getBooksCopy(){
+         return super.books;
+    }
+
+    /**
+     * Helper method for undoing and redoing BookPurchase requests
+     */
+    public void setBooks(Map<String,BookInfo> books){
+        super.books = books;
+    }
+
+    /**
      * Helps checkoutBooks request validate that bookIds being borrowed are contained
      * in the last book search.
      * @param search The book search
