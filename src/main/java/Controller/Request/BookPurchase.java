@@ -4,10 +4,7 @@ import Model.Book.BookDB;
 import Model.Book.BookInfo;
 import Model.Client.AccountDB;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Book purchase request to add books to the library.
@@ -36,6 +33,14 @@ public class BookPurchase extends AccessibleRequest {
      * List of books from their IDs of the most recent book store search
      */
     private List<String> bookIDs;
+    /**
+     * (ISBN,BookInfo) Storing copy of books in the library for undo/redo functionality
+     */
+    private Map<String,BookInfo> booksCopy;
+    /**
+     * Store search used for this book purchase in order to redo this request
+     */
+    private Map<String,BookInfo> bookSearch;
 
     /**
      * Create a new book purchase request given the book database
@@ -87,11 +92,34 @@ public class BookPurchase extends AccessibleRequest {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
+        //Store state of books available in library before executing BookPurchase request
+        booksCopy = new HashMap<>(bookDB.getBooksCopy());
+
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getStoreSearch(clientID);
+        //Store search that was used for the BookPurchase
+        bookSearch = search;
         if (search == null) {
             return clientID + DELIMITER + NOT_AUTHORIZED;
         }
+        addToCommandHistory(this,clientID);
         return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
+    }
+
+    /**
+     * Undo a Book Purchase request
+     */
+    @Override
+    public void undo(){
+        //remove copies added to library books collection
+        bookDB.setBooks(booksCopy);
+    }
+
+    /**
+     * Redo a Book Purchase request.
+     */
+    @Override
+    public void redo(){
+        bookDB.purchase(bookSearch, quantity, bookIDs);
     }
 }

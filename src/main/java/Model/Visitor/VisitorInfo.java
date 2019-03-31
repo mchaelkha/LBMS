@@ -119,7 +119,7 @@ public class VisitorInfo implements Serializable {
      * Used by endVisit undo to clear last visit added to visits and
      * sets current visit object to last visit without its end time
      */
-    public Visit clearMostRecentVisit(){
+    public void clearMostRecentVisit(){
         //Grab mostRecentVisit
         Visit mostRecentVisit = visits.get(visits.size()-1);
         //Clear last visit from visits list
@@ -127,8 +127,10 @@ public class VisitorInfo implements Serializable {
         //Clear LocalDateTime end in visit object and set it as current
         mostRecentVisit.clearEnd();
         current = mostRecentVisit;
+    }
 
-        return mostRecentVisit;
+    public Visit getLastVisit() {
+        return visits.get(visits.size()-1);
     }
 
     /**

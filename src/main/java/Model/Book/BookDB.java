@@ -112,15 +112,31 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
      * @param bookIDs The books to remove (isbn).
      * @param quantity The amount of each book to remove.
      */
-    public void undoPurchase(List<String> bookIDs, int quantity){
-        for(String isbn: bookIDs){
-            if(books.containsKey(isbn)){
+    public void undoPurchase(Map<String, BookInfo> bookIDs, int quantity) {
+        String isbn;
+        for ( Map.Entry<String, BookInfo> book : bookIDs.entrySet()) {
+            isbn = book.getValue().getIsbn();
+            if (books.containsKey(isbn)) {
                 books.get(isbn).removeCopies(quantity);
                 numBooksPurchased -= quantity;
+                if (books.get(isbn).getTotalCopies() <= 0)
+                    books.remove(isbn);
             }
-            if(books.get(isbn).getTotalCopies() <= 0)
-                books.remove(isbn);
         }
+    }
+    /**
+     * Helper method for undoing and redoing BookPurchase requests
+     * @return current state of available books in the library
+     */
+    public Map<String,BookInfo> getBooksCopy(){
+         return super.books;
+    }
+
+    /**
+     * Helper method for undoing and redoing BookPurchase requests
+     */
+    public void setBooks(Map<String,BookInfo> books){
+        super.books = books;
     }
 
     /**

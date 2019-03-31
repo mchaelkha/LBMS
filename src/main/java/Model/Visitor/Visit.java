@@ -28,6 +28,11 @@ public class Visit implements Serializable {
         this.start = start;
     }
 
+    public Visit(Visit visit) {
+        this.start = visit.start;
+        this.end = visit.end;
+    }
+
     /**
      * End the visit at the given end time.
      * @param end The end time

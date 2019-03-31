@@ -103,10 +103,10 @@ public class BeginVisit extends AccessibleRequest {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        String response = visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
+        String response = clientID + DELIMITER + librarySystem.beginVisit(visitorID);
         String[] parts = response.split(",");
         //Only add successful beginVisit requests to account commandHistory
-        if(parts.length == 4){
+        if(parts.length == 5){
             addToCommandHistory(this, clientID);
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
