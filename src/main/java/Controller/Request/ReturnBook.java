@@ -42,6 +42,7 @@ public class ReturnBook extends AccessibleRequest {
      */
     private List<String> bookIDs;
 
+    private Map<String, BookInfo> books;
     /**
      * Create a new return book request given the checkout database
      * and the parameters for the request.
@@ -91,6 +92,9 @@ public class ReturnBook extends AccessibleRequest {
         return RETURN_REQUEST;
     }
 
+    public void undo(){
+        checkoutDB.undoReturn(books, visitorID, bookDB);
+    }
     /**
      * Execute the return book command which returns a string.
      * @return String indicating that the book has been returned successfully
@@ -103,6 +107,7 @@ public class ReturnBook extends AccessibleRequest {
         }
         AccountDB accountDB = AccountDB.getInstance();
         Map<String, BookInfo> search = accountDB.getBorrowedSearch(clientID);
+        books = search;
         if (search == null) {
             return clientID + DELIMITER + NOT_AUTHORIZED;
         }

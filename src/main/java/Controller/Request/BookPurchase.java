@@ -79,9 +79,9 @@ public class BookPurchase extends AccessibleRequest {
         return BUY_REQUEST;
     }
 
-    @Override
+   @Override
     public void undo(){
-        bookDB.undoPurchase(bookIDs, quantity);
+        bookDB.undoPurchase(bookSearch, quantity);
     }
     /**
      * Execute the book purchase command which returns a string.
@@ -104,15 +104,6 @@ public class BookPurchase extends AccessibleRequest {
         }
         addToCommandHistory(this,clientID);
         return clientID + DELIMITER + bookDB.purchase(search, quantity, bookIDs);
-    }
-
-    /**
-     * Undo a Book Purchase request
-     */
-    @Override
-    public void undo(){
-        //remove copies added to library books collection
-        bookDB.setBooks(booksCopy);
     }
 
     /**

@@ -238,6 +238,9 @@ public class CheckoutDB implements Serializable,RequestUtil {
         return null;
     }
 
+    public void undoReturn(Map<String, BookInfo> books, String visitorID, BookDB bookDB){
+
+    }
     /**
      * Find the borrowed books under a visitor by getting the visitor info.
      * @param visitorID The visitor to find the borrowed books
