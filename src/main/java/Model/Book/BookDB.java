@@ -116,6 +116,7 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
         for(String isbn: bookIDs){
             if(books.containsKey(isbn)){
                 books.get(isbn).removeCopies(quantity);
+                numBooksPurchased -= quantity;
             }
             if(books.get(isbn).getTotalCopies() <= 0)
                 books.remove(isbn);
