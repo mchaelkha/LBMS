@@ -79,6 +79,10 @@ public class BookPurchase extends AccessibleRequest {
         return BUY_REQUEST;
     }
 
+    @Override
+    public void undo(){
+        bookDB.undoPurchase(bookIDs, quantity);
+    }
     /**
      * Execute the book purchase command which returns a string.
      * @return String indicating the books purchased if any
