@@ -122,6 +122,7 @@ public class LBServer {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         String next;
+        System.out.println("Running CLI...\nWelcome. Please connect and then log in.");
         while (scanner.hasNextLine()) {
             next = scanner.nextLine();
             String response = reader.read(next);

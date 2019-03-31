@@ -1,8 +1,6 @@
 package Model.Library;
 import Controller.Request.RequestUtil;
-import Model.Book.BookDB;
 import Model.Book.BookInfo;
-import Model.Checkout.CheckoutDB;
 import Model.Visitor.VisitorDB;
 
 import java.io.Serializable;

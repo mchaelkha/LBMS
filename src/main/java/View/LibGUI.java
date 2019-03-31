@@ -42,6 +42,7 @@ public class LibGUI extends Application {
         Text results = new Text("Library Book Management System");
         results.setFont(Font.font("arial", 20));
         TextArea textArea = new TextArea();
+        textArea.setText("Running GUI...\nWelcome. Please connect and then log in.");
         textArea.setMinWidth(600);
         textArea.setMinHeight(450);
         textArea.setFont(Font.font(14));
