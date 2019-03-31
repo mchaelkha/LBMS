@@ -109,7 +109,7 @@ public class BeginVisit extends AccessibleRequest {
             addToCommandHistory(this, clientID);
         }
         //Library.beginVisit()->currentLibraryState.beginVisit()->
-        return visitorID + DELIMITER + librarySystem.beginVisit(visitorID);
+        return response;
     }
 
     /**
