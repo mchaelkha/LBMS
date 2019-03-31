@@ -238,8 +238,10 @@ public class CheckoutDB implements Serializable,RequestUtil {
         return null;
     }
 
-    public void undoReturn(Map<String, BookInfo> books, String visitorID, BookDB bookDB){
-
+    public void undoReturn(Map<String, BookInfo> books, List<String> bookIDs, String visitorID, BookDB bookDB){
+        for(Map.Entry<String, BookInfo> book : books.entrySet()){
+            bookDB.
+        }
     }
     /**
      * Find the borrowed books under a visitor by getting the visitor info.

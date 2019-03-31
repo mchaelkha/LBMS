@@ -93,7 +93,7 @@ public class ReturnBook extends AccessibleRequest {
     }
 
     public void undo(){
-        checkoutDB.undoReturn(books, visitorID, bookDB);
+        checkoutDB.undoReturn(books, bookIDs, visitorID, bookDB);
     }
     /**
      * Execute the return book command which returns a string.
