@@ -67,14 +67,15 @@ public class EndVisit extends AccessibleRequest {
     @Override
     public boolean checkParams() {
         String[] parts = params.split(DELIMITER);
-        //visitorID given
         if (parts.length == 1) {
-            visitorID = parts[0];
-            return true;
-        }
-        //visitorID not given
-        else if (parts.length == 0) {
-            visitorID = accountDB.getVisitorIDFromClientID(clientID);
+            //visitorID given
+            if (parts[0].length() == 10) {
+                visitorID = parts[0];
+            }
+            //visitorID not given
+            else{
+                visitorID = accountDB.getVisitorIDFromClientID(clientID);
+            }
             return true;
         }
         return false;
