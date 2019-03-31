@@ -123,6 +123,14 @@ public class PayFine extends AccessibleRequest {
      */
     @Override
     public void undo(){
-        checkoutDB.undoFine(visitorID, payableTransactions);
+        checkoutDB.undoPayFine(visitorID, payableTransactions);
+    }
+
+    /**
+     * Redo a fine payment
+     */
+    @Override
+    public void redo() {
+        checkoutDB.payFine(visitorID, amount);
     }
 }
