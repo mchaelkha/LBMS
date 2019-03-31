@@ -45,7 +45,7 @@ class LibraryOpen implements LibraryState,RequestUtil {
         }
         //Check if visitor has outstanding fine
         else if (checkoutDB.hasOutstandingFine(visitorID)) {
-            int fineAmount = checkoutDB.calculateFine(visitorID);
+            double fineAmount = checkoutDB.calculateFine(visitorID);
             //return "borrow,outstanding-fine,amount"
             return BORROW_REQUEST + DELIMITER + OUTSTANDING_FINE + fineAmount+TERMINATOR;
         }

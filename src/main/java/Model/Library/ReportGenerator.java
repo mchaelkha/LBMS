@@ -98,8 +98,8 @@ public class ReportGenerator implements RequestUtil, Serializable {
         String avgLengthVisit = TimeKeeper.calculateDurationString(avgLengthVisitLong);
         int numBooksInLibrary = bookDB.getLibraryBooksAmount();
         int numBooksPurchased = bookDB.getBooksPurchased();
-        int collectedFines = checkoutDB.getCollectedFines();
-        int uncollectedFines = checkoutDB.getUncollectedFines();
+        double collectedFines = checkoutDB.getCollectedFines();
+        double uncollectedFines = checkoutDB.getUncollectedFines();
 
         StatisticsReport statisticsReport = new StatisticsReport(numBooksInLibrary,
                 numRegisteredVisitors, avgLengthVisitLong, avgLengthVisit, numBooksPurchased,
