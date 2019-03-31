@@ -108,6 +108,21 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
     }
 
     /**
+     * Undoes a purchase of books from the bookstore.
+     * @param bookIDs The books to remove (isbn).
+     * @param quantity The amount of each book to remove.
+     */
+    public void undoPurchase(List<String> bookIDs, int quantity){
+        for(String isbn: bookIDs){
+            if(books.containsKey(isbn)){
+                books.get(isbn).removeCopies(quantity);
+            }
+            if(books.get(isbn).getTotalCopies() <= 0)
+                books.remove(isbn);
+        }
+    }
+
+    /**
      * Helps checkoutBooks request validate that bookIds being borrowed are contained
      * in the last book search.
      * @param search The book search

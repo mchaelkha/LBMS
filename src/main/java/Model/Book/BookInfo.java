@@ -59,6 +59,13 @@ public class BookInfo implements Serializable {
         totalCopies += amount;
     }
 
+    //TODO: new method add it to the UML?
+    /**
+     * Removes a number of copies of this book from the library. Specifically used to undo purchases.
+     */
+    public void removeCopies(int amount){
+        totalCopies -= amount;
+    }
     /**
      * Checks out a copy of this book from the library.
      * @return Whether the book was successfully checked out.
