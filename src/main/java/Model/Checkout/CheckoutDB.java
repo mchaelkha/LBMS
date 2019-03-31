@@ -43,12 +43,12 @@ public class CheckoutDB implements Serializable,RequestUtil {
      * Amount of fines collected during a day.
      * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
      */
-    private int dailyCollectedFines;
+    private double dailyCollectedFines;
     /**
      * Amount of fines uncollected during a day.
      * Used for LibraryStatisticsReports. Cleared when daily report is generated during closing time.
      */
-    private int dailyUncollectedFines;
+    private double dailyUncollectedFines;
     /**
      * The max number of transactions a visitor can have.
      */
@@ -154,7 +154,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
      * @param visitorID The visitor ID to check for
      * @return The fine amount under a visitor ID
      */
-    public int calculateFine(String visitorID) {
+    public double calculateFine(String visitorID) {
         int fines = 0;
         List<Transaction> transactions = openLoans.get(visitorID);
         if (transactions == null) {
@@ -282,11 +282,11 @@ public class CheckoutDB implements Serializable,RequestUtil {
      * @param amount amount that visitor is paying
      * @return remaining balance of fines due for visitor
      */
-    public int payFine(String visitorID, int amount){
+    public double payFine(String visitorID, double amount){
         List<Transaction> transactions = openLoans.get(visitorID);
         List<Transaction> closedTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            int fineAmount = transaction.getFineAmount();
+            double fineAmount = transaction.getFineAmount();
             if (fineAmount > 0) {
                 //Amount greater than or equal to transaction.fine -> clear fine and decrease amount
                 if(amount >= fineAmount){
@@ -312,19 +312,56 @@ public class CheckoutDB implements Serializable,RequestUtil {
         return calculateFine(visitorID);
     }
 
-    /**
-     *
-     * @return
-     */
-    public double undoFine(double amount){
-        return 0.0;
+    public List<Transaction> getPayableTransactions(String visitorID, double amount) {
+        List<Transaction> transactions = openLoans.get(visitorID);
+        List<Transaction> payableTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            double fineAmount = transaction.getFineAmount();
+            if (fineAmount > 0) {
+                //Amount greater than or equal to transaction.fine -> decrease amount and add to payableTransactions
+                if(amount >= fineAmount){
+                    amount -= fineAmount;
+                    //add to payable transactions
+                    payableTransactions.add(transaction);
+                }
+                //Amount less than fine (or equal)-> clear amount and add to payableTransactions
+                else {
+                    amount = 0;
+                    payableTransactions.add(transaction);
+                }
+            }
+        }
+        return payableTransactions;
     }
 
-    public int getCollectedFines() {
+    /**
+     * Method used to undo payed fines
+     * @param visitorID visitor undoing the fine
+     * @param payedOffTransactions List of transactions that were modified by check
+     */
+    public void undoFine(String visitorID, List<Transaction> payedOffTransactions){
+        //Go through payedOffTransactions if they are in closedLoans add back to openLoans and increase fine
+        List<Transaction> visitorsOpenLoans = openLoans.get(visitorID);
+        List<Transaction> visitorsClosedLoans = closedLoans.get(visitorID);
+        for (Transaction transaction : payedOffTransactions) {
+            if (visitorsClosedLoans.contains(transaction)) {
+                visitorsClosedLoans.remove(transaction);
+                transaction.setFine();
+                visitorsOpenLoans.add(transaction);
+            }
+            else if (visitorsOpenLoans.contains(transaction)) {
+                visitorsOpenLoans.remove(transaction);
+                transaction.setFine();
+                visitorsOpenLoans.add(transaction);
+            }
+        }
+    }
+
+    public double getCollectedFines() {
         return dailyCollectedFines;
     }
 
-    public int getUncollectedFines() {
+    public double getUncollectedFines() {
         return dailyUncollectedFines;
     }
 

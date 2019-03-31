@@ -16,12 +16,12 @@ public class Transaction implements Serializable {
     /**
      * The base fine
      */
-    private static int BASE_FINE = 10;
+    private static double BASE_FINE = 10;
 
     /**
      * The amount the fine increases with each day past the due date
      */
-    private static int FINE_DAILY_INCREMENT = 2;
+    private static double FINE_DAILY_INCREMENT = 2;
 
     /**
      * The maximum amount of days that a book can be checked out for.
@@ -47,7 +47,7 @@ public class Transaction implements Serializable {
     /**
      * The fine amount of the transaction
      */
-    private int fineAmount;
+    private double fineAmount;
 
     /**
      * Create a new transaction given a checkout date and the book.
@@ -84,20 +84,27 @@ public class Transaction implements Serializable {
      * Get the fine amount.
      * @return Fine amount
      */
-    public int getFineAmount() {
+    public double getFineAmount() {
         return fineAmount;
+    }
+
+    /**
+     * Set the fine amount for this transaction
+     */
+    public void setFine() {
+        if(returnDate.isBefore(dueDate)) {
+            this.fineAmount = 0;
+        } else {
+            this.fineAmount = calculateTransactionFine();
+        }
     }
 
     /**
      * Calculate the fine amount from this transaction. This
      * is determined by the number of late days.
      */
-    public void setFine() {
-        if(returnDate.isBefore(dueDate)) {
-            this.fineAmount = 0;
-        } else {
-            this.fineAmount = BASE_FINE + FINE_DAILY_INCREMENT * calculateNumLateDays();
-        }
+    public double calculateTransactionFine() {
+        return BASE_FINE + FINE_DAILY_INCREMENT * calculateNumLateDays();
     }
 
     /**
@@ -160,7 +167,7 @@ public class Transaction implements Serializable {
      * Helper method to decrease fine amount
      * @param amount amount that fineAmount is being decreased by
      */
-    public void decreaseFineAmount(int amount){
+    public void decreaseFineAmount(double amount){
         fineAmount -= amount;
     }
 }

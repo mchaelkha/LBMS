@@ -1,8 +1,11 @@
 package Controller.Request;
 
 import Model.Checkout.CheckoutDB;
+import Model.Checkout.Transaction;
 import Model.Client.AccountDB;
 import Model.Visitor.VisitorDB;
+
+import java.util.List;
 
 /**
  * Pay fine request to pay the fines a visitor has accumulated from borrowing
@@ -33,14 +36,13 @@ public class PayFine extends AccessibleRequest {
      */
     private String visitorID;
     /**
-     * The amount to pay back for the fines
+     * The amount the customer is paying
      */
-    private int amount;
-
+    private double amount;
     /**
-     * The amount that was paid.
+     * List of transactions that were modified in CheckOutDB
      */
-    private double paid;
+    private List<Transaction> payableTransactions;
 
     /**
      * Create a new pay request given the library
@@ -75,14 +77,6 @@ public class PayFine extends AccessibleRequest {
     }
 
     /**
-     * Undo a fine payment
-     */
-    @Override
-    public void undo(){
-        checkoutDB.undoFine(paid);
-    }
-
-    /**
      * Get the name of the request
      * @return The name
      */
@@ -107,16 +101,28 @@ public class PayFine extends AccessibleRequest {
         }
         else{
             //Get visitor's balance
-            int balance = checkoutDB.calculateFine(visitorID);
+            double balance = checkoutDB.calculateFine(visitorID);
             //Check for invalid amount
             if (amount <= 0 || amount > balance) {
                 return response+INVALID_AMOUNT+DELIMITER+amount+balance+TERMINATOR;
             }
             else{
+                //Store payableTransactions for undo
+                payableTransactions = checkoutDB.getPayableTransactions(visitorID, amount);
+
                 double remainingBalance = checkoutDB.payFine(visitorID, amount);
 
+                addToCommandHistory(this,clientID);
                 return response+SUCCESS+DELIMITER+String.format("$%.02f", remainingBalance)+TERMINATOR;
             }
         }
+    }
+
+    /**
+     * Undo a fine payment
+     */
+    @Override
+    public void undo(){
+        checkoutDB.undoFine(visitorID, payableTransactions);
     }
 }

@@ -18,8 +18,8 @@ public class StatisticsReport implements Serializable, RequestUtil {
     private String avgLengthVisit;
     private long avgLengthVisitLong;
     private int numBooksPurchased;
-    private int finesCollected;
-    private int finesUncollected;
+    private double finesCollected;
+    private double finesUncollected;
 
     /**
      * Constructor setting the report statistics
@@ -32,7 +32,7 @@ public class StatisticsReport implements Serializable, RequestUtil {
      */
     public StatisticsReport(int numBooksInLibrary, int numRegisteredVisitors,
                             long avgLengthVisitLong, String avgLengthVisit, int numBooksPurchased,
-                            int finesCollected, int finesUncollected) {
+                            double finesCollected, double finesUncollected) {
         this.numBooksInLibrary = numBooksInLibrary;
         this.numRegisteredVisitors = numRegisteredVisitors;
         this.avgLengthVisit = avgLengthVisit;
