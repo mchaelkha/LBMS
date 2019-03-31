@@ -281,6 +281,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
      */
     public int payFine(String visitorID, int amount){
         List<Transaction> transactions = openLoans.get(visitorID);
+        List<Transaction> closedTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {
             int fineAmount = transaction.getFineAmount();
             if (fineAmount > 0) {
@@ -289,11 +290,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
                     amount -= fineAmount;
                     transaction.clearFine();
                     //remove transaction from open Loans
-                    this.openLoans.get(visitorID).remove(transaction);
-                    if (!this.closedLoans.containsKey(visitorID)) {
-                        this.closedLoans.put(visitorID, new ArrayList<>());
-                    }
-                    this.closedLoans.get(visitorID).add(transaction);
+                    closedTransactions.add(transaction);
                 }
                 //Amount less than fine (or equal)-> clear amount and decrease fine
                 else {
@@ -302,6 +299,12 @@ public class CheckoutDB implements Serializable,RequestUtil {
                 }
             }
         }
+        this.openLoans.get(visitorID).removeAll(closedTransactions);
+        if (!this.closedLoans.containsKey(visitorID)) {
+            this.closedLoans.put(visitorID, new ArrayList<>());
+        }
+        this.closedLoans.get(visitorID).addAll(closedTransactions);
+
         dailyCollectedFines += amount;
         return calculateFine(visitorID);
     }

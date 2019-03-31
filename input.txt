@@ -19,6 +19,10 @@ Employee01 clientID for requests: 1000
 1000,borrowed; OR 1000,borrowed,1000000000;
 1000,return,0; OR 1000,return,1000000000,0;
 1000,pay,8; OR 1000,pay,1000000000,8;
+1000,borrowed;
+1000,pay,4;
+1000,borrowed;
+1000,return,0;
 
 //First employee01 registers visitors, then accounts can be created for these visitors
 1000,create,Leroy,
