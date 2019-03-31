@@ -284,8 +284,8 @@ public class CheckoutDB implements Serializable,RequestUtil {
         for (Transaction transaction : transactions) {
             int fineAmount = transaction.getFineAmount();
             if (fineAmount > 0) {
-                //Amount greater than transaction.fine -> clear fine and decrease amount
-                if(amount > fineAmount){
+                //Amount greater than or equal to transaction.fine -> clear fine and decrease amount
+                if(amount >= fineAmount){
                     amount -= fineAmount;
                     transaction.clearFine();
                     //remove transaction from open Loans
