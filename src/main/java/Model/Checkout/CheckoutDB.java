@@ -336,7 +336,7 @@ public class CheckoutDB implements Serializable,RequestUtil {
      * @param visitorID visitor undoing the fine
      * @param payedOffTransactions List of transactions that were modified by check
      */
-    public void undoFine(String visitorID, List<Transaction> payedOffTransactions){
+    public void undoPayFine(String visitorID, List<Transaction> payedOffTransactions){
         //Go through payedOffTransactions if they are in closedLoans add back to openLoans and increase fine
         List<Transaction> visitorsOpenLoans = openLoans.get(visitorID);
         List<Transaction> visitorsClosedLoans = closedLoans.get(visitorID);

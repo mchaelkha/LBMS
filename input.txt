@@ -35,6 +35,10 @@ Employee01 clientID for requests: 1000
 1000,borrowed;
 1000,pay,12;
 
+//Use employee01 to Register new visitor
+1000,register,luis,gutierrez,508 Willcom Rd, 585 759 4439;
+
+
 //First employee01 registers visitors, then accounts can be created for these visitors
 1000,create,Leroy,
 
