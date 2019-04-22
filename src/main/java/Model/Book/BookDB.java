@@ -184,6 +184,10 @@ public class BookDB extends BookStorage implements Serializable, RequestUtil {
             books.get(book).returnCopy();
     }
 
+    public void undoReturnCopy(String book) {
+
+    }
+
     /**
      * Helper method for reportGenerator to retrieve number of books in library
      * @return number of books in library

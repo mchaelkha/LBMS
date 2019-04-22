@@ -4,6 +4,7 @@ import Model.Book.BookDB;
 import Model.Book.BookInfo;
 import Model.Checkout.CheckoutDB;
 import Model.Client.AccountDB;
+import Model.Library.LibrarySystem;
 import Model.Library.TimeKeeper;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class ReturnBook extends AccessibleRequest {
      * The visitor ID to return the books for
      */
     private String visitorID;
+
+    private LibrarySystem librarySystem;
     /**
      * List of books from their IDs of the most recent find borrowed
      * books search
@@ -49,12 +52,13 @@ public class ReturnBook extends AccessibleRequest {
      * @param clientID The client making the request
      * @param params The parameters that follow a request command
      */
-    public ReturnBook(TimeKeeper timeKeeper, String clientID, String params) {
+    public ReturnBook(LibrarySystem librarySystem, String clientID, String params) {
         super(clientID, false);
         this.checkoutDB = CheckoutDB.getInstance();
         this.bookDB = BookDB.getInstance();
         this.timeKeeper = TimeKeeper.getInstance();
         this.params = params;
+        this.librarySystem = librarySystem;
     }
 
     /**
@@ -92,9 +96,21 @@ public class ReturnBook extends AccessibleRequest {
         return RETURN_REQUEST;
     }
 
+    /**
+     * Undoing ReturnBook command is equivalent to checking out the books again
+     */
     public void undo(){
-        checkoutDB.undoReturn(books, bookIDs, visitorID, bookDB);
+        //checkoutDB.undoReturn(books, bookIDs, visitorID, bookDB);
+        librarySystem.checkoutBooks(books, visitorID, bookIDs);
     }
+
+    /**
+     * Re-execute this encapsulated request
+     */
+    public void redo(){
+        execute();
+    }
+
     /**
      * Execute the return book command which returns a string.
      * @return String indicating that the book has been returned successfully

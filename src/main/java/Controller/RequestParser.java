@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Request.*;
+import Model.Checkout.CheckoutDB;
 import Model.Library.LibrarySystem;
 import Model.Library.ReportGenerator;
 import Model.Library.TimeKeeper;
@@ -144,7 +145,7 @@ public class RequestParser implements Parser {
                 request = new FindBorrowedBooks(clientID, params);
                 break;
             case RETURN_REQUEST:
-                request = new ReturnBook(timeKeeper, clientID, params);
+                request = new ReturnBook(librarySystem, clientID, params);
                 break;
             case PAY_REQUEST:
                 request = new PayFine(clientID, params);

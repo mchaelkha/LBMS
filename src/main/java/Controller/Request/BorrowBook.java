@@ -1,8 +1,11 @@
 package Controller.Request;
 
+import Model.Book.BookDB;
 import Model.Book.BookInfo;
+import Model.Checkout.CheckoutDB;
 import Model.Client.AccountDB;
 import Model.Library.LibrarySystem;
+import Model.Library.TimeKeeper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +27,10 @@ public class BorrowBook extends AccessibleRequest {
      * The librarySystem. Used to check library closed or open state.
      */
     private LibrarySystem librarySystem;
+
+    private CheckoutDB checkoutDB;
+
+    private Map<String, BookInfo> search;
     /**
      * Params in the command
      */
@@ -47,6 +54,7 @@ public class BorrowBook extends AccessibleRequest {
     public BorrowBook(LibrarySystem librarySystem, String clientID, String params) {
         super(clientID, false);
         this.librarySystem = librarySystem;
+        this.checkoutDB = CheckoutDB.getInstance();
         this.params = params;
     }
 
@@ -71,6 +79,20 @@ public class BorrowBook extends AccessibleRequest {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Undoing BorrowBook command is equivalent to returning books (ReturnBook)
+     */
+    public void undo(){
+        checkoutDB.returnBooks(search, visitorID, bookIDs, BookDB.getInstance(), TimeKeeper.getInstance());
+    }
+
+    /**
+     * Re-execute this encapsulated request
+     */
+    public void redo(){
+        execute();
     }
 
     /**
