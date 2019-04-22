@@ -25,10 +25,6 @@ public class CreateAccount extends AccessibleRequest {
      */
     private AccountDB accountDB;
     /**
-     * The client ID
-     */
-    private String clientID;
-    /**
      * The request parameters
      */
     private String params;
@@ -97,10 +93,10 @@ public class CreateAccount extends AccessibleRequest {
         if (!checkParams()) {
             return clientID + DELIMITER + PARAM_MESSAGE;
         }
-        if (!visitorDB.validRegisteredVisitor(visitorID)) {
+        /*if (!visitorDB.validRegisteredVisitor(visitorID)) {
             return clientID + DELIMITER + CREATE_REQUEST +
                     DELIMITER + "invalid-visitor";
-        }
+        }*/
         return clientID + DELIMITER + accountDB.createAccount(username, password, role, visitorID);
     }
 }

@@ -32,6 +32,7 @@ public class ClientParser implements Parser {
     public ClientParser(Parser parser, Set<String> clients) {
         this.clients = clients;
         this.parser = parser;
+        clients.add(String.valueOf(1000));
     }
 
     /**
